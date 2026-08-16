@@ -1,5 +1,6 @@
 import os
 import sys
+import math
 import yfinance as yf
 
 TICKERS = ["AAPL", "MSFT", "NVDA", "AMZN"]
@@ -14,6 +15,7 @@ RESULTS_DIR = "results"
 RESULTS_FILE = os.path.join(RESULTS_DIR, "latest_results.txt")
 MIN_TRAINING_TRADES = 3
 MAX_TRAINING_DRAWDOWN = 30.0
+TRADING_DAYS = 252
 
 CANDIDATES = [
     {"name": "MA 5/20", "type": "ma", "fast": 5, "slow": 20, "stop_loss": 0.02},
@@ -39,8 +41,7 @@ def run_strategy(prices, config, score_start=0, allocation=1.0, use_regime_filte
     prices=prices.dropna()
     if len(prices)<60:return None
     allocation=max(0.0,min(1.0,allocation)); cash=STARTING_MONEY; shares=0.0; entry_price=0.0; in_position=False
-    trades=[]; values=[]
-    regime_ma=prices.rolling(REGIME_MA_DAYS).mean()
+    trades=[]; values=[]; regime_ma=prices.rolling(REGIME_MA_DAYS).mean()
     if config["type"]=="ma":
         fast=prices.rolling(config["fast"]).mean(); slow=prices.rolling(config["slow"]).mean(); first=max(config["slow"],score_start)
     else:
@@ -53,8 +54,7 @@ def run_strategy(prices, config, score_start=0, allocation=1.0, use_regime_filte
             m=float(momentum.iloc[i]); buy=m>config["threshold"]; sell=m<0
         regime_ok=True
         if use_regime_filter:
-            ma_value=regime_ma.iloc[i]
-            regime_ok=(not ma_value != ma_value) and price>float(ma_value)
+            ma_value=regime_ma.iloc[i]; regime_ok=(not ma_value!=ma_value) and price>float(ma_value)
         if buy and regime_ok and not in_position and allocation>0:
             buy_price=price*(1+SLIPPAGE); amount=cash*allocation; reserved=cash-amount
             shares=(amount*(1-COMMISSION))/buy_price; cash=reserved; entry_price=buy_price; in_position=True
@@ -97,43 +97,57 @@ def walk_forward(close):
         if c is None or a==0:r=empty_result(); name="CASH"
         else:
             warm=max(0,test_start-WARMUP_DAYS); r=run_strategy(close.iloc[warm:test_end],c,test_start-warm,a,True); name=c["name"]
-        regime_start=max(0,test_start-REGIME_MA_DAYS+1); history=close.iloc[regime_start:test_start+1]
-        regime_ma=float(history.mean()) if len(history)>=REGIME_MA_DAYS else float("nan")
-        regime="BULL" if regime_ma==regime_ma and first>regime_ma else "DEFENSIVE"
-        out.append({"period":len(out)+1,"strategy":name,"allocation":a,"regime":regime,"training_return":tr["return"] if tr else 0.0,"score":score,"test_return":r["return"],"drawdown":r["drawdown"],"trades":r["trades"],"hold":hold})
+        out.append({"period":len(out)+1,"strategy":name,"allocation":a,"test_return":r["return"],"drawdown":r["drawdown"],"trades":r["trades"],"hold":hold})
         start+=TEST_DAYS
     return out
 
-def summarize(rs):
-    n=len(rs)
-    if not n:return None
-    return {"n":n,"ret":sum(r["test_return"] for r in rs)/n,"hold":sum(r["hold"] for r in rs)/n,"dd":sum(r["drawdown"] for r in rs)/n,"positive":sum(r["test_return"]>0 for r in rs)/n*100,"beat":sum(r["test_return"]>r["hold"] for r in rs)/n*100,"allocation":sum(r["allocation"] for r in rs)/n*100,"cash":sum(r["allocation"]==0 for r in rs)/n*100}
+def max_drawdown_from_equity(equity):
+    peak=equity[0]; worst=0.0
+    for value in equity:
+        peak=max(peak,value)
+        if peak>0:worst=max(worst,(peak-value)/peak*100)
+    return worst
+
+def scoreboard(results):
+    bot=STARTING_MONEY; hold=STARTING_MONEY; bot_curve=[bot]; hold_curve=[hold]; period_returns=[]
+    for r in results:
+        bot*=1+r["test_return"]/100; hold*=1+r["hold"]/100
+        bot_curve.append(bot); hold_curve.append(hold); period_returns.append(r["test_return"]/100)
+    periods=len(results); years=(periods*TEST_DAYS)/TRADING_DAYS
+    bot_total=(bot/STARTING_MONEY-1)*100; hold_total=(hold/STARTING_MONEY-1)*100
+    bot_cagr=((bot/STARTING_MONEY)**(1/years)-1)*100 if years>0 and bot>0 else 0.0
+    hold_cagr=((hold/STARTING_MONEY)**(1/years)-1)*100 if years>0 and hold>0 else 0.0
+    mean=sum(period_returns)/periods if periods else 0.0
+    variance=sum((x-mean)**2 for x in period_returns)/(periods-1) if periods>1 else 0.0
+    period_std=math.sqrt(variance)
+    annualized_vol=period_std*math.sqrt(TRADING_DAYS/TEST_DAYS)*100
+    sharpe=(mean/period_std)*math.sqrt(TRADING_DAYS/TEST_DAYS) if period_std>0 else 0.0
+    return {"bot_final":bot,"hold_final":hold,"bot_total":bot_total,"hold_total":hold_total,"bot_cagr":bot_cagr,"hold_cagr":hold_cagr,"bot_mdd":max_drawdown_from_equity(bot_curve),"hold_mdd":max_drawdown_from_equity(hold_curve),"vol":annualized_vol,"sharpe":sharpe,"years":years}
 
 def run_all_tests():
-    print("VERSION 4: MARKET REGIME FILTER")
-    print("New long entries require price above its trailing 200-day moving average; positions exit if regime turns defensive.")
-    print("All regime decisions use only data available at that historical point.")
+    print("VERSION 5: CONTINUOUS PORTFOLIO SCOREBOARD")
+    print("This keeps Version 4 strategy logic but compounds each unseen test window into one continuous simulated account.")
+    print("Scoreboard metrics are for research/backtesting only, not predictions of future returns.")
     for ticker in TICKERS:
-        print("\n======================================\nREGIME-FILTERED WALK-FORWARD:",ticker,"\n======================================")
+        print("\n======================================\nCONTINUOUS OUT-OF-SAMPLE TEST:",ticker,"\n======================================")
         data=yf.download(ticker,period="10y",interval="1d",auto_adjust=False,progress=False); close=data["Close"]
         if hasattr(close,"columns"):close=close.iloc[:,0]
-        close=close.dropna(); rs=walk_forward(close)
-        for r in rs:
-            print("\nTEST PERIOD:",r["period"],"| Starting regime:",r["regime"])
-            print("Chosen:",r["strategy"],"| Simulated allocation:",round(r["allocation"]*100),"%")
-            print("Training return:",round(r["training_return"],2),"% | score:",round(r["score"],2))
-            print("UNSEEN return:",round(r["test_return"],2),"% | Buy & Hold:",round(r["hold"],2),"%")
-            print("UNSEEN drawdown:",round(r["drawdown"],2),"% | trades:",r["trades"])
-        s=summarize(rs)
-        if s:
-            print("\n========== VERSION 4 SUMMARY ==========")
-            print("Test periods:",s["n"]); print("Average unseen return:",round(s["ret"],2),"%")
-            print("Average Buy & Hold return:",round(s["hold"],2),"%")
-            print("Average unseen drawdown:",round(s["dd"],2),"%")
-            print("Positive unseen periods:",round(s["positive"],2),"%")
-            print("Beat Buy & Hold:",round(s["beat"],2),"%")
-            print("Average simulated allocation:",round(s["allocation"],2),"%")
-            print("Cash periods:",round(s["cash"],2),"%")
+        close=close.dropna(); rs=walk_forward(close); s=scoreboard(rs)
+        print("Unseen test windows:",len(rs),"| Approx unseen years:",round(s["years"],2))
+        print("\n========== VERSION 5 SCOREBOARD ==========")
+        print("Starting simulated account: $",round(STARTING_MONEY,2))
+        print("Bot ending simulated account: $",round(s["bot_final"],2))
+        print("Buy & Hold ending simulated account: $",round(s["hold_final"],2))
+        print("Bot compounded total return:",round(s["bot_total"],2),"%")
+        print("Buy & Hold compounded total return:",round(s["hold_total"],2),"%")
+        print("Bot estimated CAGR:",round(s["bot_cagr"],2),"%")
+        print("Buy & Hold estimated CAGR:",round(s["hold_cagr"],2),"%")
+        print("Bot max drawdown across test-window equity:",round(s["bot_mdd"],2),"%")
+        print("Buy & Hold max drawdown across test-window equity:",round(s["hold_mdd"],2),"%")
+        print("Bot annualized window volatility:",round(s["vol"],2),"%")
+        print("Bot window-based Sharpe (0% risk-free assumption):",round(s["sharpe"],2))
+        print("Total simulated trades across unseen windows:",sum(r["trades"] for r in rs))
+        print("Cash windows:",sum(r["allocation"]==0 for r in rs),"of",len(rs))
 
 def main():
     os.makedirs(RESULTS_DIR,exist_ok=True); original=sys.stdout

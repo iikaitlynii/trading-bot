@@ -1,3 +1,5 @@
+import os
+import sys
 import yfinance as yf
 
 # ==========================================
@@ -13,6 +15,9 @@ TRAIN_DAYS = 500
 TEST_DAYS = 125
 WARMUP_DAYS = 60
 
+RESULTS_DIR = "results"
+RESULTS_FILE = os.path.join(RESULTS_DIR, "latest_results.txt")
+
 # Each candidate has a strategy plus parameters to test on training data.
 CANDIDATES = [
     {"name": "MA 5/20", "type": "ma", "fast": 5, "slow": 20, "stop_loss": 0.02},
@@ -22,6 +27,22 @@ CANDIDATES = [
     {"name": "Momentum 20d 5%", "type": "momentum", "lookback": 20, "threshold": 0.05, "stop_loss": 0.03},
     {"name": "Momentum 30d 7%", "type": "momentum", "lookback": 30, "threshold": 0.07, "stop_loss": 0.04},
 ]
+
+
+class Tee:
+    """Write output to Terminal and a file at the same time."""
+
+    def __init__(self, *streams):
+        self.streams = streams
+
+    def write(self, text):
+        for stream in self.streams:
+            stream.write(text)
+            stream.flush()
+
+    def flush(self):
+        for stream in self.streams:
+            stream.flush()
 
 
 def run_strategy(prices, config, score_start=0):
@@ -125,10 +146,7 @@ def run_strategy(prices, config, score_start=0):
 
 
 def training_score(result):
-    """Rank candidates using return with a drawdown penalty.
-
-    This keeps selection simple and avoids choosing purely on raw return.
-    """
+    """Rank candidates using return with a drawdown penalty."""
     if result is None:
         return float("-inf")
     return result["return"] - 0.50 * result["drawdown"]
@@ -228,49 +246,74 @@ def print_profit_factor(value):
     return "inf" if value == float("inf") else str(round(value, 2))
 
 
-for ticker in TICKERS:
-    print("\n======================================")
-    print("TRUE WALK-FORWARD OPTIMIZATION:", ticker)
-    print("======================================")
+def run_all_tests():
+    for ticker in TICKERS:
+        print("\n======================================")
+        print("TRUE WALK-FORWARD OPTIMIZATION:", ticker)
+        print("======================================")
 
-    data = yf.download(
-        ticker,
-        period="10y",
-        interval="1d",
-        auto_adjust=False,
-        progress=False,
-    )
+        data = yf.download(
+            ticker,
+            period="10y",
+            interval="1d",
+            auto_adjust=False,
+            progress=False,
+        )
 
-    close = data["Close"]
-    if hasattr(close, "columns"):
-        close = close.iloc[:, 0]
-    close = close.dropna()
+        close = data["Close"]
+        if hasattr(close, "columns"):
+            close = close.iloc[:, 0]
+        close = close.dropna()
 
-    results = walk_forward_optimize(close)
+        results = walk_forward_optimize(close)
 
-    for result in results:
-        print("\n--------------------------------------")
-        print("TEST PERIOD:", result["period"])
-        print("Chosen from training:", result["strategy"])
-        print("Training return:", round(result["training_return"], 2), "%")
-        print("Training drawdown:", round(result["training_drawdown"], 2), "%")
-        print("Training score:", round(result["training_score"], 2))
-        print("UNSEEN test return:", round(result["test_return"], 2), "%")
-        print("Buy & Hold:", round(result["buy_hold"], 2), "%")
-        print("Test drawdown:", round(result["test_drawdown"], 2), "%")
-        print("Test trades:", result["test_trades"])
-        print("Test win rate:", round(result["test_win_rate"], 2), "%")
-        print("Test profit factor:", print_profit_factor(result["test_profit_factor"]))
+        for result in results:
+            print("\n--------------------------------------")
+            print("TEST PERIOD:", result["period"])
+            print("Chosen from training:", result["strategy"])
+            print("Training return:", round(result["training_return"], 2), "%")
+            print("Training drawdown:", round(result["training_drawdown"], 2), "%")
+            print("Training score:", round(result["training_score"], 2))
+            print("UNSEEN test return:", round(result["test_return"], 2), "%")
+            print("Buy & Hold:", round(result["buy_hold"], 2), "%")
+            print("Test drawdown:", round(result["test_drawdown"], 2), "%")
+            print("Test trades:", result["test_trades"])
+            print("Test win rate:", round(result["test_win_rate"], 2), "%")
+            print("Test profit factor:", print_profit_factor(result["test_profit_factor"]))
 
-    summary = summarize_results(results)
-    if summary is not None:
-        print("\n========== WALK-FORWARD SUMMARY ==========")
-        print("Test periods:", summary["periods"])
-        print("Average unseen return:", round(summary["avg_return"], 2), "%")
-        print("Average Buy & Hold return:", round(summary["avg_buy_hold"], 2), "%")
-        print("Average unseen drawdown:", round(summary["avg_drawdown"], 2), "%")
-        print("Positive unseen periods:", round(summary["positive_rate"], 2), "%")
-        print("Beat Buy & Hold:", round(summary["beat_buy_hold_rate"], 2), "%")
-        print("Strategies selected:")
-        for name, count in summary["strategy_counts"].items():
-            print("  ", name, "->", count, "period(s)")
+        summary = summarize_results(results)
+        if summary is not None:
+            print("\n========== WALK-FORWARD SUMMARY ==========")
+            print("Test periods:", summary["periods"])
+            print("Average unseen return:", round(summary["avg_return"], 2), "%")
+            print("Average Buy & Hold return:", round(summary["avg_buy_hold"], 2), "%")
+            print("Average unseen drawdown:", round(summary["avg_drawdown"], 2), "%")
+            print("Positive unseen periods:", round(summary["positive_rate"], 2), "%")
+            print("Beat Buy & Hold:", round(summary["beat_buy_hold_rate"], 2), "%")
+            print("Strategies selected:")
+            for name, count in summary["strategy_counts"].items():
+                print("  ", name, "->", count, "period(s)")
+
+
+def main():
+    os.makedirs(RESULTS_DIR, exist_ok=True)
+
+    original_stdout = sys.stdout
+    with open(RESULTS_FILE, "w", encoding="utf-8") as result_file:
+        sys.stdout = Tee(original_stdout, result_file)
+        try:
+            print("Trading Bot Walk-Forward Results")
+            print("Saved to:", RESULTS_FILE)
+            run_all_tests()
+        finally:
+            sys.stdout = original_stdout
+
+    print("\nResults saved successfully to:", RESULTS_FILE)
+    print("To upload the results to GitHub, run:")
+    print("git add results/latest_results.txt")
+    print('git commit -m "Save latest backtest results"')
+    print("git push")
+
+
+if __name__ == "__main__":
+    main()

@@ -14,6 +14,7 @@ MAX_WEIGHT = 0.20
 STATE_FILE = "paper/state.json"
 JOURNAL_FILE = "paper/journal.csv"
 SIGNALS_FILE = "paper/latest_signals.csv"
+PERFORMANCE_FILE = "paper/performance.csv"
 
 # Safety: this program NEVER sends an order to a brokerage.
 # It only reads market data and records simulated decisions.
@@ -32,13 +33,13 @@ def save_state(state):
         json.dump(state, f, indent=2, sort_keys=True)
 
 
-def append_journal(rows):
+def append_csv(path, rows):
     if not rows:
         return
     os.makedirs("paper", exist_ok=True)
     df = pd.DataFrame(rows)
-    exists = os.path.exists(JOURNAL_FILE)
-    df.to_csv(JOURNAL_FILE, mode="a", header=not exists, index=False)
+    exists = os.path.exists(path)
+    df.to_csv(path, mode="a", header=not exists, index=False)
 
 
 def get_data(ticker):
@@ -54,6 +55,18 @@ def portfolio_value(state, prices):
     for ticker, pos in state["positions"].items():
         value += float(pos["shares"]) * float(prices.get(ticker, pos["entry_price"]))
     return value
+
+
+def previous_paper_value():
+    if not os.path.exists(PERFORMANCE_FILE):
+        return STARTING_CASH
+    try:
+        df = pd.read_csv(PERFORMANCE_FILE)
+        if len(df) == 0:
+            return STARTING_CASH
+        return float(df.iloc[-1]["paper_value"])
+    except Exception:
+        return STARTING_CASH
 
 
 def main():
@@ -89,7 +102,6 @@ def main():
         })
 
     pd.DataFrame(signals).to_csv(SIGNALS_FILE, index=False)
-    starting_value = portfolio_value(state, market)
     journal = []
 
     # Exits first.
@@ -116,15 +128,30 @@ def main():
         state["positions"][ticker] = {"shares": shares, "entry_price": float(row["close"]), "entry_date": today}
         journal.append({"date_utc": today, "ticker": ticker, "action": "SIM_BUY", "price": row["close"], "shares": shares, "reason": "bullish_signal"})
 
+    ending_value = portfolio_value(state, market)
+    previous_value = previous_paper_value()
+    daily_pnl = ending_value - previous_value
+    daily_return = (ending_value / previous_value - 1) * 100 if previous_value else 0.0
+    total_return = (ending_value / STARTING_CASH - 1) * 100
+
     state["last_run_date"] = today
     save_state(state)
-    append_journal(journal)
-    ending_value = portfolio_value(state, market)
+    append_csv(JOURNAL_FILE, journal)
+    append_csv(PERFORMANCE_FILE, [{
+        "date_utc": today,
+        "paper_value": round(ending_value, 2),
+        "cash": round(float(state["cash"]), 2),
+        "open_positions": len(state["positions"]),
+        "daily_pnl": round(daily_pnl, 2),
+        "daily_return_pct": round(daily_return, 4),
+        "total_return_pct": round(total_return, 4),
+    }])
 
     print("LIVE-DATA PAPER TRADER — SIMULATION ONLY")
     print("UTC date:", today)
-    print("Starting paper value: $", round(starting_value, 2))
     print("Ending paper value: $", round(ending_value, 2))
+    print("Daily simulated P/L: $", round(daily_pnl, 2))
+    print("Total paper return:", round(total_return, 2), "%")
     print("Cash: $", round(float(state["cash"]), 2))
     print("Open simulated positions:", list(state["positions"].keys()))
     print("New simulated actions:", len(journal))

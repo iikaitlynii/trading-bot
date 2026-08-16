@@ -28,11 +28,14 @@ jobs:
       - name: Run simulation-only paper trader
         run: python paper_trader.py
 
-      - name: Save paper account state and journal
+      - name: Build paper trading health report
+        run: python paper_report.py
+
+      - name: Save paper account state, journal, and report
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add paper/state.json paper/journal.csv paper/latest_signals.csv paper/performance.csv
+          git add paper/state.json paper/journal.csv paper/latest_signals.csv paper/performance.csv paper/report.txt
           if git diff --cached --quiet; then
             echo "No paper-trading state changes to save."
           else

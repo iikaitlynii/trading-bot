@@ -1,6 +1,7 @@
 import os
 import sys
 import math
+import pandas as pd
 import yfinance as yf
 
 TICKERS = ["AAPL", "MSFT", "NVDA", "AMZN"]
@@ -9,145 +10,154 @@ COMMISSION = 0.001
 SLIPPAGE = 0.001
 TRAIN_DAYS = 500
 TEST_DAYS = 125
-WARMUP_DAYS = 220
 REGIME_MA_DAYS = 200
+TRADING_DAYS = 252
+MAX_STOCK_WEIGHT = 0.30
+MIN_CASH_RESERVE = 0.10
 RESULTS_DIR = "results"
 RESULTS_FILE = os.path.join(RESULTS_DIR, "latest_results.txt")
-MIN_TRAINING_TRADES = 3
-MAX_TRAINING_DRAWDOWN = 30.0
-TRADING_DAYS = 252
 
 CANDIDATES = [
-    {"name": "MA 5/20", "type": "ma", "fast": 5, "slow": 20, "stop_loss": 0.02},
-    {"name": "MA 10/30", "type": "ma", "fast": 10, "slow": 30, "stop_loss": 0.03},
-    {"name": "MA 20/50", "type": "ma", "fast": 20, "slow": 50, "stop_loss": 0.04},
-    {"name": "Momentum 10d 3%", "type": "momentum", "lookback": 10, "threshold": 0.03, "stop_loss": 0.02},
-    {"name": "Momentum 20d 5%", "type": "momentum", "lookback": 20, "threshold": 0.05, "stop_loss": 0.03},
-    {"name": "Momentum 30d 7%", "type": "momentum", "lookback": 30, "threshold": 0.07, "stop_loss": 0.04},
+    {"name":"MA 5/20","type":"ma","fast":5,"slow":20,"stop_loss":0.02},
+    {"name":"MA 10/30","type":"ma","fast":10,"slow":30,"stop_loss":0.03},
+    {"name":"MA 20/50","type":"ma","fast":20,"slow":50,"stop_loss":0.04},
+    {"name":"Momentum 10d 3%","type":"momentum","lookback":10,"threshold":0.03,"stop_loss":0.02},
+    {"name":"Momentum 20d 5%","type":"momentum","lookback":20,"threshold":0.05,"stop_loss":0.03},
+    {"name":"Momentum 30d 7%","type":"momentum","lookback":30,"threshold":0.07,"stop_loss":0.04},
 ]
 
 class Tee:
-    def __init__(self, *streams): self.streams = streams
-    def write(self, text):
-        for stream in self.streams:
-            stream.write(text); stream.flush()
+    def __init__(self,*streams): self.streams=streams
+    def write(self,text):
+        for s in self.streams: s.write(text); s.flush()
     def flush(self):
-        for stream in self.streams: stream.flush()
+        for s in self.streams: s.flush()
 
-def empty_result():
-    return {"return":0.0,"drawdown":0.0,"trades":0,"win_rate":0.0,"profit_factor":0.0}
+def candidate_signals(prices,c):
+    if c["type"]=="ma":
+        fast=prices.rolling(c["fast"]).mean(); slow=prices.rolling(c["slow"]).mean()
+        return fast>slow, fast<slow
+    mom=prices.pct_change(c["lookback"])
+    return mom>c["threshold"], mom<0
 
-def run_strategy(prices, config, score_start=0, allocation=1.0, use_regime_filter=False):
-    prices=prices.dropna()
-    if len(prices)<60:return None
-    allocation=max(0.0,min(1.0,allocation)); cash=STARTING_MONEY; shares=0.0; entry_price=0.0; in_position=False
-    trades=[]; values=[]; regime_ma=prices.rolling(REGIME_MA_DAYS).mean()
-    if config["type"]=="ma":
-        fast=prices.rolling(config["fast"]).mean(); slow=prices.rolling(config["slow"]).mean(); first=max(config["slow"],score_start)
-    else:
-        momentum=prices.pct_change(config["lookback"]); first=max(config["lookback"],score_start)
-    for i in range(first,len(prices)):
-        price=float(prices.iloc[i])
-        if config["type"]=="ma":
-            buy=float(fast.iloc[i])>float(slow.iloc[i]); sell=float(fast.iloc[i])<float(slow.iloc[i])
-        else:
-            m=float(momentum.iloc[i]); buy=m>config["threshold"]; sell=m<0
-        regime_ok=True
-        if use_regime_filter:
-            ma_value=regime_ma.iloc[i]; regime_ok=(not ma_value!=ma_value) and price>float(ma_value)
-        if buy and regime_ok and not in_position and allocation>0:
-            buy_price=price*(1+SLIPPAGE); amount=cash*allocation; reserved=cash-amount
-            shares=(amount*(1-COMMISSION))/buy_price; cash=reserved; entry_price=buy_price; in_position=True
-        elif in_position and (price<=entry_price*(1-config["stop_loss"]) or sell or (use_regime_filter and not regime_ok)):
-            sell_price=price*(1-SLIPPAGE); trades.append(((sell_price-entry_price)/entry_price)*100)
-            cash+=shares*sell_price*(1-COMMISSION); shares=0.0; entry_price=0.0; in_position=False
-        values.append(cash+shares*price if in_position else cash)
+def simple_training_test(prices,c):
+    buy,sell=candidate_signals(prices,c); regime=prices>prices.rolling(REGIME_MA_DAYS).mean()
+    cash=1.0; shares=0.0; entry=0.0; values=[]; trades=0
+    for i in range(REGIME_MA_DAYS,len(prices)):
+        p=float(prices.iloc[i])
+        if shares==0 and bool(buy.iloc[i]) and bool(regime.iloc[i]):
+            bp=p*(1+SLIPPAGE); shares=(cash*(1-COMMISSION))/bp; cash=0.0; entry=bp
+        elif shares>0 and (bool(sell.iloc[i]) or not bool(regime.iloc[i]) or p<=entry*(1-c["stop_loss"])):
+            cash=shares*p*(1-SLIPPAGE)*(1-COMMISSION); shares=0.0; trades+=1
+        values.append(cash+shares*p)
     if not values:return None
-    ret=((values[-1]-STARTING_MONEY)/STARTING_MONEY)*100; peak=values[0]; dd=0.0
-    for value in values:
-        peak=max(peak,value)
-        if peak>0:dd=max(dd,((peak-value)/peak)*100)
-    wins=[t for t in trades if t>0]; losses=[t for t in trades if t<0]; tw=sum(wins); tl=abs(sum(losses))
-    pf=tw/tl if tl>0 else (float("inf") if tw>0 else 0.0)
-    return {"return":ret,"drawdown":dd,"trades":len(trades),"win_rate":len(wins)/len(trades)*100 if trades else 0.0,"profit_factor":pf}
+    ret=(values[-1]-1)*100; peak=values[0]; dd=0.0
+    for v in values:
+        peak=max(peak,v); dd=max(dd,(peak-v)/peak*100 if peak else 0)
+    return {"return":ret,"drawdown":dd,"trades":trades,"score":ret-0.5*dd}
 
-def training_score(r):
-    return float("-inf") if r is None else r["return"]-0.5*r["drawdown"]
-
-def choose_best_strategy(training):
-    ranked=[]
+def choose_strategy(training):
+    choices=[]
     for c in CANDIDATES:
-        r=run_strategy(training,c)
-        if r and r["trades"]>=MIN_TRAINING_TRADES and r["drawdown"]<=MAX_TRAINING_DRAWDOWN:ranked.append((training_score(r),c,r))
-    if not ranked:return None,None,0.0,0.0
-    ranked.sort(key=lambda x:x[0],reverse=True); score,c,r=ranked[0]
-    if score<=0 or r["return"]<=0:a=0.0
-    elif score<10:a=0.25
+        r=simple_training_test(training,c)
+        if r and r["trades"]>=3 and r["drawdown"]<=30: choices.append((r["score"],c,r))
+    if not choices:return None,0.0
+    choices.sort(key=lambda x:x[0],reverse=True); score,c,r=choices[0]
+    if score<=0 or r["return"]<=0:return None,0.0
+    if score<10:a=0.25
     elif score<25:a=0.50
     else:a=0.75
-    return c,r,score,a
+    return c,a
 
-def walk_forward(close):
-    out=[]; start=0
-    while True:
-        train_end=start+TRAIN_DAYS; test_start=train_end; test_end=test_start+TEST_DAYS
-        if test_end>len(close):break
-        c,tr,score,a=choose_best_strategy(close.iloc[start:train_end])
-        first=float(close.iloc[test_start]); last=float(close.iloc[test_end-1]); hold=((last-first)/first)*100
-        if c is None or a==0:r=empty_result(); name="CASH"
-        else:
-            warm=max(0,test_start-WARMUP_DAYS); r=run_strategy(close.iloc[warm:test_end],c,test_start-warm,a,True); name=c["name"]
-        out.append({"period":len(out)+1,"strategy":name,"allocation":a,"test_return":r["return"],"drawdown":r["drawdown"],"trades":r["trades"],"hold":hold})
-        start+=TEST_DAYS
-    return out
-
-def max_drawdown_from_equity(equity):
-    peak=equity[0]; worst=0.0
-    for value in equity:
-        peak=max(peak,value)
-        if peak>0:worst=max(worst,(peak-value)/peak*100)
+def max_drawdown(curve):
+    peak=curve[0]; worst=0.0
+    for v in curve:
+        peak=max(peak,v); worst=max(worst,(peak-v)/peak*100 if peak else 0)
     return worst
 
-def scoreboard(results):
-    bot=STARTING_MONEY; hold=STARTING_MONEY; bot_curve=[bot]; hold_curve=[hold]; period_returns=[]
-    for r in results:
-        bot*=1+r["test_return"]/100; hold*=1+r["hold"]/100
-        bot_curve.append(bot); hold_curve.append(hold); period_returns.append(r["test_return"]/100)
-    periods=len(results); years=(periods*TEST_DAYS)/TRADING_DAYS
-    bot_total=(bot/STARTING_MONEY-1)*100; hold_total=(hold/STARTING_MONEY-1)*100
-    bot_cagr=((bot/STARTING_MONEY)**(1/years)-1)*100 if years>0 and bot>0 else 0.0
-    hold_cagr=((hold/STARTING_MONEY)**(1/years)-1)*100 if years>0 and hold>0 else 0.0
-    mean=sum(period_returns)/periods if periods else 0.0
-    variance=sum((x-mean)**2 for x in period_returns)/(periods-1) if periods>1 else 0.0
-    period_std=math.sqrt(variance)
-    annualized_vol=period_std*math.sqrt(TRADING_DAYS/TEST_DAYS)*100
-    sharpe=(mean/period_std)*math.sqrt(TRADING_DAYS/TEST_DAYS) if period_std>0 else 0.0
-    return {"bot_final":bot,"hold_final":hold,"bot_total":bot_total,"hold_total":hold_total,"bot_cagr":bot_cagr,"hold_cagr":hold_cagr,"bot_mdd":max_drawdown_from_equity(bot_curve),"hold_mdd":max_drawdown_from_equity(hold_curve),"vol":annualized_vol,"sharpe":sharpe,"years":years}
+def load_prices():
+    frames=[]
+    for ticker in TICKERS:
+        d=yf.download(ticker,period="10y",interval="1d",auto_adjust=False,progress=False)
+        s=d["Close"]
+        if hasattr(s,"columns"):s=s.iloc[:,0]
+        frames.append(s.rename(ticker))
+    return pd.concat(frames,axis=1).dropna()
+
+def run_portfolio(prices):
+    cash=STARTING_MONEY; shares={t:0.0 for t in TICKERS}; entry={t:0.0 for t in TICKERS}
+    equity_curve=[STARTING_MONEY]; window_returns=[]; trade_count=0; selections=[]
+    start=0
+    while True:
+        train_end=start+TRAIN_DAYS; test_end=train_end+TEST_DAYS
+        if test_end>len(prices):break
+        configs={}; requested={}
+        for t in TICKERS:
+            c,a=choose_strategy(prices[t].iloc[start:train_end]); configs[t]=c; requested[t]=a
+        active=[t for t in TICKERS if configs[t] is not None and requested[t]>0]
+        usable=1-MIN_CASH_RESERVE
+        weights={t:0.0 for t in TICKERS}
+        if active:
+            raw={t:min(MAX_STOCK_WEIGHT,requested[t]/len(active)) for t in active}
+            total=sum(raw.values())
+            scale=min(1.0,usable/total) if total>0 else 0
+            for t in active:weights[t]=raw[t]*scale
+        window_start_equity=equity_curve[-1]
+        for i in range(train_end,test_end):
+            portfolio_value=cash+sum(shares[t]*float(prices[t].iloc[i]) for t in TICKERS)
+            for t in TICKERS:
+                c=configs[t]; p=float(prices[t].iloc[i])
+                hist=prices[t].iloc[max(0,i-REGIME_MA_DAYS+1):i+1]
+                regime_ok=len(hist)>=REGIME_MA_DAYS and p>float(hist.mean())
+                if c is None: buy=sell=False
+                elif c["type"]=="ma":
+                    if i+1<c["slow"]:buy=sell=False
+                    else:
+                        fast=float(prices[t].iloc[i-c["fast"]+1:i+1].mean()); slow=float(prices[t].iloc[i-c["slow"]+1:i+1].mean()); buy=fast>slow; sell=fast<slow
+                else:
+                    if i<c["lookback"]:buy=sell=False
+                    else:
+                        m=p/float(prices[t].iloc[i-c["lookback"]])-1; buy=m>c["threshold"]; sell=m<0
+                if shares[t]>0 and (sell or not regime_ok or p<=entry[t]*(1-c["stop_loss"])):
+                    cash+=shares[t]*p*(1-SLIPPAGE)*(1-COMMISSION); shares[t]=0.0; entry[t]=0.0; trade_count+=1
+                elif shares[t]==0 and c is not None and buy and regime_ok and weights[t]>0:
+                    target=portfolio_value*weights[t]; amount=min(cash,max(0,target))
+                    if amount>1:
+                        bp=p*(1+SLIPPAGE); shares[t]=(amount*(1-COMMISSION))/bp; cash-=amount; entry[t]=bp
+            value=cash+sum(shares[t]*float(prices[t].iloc[i]) for t in TICKERS); equity_curve.append(value)
+        end_equity=equity_curve[-1]; window_returns.append((end_equity/window_start_equity-1)*100)
+        selections.append({t:(configs[t]["name"] if configs[t] else "CASH",round(weights[t]*100,1)) for t in TICKERS})
+        start+=TEST_DAYS
+    final=equity_curve[-1]; years=(len(window_returns)*TEST_DAYS)/TRADING_DAYS
+    returns=[r/100 for r in window_returns]; mean=sum(returns)/len(returns) if returns else 0
+    var=sum((x-mean)**2 for x in returns)/(len(returns)-1) if len(returns)>1 else 0; std=math.sqrt(var)
+    return {"final":final,"total":(final/STARTING_MONEY-1)*100,"cagr":((final/STARTING_MONEY)**(1/years)-1)*100 if years>0 and final>0 else 0,"mdd":max_drawdown(equity_curve),"vol":std*math.sqrt(TRADING_DAYS/TEST_DAYS)*100,"sharpe":mean/std*math.sqrt(TRADING_DAYS/TEST_DAYS) if std>0 else 0,"trades":trade_count,"windows":len(window_returns),"years":years,"selections":selections}
+
+def equal_weight_hold(prices,test_start,total_days):
+    start_prices=prices.iloc[test_start]; end_prices=prices.iloc[min(test_start+total_days-1,len(prices)-1)]
+    growth=sum(float(end_prices[t]/start_prices[t]) for t in TICKERS)/len(TICKERS)
+    return STARTING_MONEY*growth
 
 def run_all_tests():
-    print("VERSION 5: CONTINUOUS PORTFOLIO SCOREBOARD")
-    print("This keeps Version 4 strategy logic but compounds each unseen test window into one continuous simulated account.")
-    print("Scoreboard metrics are for research/backtesting only, not predictions of future returns.")
-    for ticker in TICKERS:
-        print("\n======================================\nCONTINUOUS OUT-OF-SAMPLE TEST:",ticker,"\n======================================")
-        data=yf.download(ticker,period="10y",interval="1d",auto_adjust=False,progress=False); close=data["Close"]
-        if hasattr(close,"columns"):close=close.iloc[:,0]
-        close=close.dropna(); rs=walk_forward(close); s=scoreboard(rs)
-        print("Unseen test windows:",len(rs),"| Approx unseen years:",round(s["years"],2))
-        print("\n========== VERSION 5 SCOREBOARD ==========")
-        print("Starting simulated account: $",round(STARTING_MONEY,2))
-        print("Bot ending simulated account: $",round(s["bot_final"],2))
-        print("Buy & Hold ending simulated account: $",round(s["hold_final"],2))
-        print("Bot compounded total return:",round(s["bot_total"],2),"%")
-        print("Buy & Hold compounded total return:",round(s["hold_total"],2),"%")
-        print("Bot estimated CAGR:",round(s["bot_cagr"],2),"%")
-        print("Buy & Hold estimated CAGR:",round(s["hold_cagr"],2),"%")
-        print("Bot max drawdown across test-window equity:",round(s["bot_mdd"],2),"%")
-        print("Buy & Hold max drawdown across test-window equity:",round(s["hold_mdd"],2),"%")
-        print("Bot annualized window volatility:",round(s["vol"],2),"%")
-        print("Bot window-based Sharpe (0% risk-free assumption):",round(s["sharpe"],2))
-        print("Total simulated trades across unseen windows:",sum(r["trades"] for r in rs))
-        print("Cash windows:",sum(r["allocation"]==0 for r in rs),"of",len(rs))
+    print("VERSION 6: ONE-ACCOUNT MULTI-STOCK PORTFOLIO")
+    print("One simulated $10,000 account is shared across AAPL, MSFT, NVDA, and AMZN.")
+    print("Rules: max 30% target weight per stock, at least 10% cash capacity, transaction costs, regime filter, and walk-forward strategy selection.")
+    prices=load_prices(); r=run_portfolio(prices); total_days=r["windows"]*TEST_DAYS
+    benchmark=equal_weight_hold(prices,TRAIN_DAYS,total_days); benchmark_return=(benchmark/STARTING_MONEY-1)*100
+    print("\n========== VERSION 6 PORTFOLIO SCOREBOARD ==========")
+    print("Unseen windows:",r["windows"],"| Approx unseen years:",round(r["years"],2))
+    print("Starting simulated account: $",round(STARTING_MONEY,2))
+    print("Bot ending simulated account: $",round(r["final"],2))
+    print("Equal-weight Buy & Hold ending value: $",round(benchmark,2))
+    print("Bot compounded total return:",round(r["total"],2),"%")
+    print("Equal-weight Buy & Hold return:",round(benchmark_return,2),"%")
+    print("Bot estimated CAGR:",round(r["cagr"],2),"%")
+    print("Bot max daily portfolio drawdown:",round(r["mdd"],2),"%")
+    print("Bot annualized window volatility:",round(r["vol"],2),"%")
+    print("Bot window-based Sharpe (0% risk-free assumption):",round(r["sharpe"],2))
+    print("Completed simulated trades:",r["trades"])
+    print("\nLast 3 walk-forward allocations:")
+    for idx,s in list(enumerate(r["selections"],1))[-3:]:print("Window",idx,":",s)
 
 def main():
     os.makedirs(RESULTS_DIR,exist_ok=True); original=sys.stdout

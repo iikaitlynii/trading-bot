@@ -1,445 +1,85 @@
 Trading Bot Automated Research Results
 Saved to: results/latest_results.txt
-VERSION 4: MARKET REGIME FILTER
-New long entries require price above its trailing 200-day moving average; positions exit if regime turns defensive.
-All regime decisions use only data available at that historical point.
+VERSION 5: CONTINUOUS PORTFOLIO SCOREBOARD
+This keeps Version 4 strategy logic but compounds each unseen test window into one continuous simulated account.
+Scoreboard metrics are for research/backtesting only, not predictions of future returns.
 
 ======================================
-REGIME-FILTERED WALK-FORWARD: AAPL 
+CONTINUOUS OUT-OF-SAMPLE TEST: AAPL 
 ======================================
+Unseen test windows: 16 | Approx unseen years: 7.94
 
-TEST PERIOD: 1 | Starting regime: BULL
-Chosen: MA 5/20 | Simulated allocation: 75 %
-Training return: 38.39 % | score: 30.77
-UNSEEN return: -0.41 % | Buy & Hold: -18.16 %
-UNSEEN drawdown: 6.78 % | trades: 2
-
-TEST PERIOD: 2 | Starting regime: DEFENSIVE
-Chosen: Momentum 20d 5% | Simulated allocation: 50 %
-Training return: 23.69 % | score: 19.11
-UNSEEN return: 0.69 % | Buy & Hold: 16.8 %
-UNSEEN drawdown: 4.5 % | trades: 3
-
-TEST PERIOD: 3 | Starting regime: BULL
-Chosen: Momentum 20d 5% | Simulated allocation: 75 %
-Training return: 34.29 % | score: 29.72
-UNSEEN return: 41.97 % | Buy & Hold: 58.02 %
-UNSEEN drawdown: 3.99 % | trades: 0
-
-TEST PERIOD: 4 | Starting regime: BULL
-Chosen: Momentum 20d 5% | Simulated allocation: 75 %
-Training return: 102.89 % | score: 98.59
-UNSEEN return: 40.22 % | Buy & Hold: 34.89 %
-UNSEEN drawdown: 5.27 % | trades: 3
-
-TEST PERIOD: 5 | Starting regime: BULL
-Chosen: Momentum 20d 5% | Simulated allocation: 75 %
-Training return: 183.2 % | score: 178.9
-UNSEEN return: -2.7 % | Buy & Hold: 22.65 %
-UNSEEN drawdown: 17.78 % | trades: 5
-
-TEST PERIOD: 6 | Starting regime: BULL
-Chosen: Momentum 20d 5% | Simulated allocation: 75 %
-Training return: 159.81 % | score: 148.49
-UNSEEN return: 6.74 % | Buy & Hold: 8.65 %
-UNSEEN drawdown: 3.95 % | trades: 2
-
-TEST PERIOD: 7 | Starting regime: BULL
-Chosen: Momentum 20d 5% | Simulated allocation: 75 %
-Training return: 144.56 % | score: 132.7
-UNSEEN return: 5.14 % | Buy & Hold: 15.59 %
-UNSEEN drawdown: 6.15 % | trades: 3
-
-TEST PERIOD: 8 | Starting regime: BULL
-Chosen: MA 5/20 | Simulated allocation: 75 %
-Training return: 84.6 % | score: 74.29
-UNSEEN return: -4.85 % | Buy & Hold: -7.02 %
-UNSEEN drawdown: 5.61 % | trades: 3
-
-TEST PERIOD: 9 | Starting regime: BULL
-Chosen: Momentum 30d 7% | Simulated allocation: 50 %
-Training return: 19.26 % | score: 12.0
-UNSEEN return: -1.0 % | Buy & Hold: -9.65 %
-UNSEEN drawdown: 4.74 % | trades: 1
-
-TEST PERIOD: 10 | Starting regime: DEFENSIVE
-Chosen: MA 5/20 | Simulated allocation: 75 %
-Training return: 38.29 % | score: 29.41
-UNSEEN return: 16.64 % | Buy & Hold: 36.94 %
-UNSEEN drawdown: 6.8 % | trades: 2
-
-TEST PERIOD: 11 | Starting regime: BULL
-Chosen: MA 5/20 | Simulated allocation: 75 %
-Training return: 47.48 % | score: 38.6
-UNSEEN return: -7.45 % | Buy & Hold: -2.05 %
-UNSEEN drawdown: 11.21 % | trades: 7
-
-TEST PERIOD: 12 | Starting regime: BULL
-Chosen: MA 5/20 | Simulated allocation: 50 %
-Training return: 26.84 % | score: 19.17
-UNSEEN return: 8.29 % | Buy & Hold: 13.68 %
-UNSEEN drawdown: 3.99 % | trades: 3
-
-TEST PERIOD: 13 | Starting regime: BULL
-Chosen: Momentum 30d 7% | Simulated allocation: 75 %
-Training return: 40.39 % | score: 36.4
-UNSEEN return: -8.4 % | Buy & Hold: 5.32 %
-UNSEEN drawdown: 9.49 % | trades: 3
-
-TEST PERIOD: 14 | Starting regime: BULL
-Chosen: Momentum 10d 3% | Simulated allocation: 50 %
-Training return: 29.55 % | score: 22.92
-UNSEEN return: -4.8 % | Buy & Hold: -10.16 %
-UNSEEN drawdown: 4.8 % | trades: 3
-
-TEST PERIOD: 15 | Starting regime: DEFENSIVE
-Chosen: CASH | Simulated allocation: 0 %
-Training return: -1.97 % | score: -13.6
-UNSEEN return: 0.0 % | Buy & Hold: 20.89 %
-UNSEEN drawdown: 0.0 % | trades: 0
-
-TEST PERIOD: 16 | Starting regime: BULL
-Chosen: MA 20/50 | Simulated allocation: 25 %
-Training return: 21.5 % | score: 8.5
-UNSEEN return: 3.68 % | Buy & Hold: 30.45 %
-UNSEEN drawdown: 3.52 % | trades: 3
-
-========== VERSION 4 SUMMARY ==========
-Test periods: 16
-Average unseen return: 5.86 %
-Average Buy & Hold return: 13.55 %
-Average unseen drawdown: 6.16 %
-Positive unseen periods: 50.0 %
-Beat Buy & Hold: 31.25 %
-Average simulated allocation: 60.94 %
-Cash periods: 6.25 %
+========== VERSION 5 SCOREBOARD ==========
+Starting simulated account: $ 10000
+Bot ending simulated account: $ 21702.99
+Buy & Hold ending simulated account: $ 59984.04
+Bot compounded total return: 117.03 %
+Buy & Hold compounded total return: 499.84 %
+Bot estimated CAGR: 10.26 %
+Buy & Hold estimated CAGR: 25.32 %
+Bot max drawdown across test-window equity: 12.8 %
+Buy & Hold max drawdown across test-window equity: 18.16 %
+Bot annualized window volatility: 21.51 %
+Bot window-based Sharpe (0% risk-free assumption): 0.55
+Total simulated trades across unseen windows: 43
+Cash windows: 1 of 16
 
 ======================================
-REGIME-FILTERED WALK-FORWARD: MSFT 
+CONTINUOUS OUT-OF-SAMPLE TEST: MSFT 
 ======================================
+Unseen test windows: 16 | Approx unseen years: 7.94
 
-TEST PERIOD: 1 | Starting regime: BULL
-Chosen: MA 10/30 | Simulated allocation: 75 %
-Training return: 41.27 % | score: 36.01
-UNSEEN return: -17.7 % | Buy & Hold: -4.01 %
-UNSEEN drawdown: 19.98 % | trades: 7
-
-TEST PERIOD: 2 | Starting regime: BULL
-Chosen: Momentum 30d 7% | Simulated allocation: 25 %
-Training return: 6.7 % | score: 0.69
-UNSEEN return: 2.7 % | Buy & Hold: 28.02 %
-UNSEEN drawdown: 2.87 % | trades: 2
-
-TEST PERIOD: 3 | Starting regime: BULL
-Chosen: Momentum 30d 7% | Simulated allocation: 50 %
-Training return: 24.37 % | score: 18.36
-UNSEEN return: 11.04 % | Buy & Hold: 29.53 %
-UNSEEN drawdown: 1.53 % | trades: 0
-
-TEST PERIOD: 4 | Starting regime: BULL
-Chosen: Momentum 30d 7% | Simulated allocation: 75 %
-Training return: 48.45 % | score: 43.39
-UNSEEN return: 5.27 % | Buy & Hold: 16.15 %
-UNSEEN drawdown: 13.26 % | trades: 2
-
-TEST PERIOD: 5 | Starting regime: BULL
-Chosen: MA 20/50 | Simulated allocation: 75 %
-Training return: 64.36 % | score: 51.21
-UNSEEN return: 0.27 % | Buy & Hold: 12.48 %
-UNSEEN drawdown: 13.52 % | trades: 5
-
-TEST PERIOD: 6 | Starting regime: BULL
-Chosen: MA 20/50 | Simulated allocation: 75 %
-Training return: 50.26 % | score: 37.11
-UNSEEN return: 2.94 % | Buy & Hold: 17.21 %
-UNSEEN drawdown: 6.93 % | trades: 4
-
-TEST PERIOD: 7 | Starting regime: BULL
-Chosen: MA 20/50 | Simulated allocation: 75 %
-Training return: 57.85 % | score: 44.7
-UNSEEN return: -1.22 % | Buy & Hold: 7.36 %
-UNSEEN drawdown: 6.62 % | trades: 2
-
-TEST PERIOD: 8 | Starting regime: BULL
-Chosen: MA 20/50 | Simulated allocation: 75 %
-Training return: 36.23 % | score: 28.05
-UNSEEN return: -3.97 % | Buy & Hold: -9.72 %
-UNSEEN drawdown: 3.97 % | trades: 1
-
-TEST PERIOD: 9 | Starting regime: DEFENSIVE
-Chosen: CASH | Simulated allocation: 0 %
-Training return: -2.27 % | score: -9.07
-UNSEEN return: 0.0 % | Buy & Hold: -10.74 %
-UNSEEN drawdown: 0.0 % | trades: 0
-
-TEST PERIOD: 10 | Starting regime: DEFENSIVE
-Chosen: CASH | Simulated allocation: 0 %
-Training return: -5.65 % | score: -19.9
-UNSEEN return: 0.0 % | Buy & Hold: 39.41 %
-UNSEEN drawdown: 0.0 % | trades: 0
-
-TEST PERIOD: 11 | Starting regime: BULL
-Chosen: CASH | Simulated allocation: 0 %
-Training return: 8.83 % | score: -1.85
-UNSEEN return: 0.0 % | Buy & Hold: 20.25 %
-UNSEEN drawdown: 0.0 % | trades: 0
-
-TEST PERIOD: 12 | Starting regime: BULL
-Chosen: Momentum 30d 7% | Simulated allocation: 25 %
-Training return: 19.11 % | score: 9.0
-UNSEEN return: -0.78 % | Buy & Hold: 3.8 %
-UNSEEN drawdown: 2.83 % | trades: 2
-
-TEST PERIOD: 13 | Starting regime: BULL
-Chosen: Momentum 30d 7% | Simulated allocation: 50 %
-Training return: 27.75 % | score: 20.79
-UNSEEN return: -4.5 % | Buy & Hold: 1.83 %
-UNSEEN drawdown: 4.79 % | trades: 2
-
-TEST PERIOD: 14 | Starting regime: BULL
-Chosen: MA 20/50 | Simulated allocation: 50 %
-Training return: 22.75 % | score: 13.68
-UNSEEN return: 9.02 % | Buy & Hold: 14.6 %
-UNSEEN drawdown: 0.97 % | trades: 0
-
-TEST PERIOD: 15 | Starting regime: BULL
-Chosen: Momentum 20d 5% | Simulated allocation: 50 %
-Training return: 27.06 % | score: 21.38
-UNSEEN return: -3.56 % | Buy & Hold: -8.25 %
-UNSEEN drawdown: 3.65 % | trades: 2
-
-TEST PERIOD: 16 | Starting regime: DEFENSIVE
-Chosen: Momentum 20d 5% | Simulated allocation: 25 %
-Training return: 11.13 % | score: 5.45
-UNSEEN return: -1.14 % | Buy & Hold: -19.04 %
-UNSEEN drawdown: 1.14 % | trades: 1
-
-========== VERSION 4 SUMMARY ==========
-Test periods: 16
-Average unseen return: -0.1 %
-Average Buy & Hold return: 8.68 %
-Average unseen drawdown: 5.13 %
-Positive unseen periods: 37.5 %
-Beat Buy & Hold: 25.0 %
-Average simulated allocation: 45.31 %
-Cash periods: 18.75 %
+========== VERSION 5 SCOREBOARD ==========
+Starting simulated account: $ 10000
+Bot ending simulated account: $ 9527.2
+Buy & Hold ending simulated account: $ 31809.19
+Bot compounded total return: -4.73 %
+Buy & Hold compounded total return: 218.09 %
+Bot estimated CAGR: -0.61 %
+Buy & Hold estimated CAGR: 15.7 %
+Bot max drawdown across test-window equity: 17.7 %
+Buy & Hold max drawdown across test-window equity: 25.72 %
+Bot annualized window volatility: 9.07 %
+Bot window-based Sharpe (0% risk-free assumption): -0.02
+Total simulated trades across unseen windows: 30
+Cash windows: 3 of 16
 
 ======================================
-REGIME-FILTERED WALK-FORWARD: NVDA 
+CONTINUOUS OUT-OF-SAMPLE TEST: NVDA 
 ======================================
+Unseen test windows: 16 | Approx unseen years: 7.94
 
-TEST PERIOD: 1 | Starting regime: BULL
-Chosen: Momentum 30d 7% | Simulated allocation: 75 %
-Training return: 99.95 % | score: 90.38
-UNSEEN return: -5.68 % | Buy & Hold: -42.52 %
-UNSEEN drawdown: 7.36 % | trades: 2
-
-TEST PERIOD: 2 | Starting regime: DEFENSIVE
-Chosen: Momentum 20d 5% | Simulated allocation: 25 %
-Training return: 22.36 % | score: 8.04
-UNSEEN return: -1.03 % | Buy & Hold: 3.86 %
-UNSEEN drawdown: 2.03 % | trades: 1
-
-TEST PERIOD: 3 | Starting regime: DEFENSIVE
-Chosen: CASH | Simulated allocation: 0 %
-Training return: 0.0 % | score: 0.0
-UNSEEN return: 0.0 % | Buy & Hold: 58.45 %
-UNSEEN drawdown: 0.0 % | trades: 0
-
-TEST PERIOD: 4 | Starting regime: BULL
-Chosen: MA 10/30 | Simulated allocation: 75 %
-Training return: 54.4 % | score: 40.9
-UNSEEN return: 58.12 % | Buy & Hold: 76.64 %
-UNSEEN drawdown: 17.58 % | trades: 1
-
-TEST PERIOD: 5 | Starting regime: BULL
-Chosen: MA 10/30 | Simulated allocation: 75 %
-Training return: 225.37 % | score: 214.37
-UNSEEN return: -17.8 % | Buy & Hold: 20.11 %
-UNSEEN drawdown: 31.12 % | trades: 10
-
-TEST PERIOD: 6 | Starting regime: BULL
-Chosen: Momentum 20d 5% | Simulated allocation: 75 %
-Training return: 86.45 % | score: 73.22
-UNSEEN return: 5.31 % | Buy & Hold: 45.97 %
-UNSEEN drawdown: 12.95 % | trades: 3
-
-TEST PERIOD: 7 | Starting regime: BULL
-Chosen: CASH | Simulated allocation: 0 %
-Training return: 0.0 % | score: 0.0
-UNSEEN return: 0.0 % | Buy & Hold: 15.27 %
-UNSEEN drawdown: 0.0 % | trades: 0
-
-TEST PERIOD: 8 | Starting regime: BULL
-Chosen: Momentum 30d 7% | Simulated allocation: 75 %
-Training return: 59.46 % | score: 45.46
-UNSEEN return: -6.08 % | Buy & Hold: -25.82 %
-UNSEEN drawdown: 11.46 % | trades: 1
-
-TEST PERIOD: 9 | Starting regime: DEFENSIVE
-Chosen: CASH | Simulated allocation: 0 %
-Training return: -8.35 % | score: -22.1
-UNSEEN return: 0.0 % | Buy & Hold: 10.43 %
-UNSEEN drawdown: 0.0 % | trades: 0
-
-TEST PERIOD: 10 | Starting regime: BULL
-Chosen: Momentum 10d 3% | Simulated allocation: 75 %
-Training return: 139.02 % | score: 126.64
-UNSEEN return: 46.92 % | Buy & Hold: 143.97 %
-UNSEEN drawdown: 15.43 % | trades: 8
-
-TEST PERIOD: 11 | Starting regime: BULL
-Chosen: Momentum 10d 3% | Simulated allocation: 75 %
-Training return: 200.14 % | score: 187.77
-UNSEEN return: 9.93 % | Buy & Hold: 30.61 %
-UNSEEN drawdown: 8.93 % | trades: 6
-
-TEST PERIOD: 12 | Starting regime: BULL
-Chosen: Momentum 10d 3% | Simulated allocation: 75 %
-Training return: 165.47 % | score: 155.57
-UNSEEN return: 33.57 % | Buy & Hold: 81.0 %
-UNSEEN drawdown: 16.03 % | trades: 7
-
-TEST PERIOD: 13 | Starting regime: BULL
-Chosen: MA 5/20 | Simulated allocation: 75 %
-Training return: 550.49 % | score: 542.31
-UNSEEN return: -15.43 % | Buy & Hold: 6.12 %
-UNSEEN drawdown: 18.84 % | trades: 10
-
-TEST PERIOD: 14 | Starting regime: BULL
-Chosen: Momentum 30d 7% | Simulated allocation: 75 %
-Training return: 328.45 % | score: 320.45
-UNSEEN return: 26.82 % | Buy & Hold: 37.03 %
-UNSEEN drawdown: 2.76 % | trades: 0
-
-TEST PERIOD: 15 | Starting regime: BULL
-Chosen: Momentum 30d 7% | Simulated allocation: 75 %
-Training return: 225.74 % | score: 217.75
-UNSEEN return: -4.91 % | Buy & Hold: 6.24 %
-UNSEEN drawdown: 10.1 % | trades: 3
-
-TEST PERIOD: 16 | Starting regime: BULL
-Chosen: Momentum 10d 3% | Simulated allocation: 75 %
-Training return: 64.12 % | score: 50.82
-UNSEEN return: -0.74 % | Buy & Hold: 4.24 %
-UNSEEN drawdown: 11.49 % | trades: 7
-
-========== VERSION 4 SUMMARY ==========
-Test periods: 16
-Average unseen return: 8.06 %
-Average Buy & Hold return: 29.47 %
-Average unseen drawdown: 10.38 %
-Positive unseen periods: 37.5 %
-Beat Buy & Hold: 12.5 %
-Average simulated allocation: 57.81 %
-Cash periods: 18.75 %
+========== VERSION 5 SCOREBOARD ==========
+Starting simulated account: $ 10000
+Bot ending simulated account: $ 26207.42
+Buy & Hold ending simulated account: $ 256916.39
+Bot compounded total return: 162.07 %
+Buy & Hold compounded total return: 2469.16 %
+Bot estimated CAGR: 12.91 %
+Buy & Hold estimated CAGR: 50.53 %
+Bot max drawdown across test-window equity: 18.7 %
+Buy & Hold max drawdown across test-window equity: 42.52 %
+Bot annualized window volatility: 31.03 %
+Bot window-based Sharpe (0% risk-free assumption): 0.52
+Total simulated trades across unseen windows: 59
+Cash windows: 3 of 16
 
 ======================================
-REGIME-FILTERED WALK-FORWARD: AMZN 
+CONTINUOUS OUT-OF-SAMPLE TEST: AMZN 
 ======================================
+Unseen test windows: 16 | Approx unseen years: 7.94
 
-TEST PERIOD: 1 | Starting regime: BULL
-Chosen: Momentum 20d 5% | Simulated allocation: 75 %
-Training return: 73.25 % | score: 69.42
-UNSEEN return: -5.27 % | Buy & Hold: -14.97 %
-UNSEEN drawdown: 10.13 % | trades: 3
-
-TEST PERIOD: 2 | Starting regime: DEFENSIVE
-Chosen: MA 10/30 | Simulated allocation: 75 %
-Training return: 60.06 % | score: 50.39
-UNSEEN return: 2.2 % | Buy & Hold: 12.92 %
-UNSEEN drawdown: 6.5 % | trades: 2
-
-TEST PERIOD: 3 | Starting regime: BULL
-Chosen: MA 10/30 | Simulated allocation: 75 %
-Training return: 75.98 % | score: 67.13
-UNSEEN return: 1.07 % | Buy & Hold: 11.29 %
-UNSEEN drawdown: 6.67 % | trades: 3
-
-TEST PERIOD: 4 | Starting regime: BULL
-Chosen: MA 10/30 | Simulated allocation: 50 %
-Training return: 20.5 % | score: 11.66
-UNSEEN return: 26.58 % | Buy & Hold: 53.1 %
-UNSEEN drawdown: 7.33 % | trades: 3
-
-TEST PERIOD: 5 | Starting regime: BULL
-Chosen: MA 10/30 | Simulated allocation: 75 %
-Training return: 54.02 % | score: 45.47
-UNSEEN return: -17.46 % | Buy & Hold: 5.46 %
-UNSEEN drawdown: 22.13 % | trades: 9
-
-TEST PERIOD: 6 | Starting regime: BULL
-Chosen: Momentum 30d 7% | Simulated allocation: 75 %
-Training return: 35.95 % | score: 26.69
-UNSEEN return: -8.24 % | Buy & Hold: 0.57 %
-UNSEEN drawdown: 10.08 % | trades: 2
-
-TEST PERIOD: 7 | Starting regime: BULL
-Chosen: Momentum 30d 7% | Simulated allocation: 25 %
-Training return: 20.2 % | score: 7.06
-UNSEEN return: -1.02 % | Buy & Hold: -14.46 %
-UNSEEN drawdown: 1.79 % | trades: 1
-
-TEST PERIOD: 8 | Starting regime: DEFENSIVE
-Chosen: Momentum 30d 7% | Simulated allocation: 25 %
-Training return: 22.0 % | score: 7.36
-UNSEEN return: -1.23 % | Buy & Hold: -9.78 %
-UNSEEN drawdown: 1.23 % | trades: 2
-
-TEST PERIOD: 9 | Starting regime: DEFENSIVE
-Chosen: CASH | Simulated allocation: 0 %
-Training return: 0.0 % | score: 0.0
-UNSEEN return: 0.0 % | Buy & Hold: -24.48 %
-UNSEEN drawdown: 0.0 % | trades: 0
-
-TEST PERIOD: 10 | Starting regime: DEFENSIVE
-Chosen: CASH | Simulated allocation: 0 %
-Training return: 2.71 % | score: -7.37
-UNSEEN return: 0.0 % | Buy & Hold: 31.49 %
-UNSEEN drawdown: 0.0 % | trades: 0
-
-TEST PERIOD: 11 | Starting regime: BULL
-Chosen: MA 10/30 | Simulated allocation: 25 %
-Training return: 17.31 % | score: 6.34
-UNSEEN return: -0.02 % | Buy & Hold: 19.03 %
-UNSEEN drawdown: 3.64 % | trades: 4
-
-TEST PERIOD: 12 | Starting regime: BULL
-Chosen: MA 10/30 | Simulated allocation: 50 %
-Training return: 23.48 % | score: 13.56
-UNSEEN return: -0.11 % | Buy & Hold: 13.17 %
-UNSEEN drawdown: 7.49 % | trades: 5
-
-TEST PERIOD: 13 | Starting regime: BULL
-Chosen: MA 20/50 | Simulated allocation: 75 %
-Training return: 38.84 % | score: 26.92
-UNSEEN return: 7.86 % | Buy & Hold: 28.5 %
-UNSEEN drawdown: 13.14 % | trades: 2
-
-TEST PERIOD: 14 | Starting regime: BULL
-Chosen: MA 20/50 | Simulated allocation: 75 %
-Training return: 76.86 % | score: 65.6
-UNSEEN return: 1.86 % | Buy & Hold: -2.25 %
-UNSEEN drawdown: 9.86 % | trades: 3
-
-TEST PERIOD: 15 | Starting regime: BULL
-Chosen: MA 10/30 | Simulated allocation: 75 %
-Training return: 62.37 % | score: 55.38
-UNSEEN return: -1.21 % | Buy & Hold: 3.21 %
-UNSEEN drawdown: 11.22 % | trades: 4
-
-TEST PERIOD: 16 | Starting regime: BULL
-Chosen: MA 10/30 | Simulated allocation: 75 %
-Training return: 33.5 % | score: 26.24
-UNSEEN return: -3.64 % | Buy & Hold: -5.43 %
-UNSEEN drawdown: 11.37 % | trades: 3
-
-========== VERSION 4 SUMMARY ==========
-Test periods: 16
-Average unseen return: 0.09 %
-Average Buy & Hold return: 6.71 %
-Average unseen drawdown: 7.66 %
-Positive unseen periods: 31.25 %
-Beat Buy & Hold: 37.5 %
-Average simulated allocation: 53.12 %
-Cash periods: 12.5 %
+========== VERSION 5 SCOREBOARD ==========
+Starting simulated account: $ 10000
+Bot ending simulated account: $ 9579.96
+Buy & Hold ending simulated account: $ 21960.78
+Bot compounded total return: -4.2 %
+Buy & Hold compounded total return: 119.61 %
+Bot estimated CAGR: -0.54 %
+Buy & Hold estimated CAGR: 10.42 %
+Bot max drawdown across test-window equity: 26.05 %
+Buy & Hold max drawdown across test-window equity: 41.72 %
+Bot annualized window volatility: 12.68 %
+Bot window-based Sharpe (0% risk-free assumption): 0.01
+Total simulated trades across unseen windows: 46
+Cash windows: 2 of 16

@@ -27,14 +27,17 @@ jobs:
       - name: Run backtest
         run: python bot.py
 
+      - name: Run robustness stress tests
+        run: python stress_test.py | tee results/stress_results.txt
+
       - name: Save latest results to repository
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add results/latest_results.txt
+          git add results/latest_results.txt results/stress_results.txt
           if git diff --cached --quiet; then
             echo "Results did not change."
           else
-            git commit -m "Update automated backtest results [skip ci]"
+            git commit -m "Update automated research results [skip ci]"
             git push
           fi

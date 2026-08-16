@@ -12,9 +12,11 @@ TRAIN_DAYS=500
 TEST_DAYS=125
 REGIME_MA_DAYS=200
 TRADING_DAYS=252
-MAX_STOCK_WEIGHT=0.35
-MIN_CASH_RESERVE=0.10
+MAX_STOCK_WEIGHT=0.30
+MIN_CASH_RESERVE=0.15
 MOMENTUM_LOOKBACK=126
+VOL_LOOKBACK=63
+TARGET_STOCK_VOL=0.25
 RESULTS_DIR="results"
 RESULTS_FILE=os.path.join(RESULTS_DIR,"latest_results.txt")
 
@@ -76,26 +78,31 @@ def load_prices():
   frames.append(s.rename(t))
  return pd.concat(frames,axis=1).dropna()
 
-def strength_weights(prices,train_end,configs,requested):
+def risk_adjusted_weights(prices,train_end,configs,requested):
  scores={}
  for t in TICKERS:
   if configs[t] is None or requested[t]<=0:continue
   s=prices[t].iloc[:train_end]
-  if len(s)<MOMENTUM_LOOKBACK+1:continue
+  if len(s)<max(MOMENTUM_LOOKBACK,REGIME_MA_DAYS,VOL_LOOKBACK)+1:continue
   momentum=float(s.iloc[-1]/s.iloc[-MOMENTUM_LOOKBACK]-1)
-  ma=float(s.iloc[-REGIME_MA_DAYS:].mean())
-  trend=max(0.,float(s.iloc[-1]/ma-1)) if ma>0 else 0.
-  score=max(0.,momentum)+trend
-  if score>0:scores[t]=score
+  ma=float(s.iloc[-REGIME_MA_DAYS:].mean());trend=max(0.,float(s.iloc[-1]/ma-1)) if ma>0 else 0.
+  returns=s.pct_change().dropna().iloc[-VOL_LOOKBACK:];daily_vol=float(returns.std())
+  annual_vol=daily_vol*math.sqrt(TRADING_DAYS)
+  strength=max(0.,momentum)+trend
+  if strength<=0 or annual_vol<=0:continue
+  vol_scale=min(1.,TARGET_STOCK_VOL/annual_vol)
+  scores[t]=strength*vol_scale
  weights={t:0. for t in TICKERS}
  if not scores:return weights
  usable=1-MIN_CASH_RESERVE;total=sum(scores.values())
  for t,score in scores.items():weights[t]=min(MAX_STOCK_WEIGHT,usable*score/total)
- # Redistribute unused capacity toward the strongest names without exceeding caps.
  remaining=usable-sum(weights.values())
+ # Only redistribute while respecting both concentration and volatility limits.
  for t in sorted(scores,key=scores.get,reverse=True):
   if remaining<=1e-9:break
-  add=min(MAX_STOCK_WEIGHT-weights[t],remaining);weights[t]+=add;remaining-=add
+  s=prices[t].iloc[:train_end];annual_vol=float(s.pct_change().dropna().iloc[-VOL_LOOKBACK:].std())*math.sqrt(TRADING_DAYS)
+  risk_cap=min(MAX_STOCK_WEIGHT,MAX_STOCK_WEIGHT*min(1.,TARGET_STOCK_VOL/annual_vol)) if annual_vol>0 else 0.
+  add=min(max(0.,risk_cap-weights[t]),remaining);weights[t]+=add;remaining-=add
  return weights
 
 def run_portfolio(prices):
@@ -105,7 +112,7 @@ def run_portfolio(prices):
   if test_end>len(prices):break
   configs={};requested={}
   for t in TICKERS:configs[t],requested[t]=choose_strategy(prices[t].iloc[start:train_end])
-  weights=strength_weights(prices,train_end,configs,requested);window_start=equity[-1]
+  weights=risk_adjusted_weights(prices,train_end,configs,requested);window_start=equity[-1]
   for i in range(train_end,test_end):
    portfolio_value=cash+sum(shares[t]*float(prices[t].iloc[i]) for t in TICKERS)
    for t in TICKERS:
@@ -133,11 +140,11 @@ def equal_weight_hold(prices,test_start,total_days):
  a=prices.iloc[test_start];b=prices.iloc[min(test_start+total_days-1,len(prices)-1)];return STARTING_MONEY*sum(float(b[t]/a[t]) for t in TICKERS)/len(TICKERS)
 
 def run_all_tests():
- print("VERSION 7: RELATIVE-STRENGTH PORTFOLIO ALLOCATION")
- print("One simulated $10,000 account. Strategy selection remains walk-forward; portfolio weights now favor stronger trailing trends using only data available before each unseen window.")
- print("Risk limits: max 35% per stock, 10% minimum cash capacity, transaction costs, stop losses, and 200-day regime filter.")
+ print("VERSION 8: VOLATILITY-ADJUSTED RELATIVE-STRENGTH ALLOCATION")
+ print("One simulated $10,000 account. Strong trends still receive preference, but higher-volatility stocks receive smaller target weights.")
+ print("Risk limits: max 30% per stock, at least 15% cash capacity, 63-day volatility estimate, 25% annualized stock-vol target, transaction costs, stop losses, and 200-day regime filter.")
  prices=load_prices();r=run_portfolio(prices);days=r["windows"]*TEST_DAYS;bench=equal_weight_hold(prices,TRAIN_DAYS,days);br=(bench/STARTING_MONEY-1)*100
- print("\n========== VERSION 7 PORTFOLIO SCOREBOARD ==========")
+ print("\n========== VERSION 8 PORTFOLIO SCOREBOARD ==========")
  print("Unseen windows:",r["windows"],"| Approx unseen years:",round(r["years"],2));print("Starting simulated account: $",STARTING_MONEY);print("Bot ending simulated account: $",round(r["final"],2));print("Equal-weight Buy & Hold ending value: $",round(bench,2));print("Bot compounded total return:",round(r["total"],2),"%");print("Equal-weight Buy & Hold return:",round(br,2),"%");print("Bot estimated CAGR:",round(r["cagr"],2),"%");print("Bot max daily portfolio drawdown:",round(r["mdd"],2),"%");print("Bot annualized window volatility:",round(r["vol"],2),"%");print("Bot window-based Sharpe (0% risk-free assumption):",round(r["sharpe"],2));print("Completed simulated trades:",r["trades"])
  print("\nLast 3 walk-forward allocations:")
  for idx,s in list(enumerate(r["selections"],1))[-3:]:print("Window",idx,":",s)

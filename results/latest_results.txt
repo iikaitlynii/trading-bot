@@ -1,23 +1,23 @@
 Trading Bot Automated Research Results
 Saved to: results/latest_results.txt
-VERSION 6: ONE-ACCOUNT MULTI-STOCK PORTFOLIO
-One simulated $10,000 account is shared across AAPL, MSFT, NVDA, and AMZN.
-Rules: max 30% target weight per stock, at least 10% cash capacity, transaction costs, regime filter, and walk-forward strategy selection.
+VERSION 7: RELATIVE-STRENGTH PORTFOLIO ALLOCATION
+One simulated $10,000 account. Strategy selection remains walk-forward; portfolio weights now favor stronger trailing trends using only data available before each unseen window.
+Risk limits: max 35% per stock, 10% minimum cash capacity, transaction costs, stop losses, and 200-day regime filter.
 
-========== VERSION 6 PORTFOLIO SCOREBOARD ==========
+========== VERSION 7 PORTFOLIO SCOREBOARD ==========
 Unseen windows: 16 | Approx unseen years: 7.94
 Starting simulated account: $ 10000
-Bot ending simulated account: $ 14742.47
+Bot ending simulated account: $ 16048.25
 Equal-weight Buy & Hold ending value: $ 107717.14
-Bot compounded total return: 47.42 %
+Bot compounded total return: 60.48 %
 Equal-weight Buy & Hold return: 977.17 %
-Bot estimated CAGR: 5.01 %
-Bot max daily portfolio drawdown: 25.45 %
-Bot annualized window volatility: 11.78 %
-Bot window-based Sharpe (0% risk-free assumption): 0.47
-Completed simulated trades: 167
+Bot estimated CAGR: 6.14 %
+Bot max daily portfolio drawdown: 38.57 %
+Bot annualized window volatility: 17.22 %
+Bot window-based Sharpe (0% risk-free assumption): 0.42
+Completed simulated trades: 155
 
 Last 3 walk-forward allocations:
-Window 14 : {'AAPL': ('MA 5/20', 8.3), 'MSFT': ('CASH', 0.0), 'NVDA': ('MA 20/50', 25.0), 'AMZN': ('MA 20/50', 16.7)}
-Window 15 : {'AAPL': ('CASH', 0.0), 'MSFT': ('Momentum 20d 5%', 16.7), 'NVDA': ('MA 20/50', 25.0), 'AMZN': ('MA 10/30', 8.3)}
-Window 16 : {'AAPL': ('Momentum 20d 5%', 8.3), 'MSFT': ('Momentum 20d 5%', 8.3), 'NVDA': ('Momentum 30d 7%', 8.3), 'AMZN': ('CASH', 0.0)}
+Window 14 : {'AAPL': ('MA 5/20', 35.0), 'MSFT': ('CASH', 0.0), 'NVDA': ('MA 20/50', 20.0), 'AMZN': ('MA 20/50', 35.0)}
+Window 15 : {'AAPL': ('CASH', 0.0), 'MSFT': ('Momentum 20d 5%', 35.0), 'NVDA': ('MA 20/50', 35.0), 'AMZN': ('MA 10/30', 20.0)}
+Window 16 : {'AAPL': ('Momentum 20d 5%', 35.0), 'MSFT': ('Momentum 20d 5%', 0.0), 'NVDA': ('Momentum 30d 7%', 35.0), 'AMZN': ('CASH', 0.0)}

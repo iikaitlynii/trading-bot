@@ -18,6 +18,13 @@ WARMUP_DAYS = 60
 RESULTS_DIR = "results"
 RESULTS_FILE = os.path.join(RESULTS_DIR, "latest_results.txt")
 
+# Safety rules. A strategy must pass ALL of these on training data
+# before it is allowed to trade during the next unseen test period.
+MIN_TRAINING_RETURN = 5.0
+MAX_TRAINING_DRAWDOWN = 20.0
+MIN_TRAINING_TRADES = 3
+MIN_TRAINING_SCORE = 0.0
+
 # Each candidate has a strategy plus parameters to test on training data.
 CANDIDATES = [
     {"name": "MA 5/20", "type": "ma", "fast": 5, "slow": 20, "stop_loss": 0.02},
@@ -27,6 +34,12 @@ CANDIDATES = [
     {"name": "Momentum 20d 5%", "type": "momentum", "lookback": 20, "threshold": 0.05, "stop_loss": 0.03},
     {"name": "Momentum 30d 7%", "type": "momentum", "lookback": 30, "threshold": 0.07, "stop_loss": 0.04},
 ]
+
+CASH_CONFIG = {
+    "name": "CASH",
+    "type": "cash",
+    "stop_loss": 0.0,
+}
 
 
 class Tee:
@@ -45,13 +58,25 @@ class Tee:
             stream.flush()
 
 
-def run_strategy(prices, config, score_start=0):
-    """Backtest one strategy configuration.
+def empty_result():
+    return {
+        "return": 0.0,
+        "drawdown": 0.0,
+        "trades": 0,
+        "win_rate": 0.0,
+        "average_win": 0.0,
+        "average_loss": 0.0,
+        "profit_factor": 0.0,
+    }
 
-    score_start lets us include warm-up history for indicators without counting
-    that warm-up period in the reported performance.
-    """
+
+def run_strategy(prices, config, score_start=0):
+    """Backtest one strategy configuration."""
     prices = prices.dropna()
+
+    if config["type"] == "cash":
+        return empty_result()
+
     if len(prices) < 60:
         return None
 
@@ -70,8 +95,8 @@ def run_strategy(prices, config, score_start=0):
         momentum = prices.pct_change(config["lookback"])
         first_index = max(config["lookback"], score_start)
 
-    # Start trading only when the scored period begins. This prevents the bot
-    # from opening a position during the warm-up data before an unseen test.
+    # Warm-up prices may be present before score_start, but the bot does not
+    # trade until the scored period begins.
     for i in range(first_index, len(prices)):
         price = float(prices.iloc[i])
 
@@ -152,20 +177,43 @@ def training_score(result):
     return result["return"] - 0.50 * result["drawdown"]
 
 
+def passes_training_filter(result, score):
+    """Return True only when a candidate meets every safety requirement."""
+    if result is None:
+        return False
+
+    return (
+        result["return"] >= MIN_TRAINING_RETURN
+        and result["drawdown"] <= MAX_TRAINING_DRAWDOWN
+        and result["trades"] >= MIN_TRAINING_TRADES
+        and score >= MIN_TRAINING_SCORE
+    )
+
+
 def choose_best_strategy(training_data):
     best_config = None
     best_result = None
     best_score = float("-inf")
+    rejected = []
 
     for config in CANDIDATES:
         result = run_strategy(training_data, config)
         score = training_score(result)
+
+        if not passes_training_filter(result, score):
+            rejected.append(config["name"])
+            continue
+
         if score > best_score:
             best_score = score
             best_config = config
             best_result = result
 
-    return best_config, best_result, best_score
+    # If nothing qualifies, deliberately stay in cash for the unseen period.
+    if best_config is None:
+        return CASH_CONFIG, empty_result(), 0.0, rejected
+
+    return best_config, best_result, best_score, rejected
 
 
 def walk_forward_optimize(close):
@@ -182,28 +230,33 @@ def walk_forward_optimize(close):
             break
 
         training_data = close.iloc[train_start:train_end]
-        best_config, training_result, best_score = choose_best_strategy(training_data)
+        best_config, training_result, best_score, rejected = choose_best_strategy(training_data)
 
-        if best_config is None:
-            start += TEST_DAYS
-            continue
+        first_test_price = float(close.iloc[test_start])
+        last_test_price = float(close.iloc[test_end - 1])
+        buy_hold_return = ((last_test_price - first_test_price) / first_test_price) * 100
 
-        warmup_start = max(0, test_start - WARMUP_DAYS)
-        testing_with_warmup = close.iloc[warmup_start:test_end]
-        score_start = test_start - warmup_start
-        test_result = run_strategy(testing_with_warmup, best_config, score_start=score_start)
+        if best_config["type"] == "cash":
+            test_result = empty_result()
+        else:
+            warmup_start = max(0, test_start - WARMUP_DAYS)
+            testing_with_warmup = close.iloc[warmup_start:test_end]
+            score_start = test_start - warmup_start
+            test_result = run_strategy(
+                testing_with_warmup,
+                best_config,
+                score_start=score_start,
+            )
 
         if test_result is not None:
-            first_test_price = float(close.iloc[test_start])
-            last_test_price = float(close.iloc[test_end - 1])
-            buy_hold_return = ((last_test_price - first_test_price) / first_test_price) * 100
-
             results.append({
                 "period": len(results) + 1,
                 "strategy": best_config["name"],
                 "training_return": training_result["return"],
                 "training_drawdown": training_result["drawdown"],
+                "training_trades": training_result["trades"],
                 "training_score": best_score,
+                "rejected_count": len(rejected),
                 "test_return": test_result["return"],
                 "test_drawdown": test_result["drawdown"],
                 "test_trades": test_result["trades"],
@@ -226,6 +279,7 @@ def summarize_results(results):
     buy_hold = [r["buy_hold"] for r in results]
     positive = sum(1 for value in returns if value > 0)
     beat_hold = sum(1 for r in results if r["test_return"] > r["buy_hold"])
+    cash_periods = sum(1 for r in results if r["strategy"] == "CASH")
 
     strategy_counts = {}
     for r in results:
@@ -238,6 +292,7 @@ def summarize_results(results):
         "avg_buy_hold": sum(buy_hold) / len(buy_hold),
         "positive_rate": positive / len(results) * 100,
         "beat_buy_hold_rate": beat_hold / len(results) * 100,
+        "cash_rate": cash_periods / len(results) * 100,
         "strategy_counts": strategy_counts,
     }
 
@@ -247,9 +302,15 @@ def print_profit_factor(value):
 
 
 def run_all_tests():
+    print("Safety filter settings:")
+    print("Minimum training return:", MIN_TRAINING_RETURN, "%")
+    print("Maximum training drawdown:", MAX_TRAINING_DRAWDOWN, "%")
+    print("Minimum training trades:", MIN_TRAINING_TRADES)
+    print("Minimum training score:", MIN_TRAINING_SCORE)
+
     for ticker in TICKERS:
         print("\n======================================")
-        print("TRUE WALK-FORWARD OPTIMIZATION:", ticker)
+        print("WALK-FORWARD + CASH FILTER:", ticker)
         print("======================================")
 
         data = yf.download(
@@ -271,9 +332,16 @@ def run_all_tests():
             print("\n--------------------------------------")
             print("TEST PERIOD:", result["period"])
             print("Chosen from training:", result["strategy"])
-            print("Training return:", round(result["training_return"], 2), "%")
-            print("Training drawdown:", round(result["training_drawdown"], 2), "%")
-            print("Training score:", round(result["training_score"], 2))
+
+            if result["strategy"] == "CASH":
+                print("Decision: no strategy passed the training safety filter")
+                print("Training candidates rejected:", result["rejected_count"], "of", len(CANDIDATES))
+            else:
+                print("Training return:", round(result["training_return"], 2), "%")
+                print("Training drawdown:", round(result["training_drawdown"], 2), "%")
+                print("Training trades:", result["training_trades"])
+                print("Training score:", round(result["training_score"], 2))
+
             print("UNSEEN test return:", round(result["test_return"], 2), "%")
             print("Buy & Hold:", round(result["buy_hold"], 2), "%")
             print("Test drawdown:", round(result["test_drawdown"], 2), "%")
@@ -290,6 +358,7 @@ def run_all_tests():
             print("Average unseen drawdown:", round(summary["avg_drawdown"], 2), "%")
             print("Positive unseen periods:", round(summary["positive_rate"], 2), "%")
             print("Beat Buy & Hold:", round(summary["beat_buy_hold_rate"], 2), "%")
+            print("Stayed in cash:", round(summary["cash_rate"], 2), "%")
             print("Strategies selected:")
             for name, count in summary["strategy_counts"].items():
                 print("  ", name, "->", count, "period(s)")

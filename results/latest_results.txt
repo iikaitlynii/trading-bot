@@ -1,85 +1,23 @@
 Trading Bot Automated Research Results
 Saved to: results/latest_results.txt
-VERSION 5: CONTINUOUS PORTFOLIO SCOREBOARD
-This keeps Version 4 strategy logic but compounds each unseen test window into one continuous simulated account.
-Scoreboard metrics are for research/backtesting only, not predictions of future returns.
+VERSION 6: ONE-ACCOUNT MULTI-STOCK PORTFOLIO
+One simulated $10,000 account is shared across AAPL, MSFT, NVDA, and AMZN.
+Rules: max 30% target weight per stock, at least 10% cash capacity, transaction costs, regime filter, and walk-forward strategy selection.
 
-======================================
-CONTINUOUS OUT-OF-SAMPLE TEST: AAPL 
-======================================
-Unseen test windows: 16 | Approx unseen years: 7.94
-
-========== VERSION 5 SCOREBOARD ==========
+========== VERSION 6 PORTFOLIO SCOREBOARD ==========
+Unseen windows: 16 | Approx unseen years: 7.94
 Starting simulated account: $ 10000
-Bot ending simulated account: $ 21702.99
-Buy & Hold ending simulated account: $ 59984.04
-Bot compounded total return: 117.03 %
-Buy & Hold compounded total return: 499.84 %
-Bot estimated CAGR: 10.26 %
-Buy & Hold estimated CAGR: 25.32 %
-Bot max drawdown across test-window equity: 12.8 %
-Buy & Hold max drawdown across test-window equity: 18.16 %
-Bot annualized window volatility: 21.51 %
-Bot window-based Sharpe (0% risk-free assumption): 0.55
-Total simulated trades across unseen windows: 43
-Cash windows: 1 of 16
+Bot ending simulated account: $ 14742.47
+Equal-weight Buy & Hold ending value: $ 107717.14
+Bot compounded total return: 47.42 %
+Equal-weight Buy & Hold return: 977.17 %
+Bot estimated CAGR: 5.01 %
+Bot max daily portfolio drawdown: 25.45 %
+Bot annualized window volatility: 11.78 %
+Bot window-based Sharpe (0% risk-free assumption): 0.47
+Completed simulated trades: 167
 
-======================================
-CONTINUOUS OUT-OF-SAMPLE TEST: MSFT 
-======================================
-Unseen test windows: 16 | Approx unseen years: 7.94
-
-========== VERSION 5 SCOREBOARD ==========
-Starting simulated account: $ 10000
-Bot ending simulated account: $ 9527.2
-Buy & Hold ending simulated account: $ 31809.19
-Bot compounded total return: -4.73 %
-Buy & Hold compounded total return: 218.09 %
-Bot estimated CAGR: -0.61 %
-Buy & Hold estimated CAGR: 15.7 %
-Bot max drawdown across test-window equity: 17.7 %
-Buy & Hold max drawdown across test-window equity: 25.72 %
-Bot annualized window volatility: 9.07 %
-Bot window-based Sharpe (0% risk-free assumption): -0.02
-Total simulated trades across unseen windows: 30
-Cash windows: 3 of 16
-
-======================================
-CONTINUOUS OUT-OF-SAMPLE TEST: NVDA 
-======================================
-Unseen test windows: 16 | Approx unseen years: 7.94
-
-========== VERSION 5 SCOREBOARD ==========
-Starting simulated account: $ 10000
-Bot ending simulated account: $ 26207.42
-Buy & Hold ending simulated account: $ 256916.39
-Bot compounded total return: 162.07 %
-Buy & Hold compounded total return: 2469.16 %
-Bot estimated CAGR: 12.91 %
-Buy & Hold estimated CAGR: 50.53 %
-Bot max drawdown across test-window equity: 18.7 %
-Buy & Hold max drawdown across test-window equity: 42.52 %
-Bot annualized window volatility: 31.03 %
-Bot window-based Sharpe (0% risk-free assumption): 0.52
-Total simulated trades across unseen windows: 59
-Cash windows: 3 of 16
-
-======================================
-CONTINUOUS OUT-OF-SAMPLE TEST: AMZN 
-======================================
-Unseen test windows: 16 | Approx unseen years: 7.94
-
-========== VERSION 5 SCOREBOARD ==========
-Starting simulated account: $ 10000
-Bot ending simulated account: $ 9579.96
-Buy & Hold ending simulated account: $ 21960.78
-Bot compounded total return: -4.2 %
-Buy & Hold compounded total return: 119.61 %
-Bot estimated CAGR: -0.54 %
-Buy & Hold estimated CAGR: 10.42 %
-Bot max drawdown across test-window equity: 26.05 %
-Buy & Hold max drawdown across test-window equity: 41.72 %
-Bot annualized window volatility: 12.68 %
-Bot window-based Sharpe (0% risk-free assumption): 0.01
-Total simulated trades across unseen windows: 46
-Cash windows: 2 of 16
+Last 3 walk-forward allocations:
+Window 14 : {'AAPL': ('MA 5/20', 8.3), 'MSFT': ('CASH', 0.0), 'NVDA': ('MA 20/50', 25.0), 'AMZN': ('MA 20/50', 16.7)}
+Window 15 : {'AAPL': ('CASH', 0.0), 'MSFT': ('Momentum 20d 5%', 16.7), 'NVDA': ('MA 20/50', 25.0), 'AMZN': ('MA 10/30', 8.3)}
+Window 16 : {'AAPL': ('Momentum 20d 5%', 8.3), 'MSFT': ('Momentum 20d 5%', 8.3), 'NVDA': ('Momentum 30d 7%', 8.3), 'AMZN': ('CASH', 0.0)}

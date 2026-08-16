@@ -1,0 +1,70 @@
+VERSION 9: ROBUSTNESS STRESS TESTS
+No strategy parameters are optimized in this file. The Version 8 rules are challenged under changed costs and different stock groups.
+
+Running: BASELINE
+Running: 2X TRADING FRICTION
+Running: 3X TRADING FRICTION
+Running: DIFFERENT LARGE-CAP STOCKS
+Running: MIXED-SECTOR STOCKS
+
+========== VERSION 9 STRESS-TEST SCOREBOARD ==========
+
+SCENARIO: BASELINE
+Stocks: AAPL, MSFT, NVDA, AMZN
+Bot ending simulated account: $ 15425.19
+Bot compounded return: 54.25 %
+Bot estimated CAGR: 5.61 %
+Bot max drawdown: 35.97 %
+Bot Sharpe: 0.42
+Completed trades: 155
+Equal-weight Buy & Hold ending value: $ 107717.14
+Equal-weight Buy & Hold return: 977.17 %
+
+SCENARIO: 2X TRADING FRICTION
+Stocks: AAPL, MSFT, NVDA, AMZN
+Bot ending simulated account: $ 12319.29
+Bot compounded return: 23.19 %
+Bot estimated CAGR: 2.66 %
+Bot max drawdown: 41.38 %
+Bot Sharpe: 0.24
+Completed trades: 155
+Equal-weight Buy & Hold ending value: $ 107717.14
+Equal-weight Buy & Hold return: 977.17 %
+
+SCENARIO: 3X TRADING FRICTION
+Stocks: AAPL, MSFT, NVDA, AMZN
+Bot ending simulated account: $ 10205.73
+Bot compounded return: 2.06 %
+Bot estimated CAGR: 0.26 %
+Bot max drawdown: 44.72 %
+Bot Sharpe: 0.09
+Completed trades: 145
+Equal-weight Buy & Hold ending value: $ 107717.14
+Equal-weight Buy & Hold return: 977.17 %
+
+SCENARIO: DIFFERENT LARGE-CAP STOCKS
+Stocks: GOOGL, META, JPM, XOM
+Bot ending simulated account: $ 13060.1
+Bot compounded return: 30.6 %
+Bot estimated CAGR: 3.42 %
+Bot max drawdown: 14.24 %
+Bot Sharpe: 0.49
+Completed trades: 112
+Equal-weight Buy & Hold ending value: $ 33458.23
+Equal-weight Buy & Hold return: 234.58 %
+
+SCENARIO: MIXED-SECTOR STOCKS
+Stocks: KO, WMT, CAT, JNJ
+Bot ending simulated account: $ 12115.66
+Bot compounded return: 21.16 %
+Bot estimated CAGR: 2.45 %
+Bot max drawdown: 17.58 %
+Bot Sharpe: 0.34
+Completed trades: 96
+Equal-weight Buy & Hold ending value: $ 34778.3
+Equal-weight Buy & Hold return: 247.78 %
+
+========== ROBUSTNESS CHECK ==========
+Profitable scenarios: 5 of 5
+Positive-Sharpe scenarios: 5 of 5
+This is a robustness screen, not evidence or a guarantee of future profit.

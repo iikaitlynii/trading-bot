@@ -86,8 +86,7 @@ def load_prices():
 
 def run_portfolio(prices):
     cash=STARTING_MONEY; shares={t:0.0 for t in TICKERS}; entry={t:0.0 for t in TICKERS}
-    equity_curve=[STARTING_MONEY]; window_returns=[]; trade_count=0; selections=[]
-    start=0
+    equity_curve=[STARTING_MONEY]; window_returns=[]; trade_count=0; selections=[]; start=0
     while True:
         train_end=start+TRAIN_DAYS; test_end=train_end+TEST_DAYS
         if test_end>len(prices):break
@@ -95,39 +94,36 @@ def run_portfolio(prices):
         for t in TICKERS:
             c,a=choose_strategy(prices[t].iloc[start:train_end]); configs[t]=c; requested[t]=a
         active=[t for t in TICKERS if configs[t] is not None and requested[t]>0]
-        usable=1-MIN_CASH_RESERVE
-        weights={t:0.0 for t in TICKERS}
+        usable=1-MIN_CASH_RESERVE; weights={t:0.0 for t in TICKERS}
         if active:
-            raw={t:min(MAX_STOCK_WEIGHT,requested[t]/len(active)) for t in active}
-            total=sum(raw.values())
-            scale=min(1.0,usable/total) if total>0 else 0
+            raw={t:min(MAX_STOCK_WEIGHT,requested[t]/len(active)) for t in active}; total=sum(raw.values()); scale=min(1.0,usable/total) if total>0 else 0
             for t in active:weights[t]=raw[t]*scale
         window_start_equity=equity_curve[-1]
         for i in range(train_end,test_end):
             portfolio_value=cash+sum(shares[t]*float(prices[t].iloc[i]) for t in TICKERS)
             for t in TICKERS:
                 c=configs[t]; p=float(prices[t].iloc[i])
+                # If the new walk-forward window selects CASH for a stock, close any
+                # position inherited from the previous window before evaluating signals.
+                if c is None:
+                    if shares[t]>0:
+                        cash+=shares[t]*p*(1-SLIPPAGE)*(1-COMMISSION); shares[t]=0.0; entry[t]=0.0; trade_count+=1
+                    continue
                 hist=prices[t].iloc[max(0,i-REGIME_MA_DAYS+1):i+1]
                 regime_ok=len(hist)>=REGIME_MA_DAYS and p>float(hist.mean())
-                if c is None: buy=sell=False
-                elif c["type"]=="ma":
-                    if i+1<c["slow"]:buy=sell=False
-                    else:
-                        fast=float(prices[t].iloc[i-c["fast"]+1:i+1].mean()); slow=float(prices[t].iloc[i-c["slow"]+1:i+1].mean()); buy=fast>slow; sell=fast<slow
+                if c["type"]=="ma":
+                    fast=float(prices[t].iloc[i-c["fast"]+1:i+1].mean()); slow=float(prices[t].iloc[i-c["slow"]+1:i+1].mean()); buy=fast>slow; sell=fast<slow
                 else:
-                    if i<c["lookback"]:buy=sell=False
-                    else:
-                        m=p/float(prices[t].iloc[i-c["lookback"]])-1; buy=m>c["threshold"]; sell=m<0
+                    m=p/float(prices[t].iloc[i-c["lookback"]])-1; buy=m>c["threshold"]; sell=m<0
                 if shares[t]>0 and (sell or not regime_ok or p<=entry[t]*(1-c["stop_loss"])):
                     cash+=shares[t]*p*(1-SLIPPAGE)*(1-COMMISSION); shares[t]=0.0; entry[t]=0.0; trade_count+=1
-                elif shares[t]==0 and c is not None and buy and regime_ok and weights[t]>0:
+                elif shares[t]==0 and buy and regime_ok and weights[t]>0:
                     target=portfolio_value*weights[t]; amount=min(cash,max(0,target))
                     if amount>1:
                         bp=p*(1+SLIPPAGE); shares[t]=(amount*(1-COMMISSION))/bp; cash-=amount; entry[t]=bp
             value=cash+sum(shares[t]*float(prices[t].iloc[i]) for t in TICKERS); equity_curve.append(value)
         end_equity=equity_curve[-1]; window_returns.append((end_equity/window_start_equity-1)*100)
-        selections.append({t:(configs[t]["name"] if configs[t] else "CASH",round(weights[t]*100,1)) for t in TICKERS})
-        start+=TEST_DAYS
+        selections.append({t:(configs[t]["name"] if configs[t] else "CASH",round(weights[t]*100,1)) for t in TICKERS}); start+=TEST_DAYS
     final=equity_curve[-1]; years=(len(window_returns)*TEST_DAYS)/TRADING_DAYS
     returns=[r/100 for r in window_returns]; mean=sum(returns)/len(returns) if returns else 0
     var=sum((x-mean)**2 for x in returns)/(len(returns)-1) if len(returns)>1 else 0; std=math.sqrt(var)
@@ -135,8 +131,7 @@ def run_portfolio(prices):
 
 def equal_weight_hold(prices,test_start,total_days):
     start_prices=prices.iloc[test_start]; end_prices=prices.iloc[min(test_start+total_days-1,len(prices)-1)]
-    growth=sum(float(end_prices[t]/start_prices[t]) for t in TICKERS)/len(TICKERS)
-    return STARTING_MONEY*growth
+    growth=sum(float(end_prices[t]/start_prices[t]) for t in TICKERS)/len(TICKERS); return STARTING_MONEY*growth
 
 def run_all_tests():
     print("VERSION 6: ONE-ACCOUNT MULTI-STOCK PORTFOLIO")
@@ -146,16 +141,11 @@ def run_all_tests():
     benchmark=equal_weight_hold(prices,TRAIN_DAYS,total_days); benchmark_return=(benchmark/STARTING_MONEY-1)*100
     print("\n========== VERSION 6 PORTFOLIO SCOREBOARD ==========")
     print("Unseen windows:",r["windows"],"| Approx unseen years:",round(r["years"],2))
-    print("Starting simulated account: $",round(STARTING_MONEY,2))
-    print("Bot ending simulated account: $",round(r["final"],2))
-    print("Equal-weight Buy & Hold ending value: $",round(benchmark,2))
-    print("Bot compounded total return:",round(r["total"],2),"%")
-    print("Equal-weight Buy & Hold return:",round(benchmark_return,2),"%")
-    print("Bot estimated CAGR:",round(r["cagr"],2),"%")
-    print("Bot max daily portfolio drawdown:",round(r["mdd"],2),"%")
-    print("Bot annualized window volatility:",round(r["vol"],2),"%")
-    print("Bot window-based Sharpe (0% risk-free assumption):",round(r["sharpe"],2))
-    print("Completed simulated trades:",r["trades"])
+    print("Starting simulated account: $",round(STARTING_MONEY,2)); print("Bot ending simulated account: $",round(r["final"],2))
+    print("Equal-weight Buy & Hold ending value: $",round(benchmark,2)); print("Bot compounded total return:",round(r["total"],2),"%")
+    print("Equal-weight Buy & Hold return:",round(benchmark_return,2),"%"); print("Bot estimated CAGR:",round(r["cagr"],2),"%")
+    print("Bot max daily portfolio drawdown:",round(r["mdd"],2),"%"); print("Bot annualized window volatility:",round(r["vol"],2),"%")
+    print("Bot window-based Sharpe (0% risk-free assumption):",round(r["sharpe"],2)); print("Completed simulated trades:",r["trades"])
     print("\nLast 3 walk-forward allocations:")
     for idx,s in list(enumerate(r["selections"],1))[-3:]:print("Window",idx,":",s)
 

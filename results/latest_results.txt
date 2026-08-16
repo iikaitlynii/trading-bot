@@ -1,0 +1,906 @@
+Trading Bot Walk-Forward Results
+Saved to: results/latest_results.txt
+
+======================================
+TRUE WALK-FORWARD OPTIMIZATION: AAPL
+======================================
+
+--------------------------------------
+TEST PERIOD: 1
+Chosen from training: MA 5/20
+Training return: 38.39 %
+Training drawdown: 15.22 %
+Training score: 30.77
+UNSEEN test return: -2.21 %
+Buy & Hold: -18.16 %
+Test drawdown: 13.36 %
+Test trades: 4
+Test win rate: 25.0 %
+Test profit factor: 0.5
+
+--------------------------------------
+TEST PERIOD: 2
+Chosen from training: Momentum 20d 5%
+Training return: 23.69 %
+Training drawdown: 9.16 %
+Training score: 19.11
+UNSEEN test return: 12.07 %
+Buy & Hold: 16.8 %
+Test drawdown: 8.6 %
+Test trades: 3
+Test win rate: 100.0 %
+Test profit factor: inf
+
+--------------------------------------
+TEST PERIOD: 3
+Chosen from training: Momentum 20d 5%
+Training return: 34.29 %
+Training drawdown: 9.16 %
+Training score: 29.72
+UNSEEN test return: 55.96 %
+Buy & Hold: 58.02 %
+Test drawdown: 4.83 %
+Test trades: 0
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 4
+Chosen from training: Momentum 20d 5%
+Training return: 102.89 %
+Training drawdown: 8.6 %
+Training score: 98.59
+UNSEEN test return: 52.62 %
+Buy & Hold: 34.89 %
+Test drawdown: 7.01 %
+Test trades: 3
+Test win rate: 33.33 %
+Test profit factor: 0.23
+
+--------------------------------------
+TEST PERIOD: 5
+Chosen from training: Momentum 20d 5%
+Training return: 183.2 %
+Training drawdown: 8.6 %
+Training score: 178.9
+UNSEEN test return: -3.68 %
+Buy & Hold: 22.65 %
+Test drawdown: 22.65 %
+Test trades: 5
+Test win rate: 40.0 %
+Test profit factor: 0.78
+
+--------------------------------------
+TEST PERIOD: 6
+Chosen from training: Momentum 20d 5%
+Training return: 159.81 %
+Training drawdown: 22.65 %
+Training score: 148.49
+UNSEEN test return: 8.94 %
+Buy & Hold: 8.65 %
+Test drawdown: 5.18 %
+Test trades: 2
+Test win rate: 50.0 %
+Test profit factor: 0.8
+
+--------------------------------------
+TEST PERIOD: 7
+Chosen from training: Momentum 20d 5%
+Training return: 144.56 %
+Training drawdown: 23.71 %
+Training score: 132.7
+UNSEEN test return: 6.63 %
+Buy & Hold: 15.59 %
+Test drawdown: 8.15 %
+Test trades: 3
+Test win rate: 33.33 %
+Test profit factor: 2.2
+
+--------------------------------------
+TEST PERIOD: 8
+Chosen from training: MA 5/20
+Training return: 84.6 %
+Training drawdown: 20.62 %
+Training score: 74.29
+UNSEEN test return: 1.89 %
+Buy & Hold: -7.02 %
+Test drawdown: 13.13 %
+Test trades: 5
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 9
+Chosen from training: Momentum 30d 7%
+Training return: 19.26 %
+Training drawdown: 14.51 %
+Training score: 12.0
+UNSEEN test return: -10.49 %
+Buy & Hold: -9.65 %
+Test drawdown: 17.01 %
+Test trades: 2
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 10
+Chosen from training: MA 5/20
+Training return: 38.29 %
+Training drawdown: 17.75 %
+Training score: 29.41
+UNSEEN test return: 28.41 %
+Buy & Hold: 36.94 %
+Test drawdown: 8.98 %
+Test trades: 2
+Test win rate: 50.0 %
+Test profit factor: 0.78
+
+--------------------------------------
+TEST PERIOD: 11
+Chosen from training: MA 5/20
+Training return: 47.48 %
+Training drawdown: 17.75 %
+Training score: 38.6
+UNSEEN test return: -9.94 %
+Buy & Hold: -2.05 %
+Test drawdown: 14.72 %
+Test trades: 7
+Test win rate: 14.29 %
+Test profit factor: 0.52
+
+--------------------------------------
+TEST PERIOD: 12
+Chosen from training: MA 5/20
+Training return: 26.84 %
+Training drawdown: 15.35 %
+Training score: 19.17
+UNSEEN test return: 14.57 %
+Buy & Hold: 13.68 %
+Test drawdown: 8.92 %
+Test trades: 6
+Test win rate: 33.33 %
+Test profit factor: 3.02
+
+--------------------------------------
+TEST PERIOD: 13
+Chosen from training: Momentum 30d 7%
+Training return: 40.39 %
+Training drawdown: 7.97 %
+Training score: 36.4
+UNSEEN test return: -11.1 %
+Buy & Hold: 5.32 %
+Test drawdown: 12.5 %
+Test trades: 3
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 14
+Chosen from training: Momentum 10d 3%
+Training return: 29.55 %
+Training drawdown: 13.26 %
+Training score: 22.92
+UNSEEN test return: -23.51 %
+Buy & Hold: -10.16 %
+Test drawdown: 25.13 %
+Test trades: 9
+Test win rate: 11.11 %
+Test profit factor: 0.08
+
+--------------------------------------
+TEST PERIOD: 15
+Chosen from training: MA 20/50
+Training return: -1.97 %
+Training drawdown: 23.25 %
+Training score: -13.6
+UNSEEN test return: 21.66 %
+Buy & Hold: 20.89 %
+Test drawdown: 9.22 %
+Test trades: 2
+Test win rate: 50.0 %
+Test profit factor: 6.31
+
+--------------------------------------
+TEST PERIOD: 16
+Chosen from training: MA 20/50
+Training return: 21.5 %
+Training drawdown: 26.0 %
+Training score: 8.5
+UNSEEN test return: 14.61 %
+Buy & Hold: 30.45 %
+Test drawdown: 12.71 %
+Test trades: 3
+Test win rate: 33.33 %
+Test profit factor: 3.06
+
+========== WALK-FORWARD SUMMARY ==========
+Test periods: 16
+Average unseen return: 9.78 %
+Average Buy & Hold return: 13.55 %
+Average unseen drawdown: 12.01 %
+Positive unseen periods: 62.5 %
+Beat Buy & Hold: 37.5 %
+Strategies selected:
+   MA 5/20 -> 5 period(s)
+   Momentum 20d 5% -> 6 period(s)
+   Momentum 30d 7% -> 2 period(s)
+   Momentum 10d 3% -> 1 period(s)
+   MA 20/50 -> 2 period(s)
+
+======================================
+TRUE WALK-FORWARD OPTIMIZATION: MSFT
+======================================
+
+--------------------------------------
+TEST PERIOD: 1
+Chosen from training: MA 20/50
+Training return: 67.97 %
+Training drawdown: 10.53 %
+Training score: 62.71
+UNSEEN test return: -7.67 %
+Buy & Hold: -4.01 %
+Test drawdown: 12.24 %
+Test trades: 1
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 2
+Chosen from training: MA 20/50
+Training return: 42.33 %
+Training drawdown: 12.24 %
+Training score: 36.21
+UNSEEN test return: 27.77 %
+Buy & Hold: 28.02 %
+Test drawdown: 8.24 %
+Test trades: 0
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 3
+Chosen from training: MA 20/50
+Training return: 57.38 %
+Training drawdown: 12.26 %
+Training score: 51.25
+UNSEEN test return: 23.43 %
+Buy & Hold: 29.53 %
+Test drawdown: 7.43 %
+Test trades: 1
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 4
+Chosen from training: MA 20/50
+Training return: 75.29 %
+Training drawdown: 12.26 %
+Training score: 69.16
+UNSEEN test return: 6.77 %
+Buy & Hold: 16.15 %
+Test drawdown: 25.55 %
+Test trades: 5
+Test win rate: 20.0 %
+Test profit factor: 0.56
+
+--------------------------------------
+TEST PERIOD: 5
+Chosen from training: MA 20/50
+Training return: 64.36 %
+Training drawdown: 26.31 %
+Training score: 51.21
+UNSEEN test return: 0.12 %
+Buy & Hold: 12.48 %
+Test drawdown: 17.58 %
+Test trades: 5
+Test win rate: 40.0 %
+Test profit factor: 0.51
+
+--------------------------------------
+TEST PERIOD: 6
+Chosen from training: MA 20/50
+Training return: 50.26 %
+Training drawdown: 26.31 %
+Training score: 37.11
+UNSEEN test return: 3.76 %
+Buy & Hold: 17.21 %
+Test drawdown: 9.13 %
+Test trades: 4
+Test win rate: 50.0 %
+Test profit factor: 0.5
+
+--------------------------------------
+TEST PERIOD: 7
+Chosen from training: MA 20/50
+Training return: 57.85 %
+Training drawdown: 26.31 %
+Training score: 44.7
+UNSEEN test return: -1.64 %
+Buy & Hold: 7.36 %
+Test drawdown: 8.7 %
+Test trades: 2
+Test win rate: 50.0 %
+Test profit factor: 0.61
+
+--------------------------------------
+TEST PERIOD: 8
+Chosen from training: MA 20/50
+Training return: 36.23 %
+Training drawdown: 16.36 %
+Training score: 28.05
+UNSEEN test return: -15.94 %
+Buy & Hold: -9.72 %
+Test drawdown: 17.23 %
+Test trades: 4
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 9
+Chosen from training: Momentum 30d 7%
+Training return: -2.27 %
+Training drawdown: 13.59 %
+Training score: -9.07
+UNSEEN test return: -8.27 %
+Buy & Hold: -10.74 %
+Test drawdown: 12.95 %
+Test trades: 3
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 10
+Chosen from training: MA 10/30
+Training return: -5.65 %
+Training drawdown: 28.49 %
+Training score: -19.9
+UNSEEN test return: 24.53 %
+Buy & Hold: 39.41 %
+Test drawdown: 10.47 %
+Test trades: 1
+Test win rate: 100.0 %
+Test profit factor: inf
+
+--------------------------------------
+TEST PERIOD: 11
+Chosen from training: Momentum 30d 7%
+Training return: 8.83 %
+Training drawdown: 21.36 %
+Training score: -1.85
+UNSEEN test return: 7.93 %
+Buy & Hold: 20.25 %
+Test drawdown: 4.38 %
+Test trades: 1
+Test win rate: 100.0 %
+Test profit factor: inf
+
+--------------------------------------
+TEST PERIOD: 12
+Chosen from training: Momentum 30d 7%
+Training return: 19.11 %
+Training drawdown: 20.22 %
+Training score: 9.0
+UNSEEN test return: -3.15 %
+Buy & Hold: 3.8 %
+Test drawdown: 10.69 %
+Test trades: 2
+Test win rate: 50.0 %
+Test profit factor: 0.22
+
+--------------------------------------
+TEST PERIOD: 13
+Chosen from training: Momentum 30d 7%
+Training return: 27.75 %
+Training drawdown: 13.91 %
+Training score: 20.79
+UNSEEN test return: -8.91 %
+Buy & Hold: 1.83 %
+Test drawdown: 9.46 %
+Test trades: 2
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 14
+Chosen from training: MA 20/50
+Training return: 22.75 %
+Training drawdown: 18.14 %
+Training score: 13.68
+UNSEEN test return: 18.04 %
+Buy & Hold: 14.6 %
+Test drawdown: 1.89 %
+Test trades: 0
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 15
+Chosen from training: Momentum 20d 5%
+Training return: 27.06 %
+Training drawdown: 11.35 %
+Training score: 21.38
+UNSEEN test return: -7.05 %
+Buy & Hold: -8.25 %
+Test drawdown: 7.24 %
+Test trades: 2
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 16
+Chosen from training: Momentum 20d 5%
+Training return: 11.13 %
+Training drawdown: 11.35 %
+Training score: 5.45
+UNSEEN test return: -12.53 %
+Buy & Hold: -19.04 %
+Test drawdown: 16.53 %
+Test trades: 4
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+========== WALK-FORWARD SUMMARY ==========
+Test periods: 16
+Average unseen return: 2.95 %
+Average Buy & Hold return: 8.68 %
+Average unseen drawdown: 11.23 %
+Positive unseen periods: 50.0 %
+Beat Buy & Hold: 25.0 %
+Strategies selected:
+   MA 20/50 -> 9 period(s)
+   Momentum 30d 7% -> 4 period(s)
+   MA 10/30 -> 1 period(s)
+   Momentum 20d 5% -> 2 period(s)
+
+======================================
+TRUE WALK-FORWARD OPTIMIZATION: NVDA
+======================================
+
+--------------------------------------
+TEST PERIOD: 1
+Chosen from training: Momentum 30d 7%
+Training return: 99.95 %
+Training drawdown: 19.15 %
+Training score: 90.38
+UNSEEN test return: -21.74 %
+Buy & Hold: -42.52 %
+Test drawdown: 23.07 %
+Test trades: 3
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 2
+Chosen from training: Momentum 20d 5%
+Training return: 22.36 %
+Training drawdown: 28.65 %
+Training score: 8.04
+UNSEEN test return: 4.79 %
+Buy & Hold: 3.86 %
+Test drawdown: 15.77 %
+Test trades: 4
+Test win rate: 25.0 %
+Test profit factor: 2.24
+
+--------------------------------------
+TEST PERIOD: 3
+Chosen from training: MA 10/30
+Training return: 23.47 %
+Training drawdown: 31.04 %
+Training score: 7.95
+UNSEEN test return: 49.86 %
+Buy & Hold: 58.45 %
+Test drawdown: 6.82 %
+Test trades: 0
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 4
+Chosen from training: MA 10/30
+Training return: 54.4 %
+Training drawdown: 26.99 %
+Training score: 40.9
+UNSEEN test return: 76.69 %
+Buy & Hold: 76.64 %
+Test drawdown: 22.32 %
+Test trades: 1
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 5
+Chosen from training: MA 10/30
+Training return: 225.37 %
+Training drawdown: 22.01 %
+Training score: 214.37
+UNSEEN test return: -23.21 %
+Buy & Hold: 20.11 %
+Test drawdown: 38.94 %
+Test trades: 10
+Test win rate: 20.0 %
+Test profit factor: 0.18
+
+--------------------------------------
+TEST PERIOD: 6
+Chosen from training: MA 10/30
+Training return: 148.44 %
+Training drawdown: 38.94 %
+Training score: 128.97
+UNSEEN test return: 14.62 %
+Buy & Hold: 45.97 %
+Test drawdown: 16.81 %
+Test trades: 3
+Test win rate: 66.67 %
+Test profit factor: 3.88
+
+--------------------------------------
+TEST PERIOD: 7
+Chosen from training: MA 10/30
+Training return: 150.9 %
+Training drawdown: 41.76 %
+Training score: 130.02
+UNSEEN test return: 19.97 %
+Buy & Hold: 15.27 %
+Test drawdown: 15.63 %
+Test trades: 4
+Test win rate: 50.0 %
+Test profit factor: 4.06
+
+--------------------------------------
+TEST PERIOD: 8
+Chosen from training: MA 20/50
+Training return: 121.26 %
+Training drawdown: 33.83 %
+Training score: 104.35
+UNSEEN test return: -22.98 %
+Buy & Hold: -25.82 %
+Test drawdown: 24.01 %
+Test trades: 4
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 9
+Chosen from training: Momentum 10d 3%
+Training return: 45.57 %
+Training drawdown: 33.39 %
+Training score: 28.87
+UNSEEN test return: 48.05 %
+Buy & Hold: 10.43 %
+Test drawdown: 13.75 %
+Test trades: 7
+Test win rate: 42.86 %
+Test profit factor: 2.15
+
+--------------------------------------
+TEST PERIOD: 10
+Chosen from training: Momentum 10d 3%
+Training return: 139.02 %
+Training drawdown: 24.75 %
+Training score: 126.64
+UNSEEN test return: 64.08 %
+Buy & Hold: 143.97 %
+Test drawdown: 19.81 %
+Test trades: 8
+Test win rate: 50.0 %
+Test profit factor: 6.79
+
+--------------------------------------
+TEST PERIOD: 11
+Chosen from training: Momentum 10d 3%
+Training return: 200.14 %
+Training drawdown: 24.75 %
+Training score: 187.77
+UNSEEN test return: 12.94 %
+Buy & Hold: 30.61 %
+Test drawdown: 11.77 %
+Test trades: 6
+Test win rate: 16.67 %
+Test profit factor: 0.9
+
+--------------------------------------
+TEST PERIOD: 12
+Chosen from training: Momentum 10d 3%
+Training return: 165.47 %
+Training drawdown: 19.81 %
+Training score: 155.57
+UNSEEN test return: 45.15 %
+Buy & Hold: 81.0 %
+Test drawdown: 19.91 %
+Test trades: 7
+Test win rate: 42.86 %
+Test profit factor: 4.74
+
+--------------------------------------
+TEST PERIOD: 13
+Chosen from training: MA 5/20
+Training return: 550.49 %
+Training drawdown: 16.36 %
+Training score: 542.31
+UNSEEN test return: -20.62 %
+Buy & Hold: 6.12 %
+Test drawdown: 24.83 %
+Test trades: 10
+Test win rate: 10.0 %
+Test profit factor: 0.47
+
+--------------------------------------
+TEST PERIOD: 14
+Chosen from training: Momentum 30d 7%
+Training return: 328.45 %
+Training drawdown: 15.99 %
+Training score: 320.45
+UNSEEN test return: 43.41 %
+Buy & Hold: 37.03 %
+Test drawdown: 3.45 %
+Test trades: 0
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 15
+Chosen from training: Momentum 30d 7%
+Training return: 225.74 %
+Training drawdown: 15.99 %
+Training score: 217.75
+UNSEEN test return: -6.55 %
+Buy & Hold: 6.24 %
+Test drawdown: 13.26 %
+Test trades: 3
+Test win rate: 33.33 %
+Test profit factor: 0.23
+
+--------------------------------------
+TEST PERIOD: 16
+Chosen from training: Momentum 10d 3%
+Training return: 64.12 %
+Training drawdown: 26.59 %
+Training score: 50.82
+UNSEEN test return: -1.12 %
+Buy & Hold: 4.24 %
+Test drawdown: 14.92 %
+Test trades: 7
+Test win rate: 42.86 %
+Test profit factor: 1.08
+
+========== WALK-FORWARD SUMMARY ==========
+Test periods: 16
+Average unseen return: 17.71 %
+Average Buy & Hold return: 29.47 %
+Average unseen drawdown: 17.82 %
+Positive unseen periods: 62.5 %
+Beat Buy & Hold: 43.75 %
+Strategies selected:
+   Momentum 30d 7% -> 3 period(s)
+   Momentum 20d 5% -> 1 period(s)
+   MA 10/30 -> 5 period(s)
+   MA 20/50 -> 1 period(s)
+   Momentum 10d 3% -> 5 period(s)
+   MA 5/20 -> 1 period(s)
+
+======================================
+TRUE WALK-FORWARD OPTIMIZATION: AMZN
+======================================
+
+--------------------------------------
+TEST PERIOD: 1
+Chosen from training: Momentum 20d 5%
+Training return: 73.25 %
+Training drawdown: 7.67 %
+Training score: 69.42
+UNSEEN test return: -5.71 %
+Buy & Hold: -14.97 %
+Test drawdown: 15.5 %
+Test trades: 4
+Test win rate: 25.0 %
+Test profit factor: 0.53
+
+--------------------------------------
+TEST PERIOD: 2
+Chosen from training: MA 10/30
+Training return: 60.06 %
+Training drawdown: 19.34 %
+Training score: 50.39
+UNSEEN test return: 8.6 %
+Buy & Hold: 12.92 %
+Test drawdown: 8.48 %
+Test trades: 4
+Test win rate: 50.0 %
+Test profit factor: 2.39
+
+--------------------------------------
+TEST PERIOD: 3
+Chosen from training: MA 10/30
+Training return: 75.98 %
+Training drawdown: 17.69 %
+Training score: 67.13
+UNSEEN test return: 3.59 %
+Buy & Hold: 11.29 %
+Test drawdown: 10.24 %
+Test trades: 4
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 4
+Chosen from training: MA 10/30
+Training return: 20.5 %
+Training drawdown: 17.69 %
+Training score: 11.66
+UNSEEN test return: 50.59 %
+Buy & Hold: 53.1 %
+Test drawdown: 14.16 %
+Test trades: 3
+Test win rate: 33.33 %
+Test profit factor: 0.13
+
+--------------------------------------
+TEST PERIOD: 5
+Chosen from training: MA 10/30
+Training return: 54.02 %
+Training drawdown: 17.09 %
+Training score: 45.47
+UNSEEN test return: -22.69 %
+Buy & Hold: 5.46 %
+Test drawdown: 28.34 %
+Test trades: 9
+Test win rate: 11.11 %
+Test profit factor: 0.06
+
+--------------------------------------
+TEST PERIOD: 6
+Chosen from training: Momentum 30d 7%
+Training return: 35.95 %
+Training drawdown: 18.5 %
+Training score: 26.69
+UNSEEN test return: -10.9 %
+Buy & Hold: 0.57 %
+Test drawdown: 13.27 %
+Test trades: 2
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 7
+Chosen from training: Momentum 30d 7%
+Training return: 20.2 %
+Training drawdown: 26.27 %
+Training score: 7.06
+UNSEEN test return: -4.09 %
+Buy & Hold: -14.46 %
+Test drawdown: 7.01 %
+Test trades: 1
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 8
+Chosen from training: Momentum 30d 7%
+Training return: 22.0 %
+Training drawdown: 29.29 %
+Training score: 7.36
+UNSEEN test return: -12.8 %
+Buy & Hold: -9.78 %
+Test drawdown: 25.4 %
+Test trades: 4
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 9
+Chosen from training: MA 10/30
+Training return: -23.97 %
+Training drawdown: 38.14 %
+Training score: -43.04
+UNSEEN test return: -6.64 %
+Buy & Hold: -24.48 %
+Test drawdown: 17.58 %
+Test trades: 3
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 10
+Chosen from training: Momentum 10d 3%
+Training return: 2.71 %
+Training drawdown: 20.15 %
+Training score: -7.37
+UNSEEN test return: 3.33 %
+Buy & Hold: 31.49 %
+Test drawdown: 13.18 %
+Test trades: 8
+Test win rate: 25.0 %
+Test profit factor: 1.4
+
+--------------------------------------
+TEST PERIOD: 11
+Chosen from training: MA 10/30
+Training return: 17.31 %
+Training drawdown: 21.93 %
+Training score: 6.34
+UNSEEN test return: -1.05 %
+Buy & Hold: 19.03 %
+Test drawdown: 13.97 %
+Test trades: 4
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 12
+Chosen from training: MA 10/30
+Training return: 23.48 %
+Training drawdown: 19.84 %
+Training score: 13.56
+UNSEEN test return: -0.47 %
+Buy & Hold: 13.17 %
+Test drawdown: 13.99 %
+Test trades: 5
+Test win rate: 40.0 %
+Test profit factor: 1.12
+
+--------------------------------------
+TEST PERIOD: 13
+Chosen from training: MA 20/50
+Training return: 38.84 %
+Training drawdown: 23.84 %
+Training score: 26.92
+UNSEEN test return: 9.76 %
+Buy & Hold: 28.5 %
+Test drawdown: 17.24 %
+Test trades: 2
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 14
+Chosen from training: MA 20/50
+Training return: 76.86 %
+Training drawdown: 22.52 %
+Training score: 65.6
+UNSEEN test return: 2.25 %
+Buy & Hold: -2.25 %
+Test drawdown: 12.97 %
+Test trades: 3
+Test win rate: 0.0 %
+Test profit factor: 0.0
+
+--------------------------------------
+TEST PERIOD: 15
+Chosen from training: MA 10/30
+Training return: 62.37 %
+Training drawdown: 13.99 %
+Training score: 55.38
+UNSEEN test return: -1.74 %
+Buy & Hold: 3.21 %
+Test drawdown: 14.51 %
+Test trades: 4
+Test win rate: 50.0 %
+Test profit factor: 0.74
+
+--------------------------------------
+TEST PERIOD: 16
+Chosen from training: MA 10/30
+Training return: 33.5 %
+Training drawdown: 14.51 %
+Training score: 26.24
+UNSEEN test return: -18.8 %
+Buy & Hold: -5.43 %
+Test drawdown: 18.64 %
+Test trades: 6
+Test win rate: 16.67 %
+Test profit factor: 0.27
+
+========== WALK-FORWARD SUMMARY ==========
+Test periods: 16
+Average unseen return: -0.42 %
+Average Buy & Hold return: 6.71 %
+Average unseen drawdown: 15.28 %
+Positive unseen periods: 37.5 %
+Beat Buy & Hold: 25.0 %
+Strategies selected:
+   Momentum 20d 5% -> 1 period(s)
+   MA 10/30 -> 9 period(s)
+   Momentum 30d 7% -> 3 period(s)
+   Momentum 10d 3% -> 1 period(s)
+   MA 20/50 -> 2 period(s)

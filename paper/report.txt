@@ -1,0 +1,20 @@
+LIVE PAPER TRADING HEALTH REPORT
+Simulation only — no brokerage orders are sent.
+
+Last processed date: 2026-08-17
+Cash: $2,000.00
+Open positions: 4
+Paper account value: $10,000.00
+Total return since launch: -0.00%
+Current drawdown from paper peak: 0.00%
+Maximum forward-test drawdown: 0.00%
+Forward-test days collected: 1
+Journal actions: 4 (4 buys, 0 sells)
+Latest signals: 4 bullish, 0 defensive
+
+HEALTH CHECK
+STATUS: OK
+State, performance, journal/signals structure, and paper cash checks passed.
+
+READINESS
+Early forward test: not enough live paper history to judge the strategy.

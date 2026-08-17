@@ -1,0 +1,5 @@
+date_utc,ticker,action,price,shares,reason
+2026-08-17,AAPL,SIM_BUY,305.59,6.544716777381459,bullish_signal
+2026-08-17,MSFT,SIM_BUY,480.35,4.1636306859581556,bullish_signal
+2026-08-17,NVDA,SIM_BUY,225.01,8.888493844718013,bullish_signal
+2026-08-17,AMZN,SIM_BUY,261.31,7.65374459454288,bullish_signal

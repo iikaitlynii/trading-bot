@@ -1,0 +1,26 @@
+{
+  "cash": 2000.0,
+  "last_run_date": "2026-08-17",
+  "positions": {
+    "AAPL": {
+      "entry_date": "2026-08-17",
+      "entry_price": 305.59,
+      "shares": 6.544716777381459
+    },
+    "AMZN": {
+      "entry_date": "2026-08-17",
+      "entry_price": 261.31,
+      "shares": 7.65374459454288
+    },
+    "MSFT": {
+      "entry_date": "2026-08-17",
+      "entry_price": 480.35,
+      "shares": 4.1636306859581556
+    },
+    "NVDA": {
+      "entry_date": "2026-08-17",
+      "entry_price": 225.01,
+      "shares": 8.888493844718013
+    }
+  }
+}

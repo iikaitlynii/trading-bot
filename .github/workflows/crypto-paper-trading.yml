@@ -1,0 +1,41 @@
+name: Memecoin Paper Trading
+
+on:
+  schedule:
+    # Crypto trades 24/7. Run once daily at 23:30 UTC for a stable daily checkpoint.
+    - cron: '30 23 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  crypto-paper-trade:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run simulation-only memecoin paper trader
+        run: python crypto_paper_trader.py
+
+      - name: Save crypto paper state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add crypto_paper/state.json crypto_paper/journal.csv crypto_paper/latest_signals.csv crypto_paper/performance.csv
+          if git diff --cached --quiet; then
+            echo "No crypto paper-trading state changes to save."
+          else
+            git commit -m "Update memecoin paper-trading state [skip ci]"
+            git push
+          fi

@@ -50,6 +50,14 @@ def save_json(path, value):
         json.dump(value, f, indent=2, sort_keys=True)
 
 
+def normalize_watchlist(raw):
+    if isinstance(raw, list):
+        return raw
+    if isinstance(raw, dict):
+        return raw.get("solana_wallets", [])
+    return []
+
+
 def append_events(rows):
     if not rows:
         return
@@ -79,19 +87,23 @@ def get_token_balances(wallet):
 
 def main():
     os.makedirs("smart_money", exist_ok=True)
-    watchlist = load_json(WATCHLIST_FILE, [])
+    watchlist = normalize_watchlist(load_json(WATCHLIST_FILE, {"solana_wallets": []}))
     state = load_json(STATE_FILE, {})
     now = datetime.now(timezone.utc).isoformat()
     events = []
 
     if not watchlist:
         print("WALLET COLLECTOR: no public wallets configured yet.")
-        print("Research-only collector is ready; add public addresses to smart_money/wallet_watchlist.json when desired.")
+        print("Research-only collector is ready; add public addresses under solana_wallets in smart_money/wallet_watchlist.json.")
         return
 
     for entry in watchlist:
-        wallet = entry.get("wallet", "").strip()
-        label = entry.get("label", "unlabeled")
+        if isinstance(entry, str):
+            wallet = entry.strip()
+            label = "unlabeled"
+        else:
+            wallet = entry.get("wallet", "").strip()
+            label = entry.get("label", "unlabeled")
         if not wallet:
             continue
         try:

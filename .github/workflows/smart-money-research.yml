@@ -30,11 +30,14 @@ jobs:
       - name: Track forward outcomes (research only)
         run: python smart_money_outcome_tracker.py
 
+      - name: Update source reputation from 24h outcomes
+        run: python smart_money_reputation_update.py
+
       - name: Save research outputs
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add smart_money/wallet_events.csv smart_money/wallet_collector_state.json smart_money/latest_scores.csv smart_money/outcomes.csv
+          git add smart_money/wallet_events.csv smart_money/wallet_collector_state.json smart_money/latest_scores.csv smart_money/outcomes.csv smart_money/source_reputation.json
           if git diff --cached --quiet; then
             echo "No smart-money research changes to save."
           else

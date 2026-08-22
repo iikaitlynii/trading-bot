@@ -1,0 +1,40 @@
+name: Smart Money Research
+
+on:
+  schedule:
+    # Read-only research checkpoint every 6 hours.
+    - cron: '20 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Collect public wallet activity (read-only)
+        run: python solana_wallet_collector.py
+
+      - name: Score research observations
+        run: python smart_money_research.py
+
+      - name: Save research outputs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add smart_money/wallet_events.csv smart_money/wallet_collector_state.json smart_money/latest_scores.csv
+          if git diff --cached --quiet; then
+            echo "No smart-money research changes to save."
+          else
+            git commit -m "Update smart-money research data [skip ci]"
+            git push
+          fi

@@ -4,3 +4,4 @@ date_utc,ticker,action,price,shares,reason
 2026-08-17,NVDA,SIM_BUY,225.01,8.888493844718013,bullish_signal
 2026-08-17,AMZN,SIM_BUY,261.31,7.65374459454288,bullish_signal
 2026-08-27,AAPL,SIM_SELL,313.45,6.544716777381459,defensive_signal
+2026-09-17,AAPL,SIM_BUY,331.34,5.980853794328443,bullish_signal

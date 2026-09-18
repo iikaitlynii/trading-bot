@@ -1,14 +1,14 @@
 LIVE PAPER TRADING HEALTH REPORT
 Simulation only — no brokerage orders are sent.
 
-Last processed date: 2026-09-17
+Last processed date: 2026-09-18
 Cash: $2,069.75
 Open positions: 4
-Paper account value: $9,908.48
-Total return since launch: -0.92%
-Current drawdown from paper peak: 2.74%
-Maximum forward-test drawdown: 2.74%
-Forward-test days collected: 23
+Paper account value: $9,883.03
+Total return since launch: -1.17%
+Current drawdown from paper peak: 2.99%
+Maximum forward-test drawdown: 2.99%
+Forward-test days collected: 24
 Journal actions: 6 (5 buys, 1 sells)
 Latest signals: 4 bullish, 0 defensive
 

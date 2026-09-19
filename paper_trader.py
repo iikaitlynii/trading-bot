@@ -1,6 +1,7 @@
 import json
 import os
-from datetime import datetime, timezone
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 import pandas as pd
 import yfinance as yf
@@ -15,9 +16,14 @@ STATE_FILE = "paper/state.json"
 JOURNAL_FILE = "paper/journal.csv"
 SIGNALS_FILE = "paper/latest_signals.csv"
 PERFORMANCE_FILE = "paper/performance.csv"
+RUN_TIMEZONE = ZoneInfo("America/Chicago")
 
 # Safety: this program NEVER sends an order to a brokerage.
 # It only reads market data and records simulated decisions.
+#
+# Existing CSV files use the legacy column name "date_utc". For compatibility,
+# that column now stores the bot's Central Time trading date so a late-evening
+# manual run cannot appear as "tomorrow" to the user.
 
 
 def load_state():
@@ -72,9 +78,10 @@ def previous_paper_value():
 def main():
     os.makedirs("paper", exist_ok=True)
     state = load_state()
-    today = datetime.now(timezone.utc).date().isoformat()
+    today = datetime.now(RUN_TIMEZONE).date().isoformat()
 
-    # Prevent duplicate simulated trading if the workflow is re-run the same UTC day.
+    # Prevent duplicate simulated trading if the workflow is re-run on the same
+    # Central Time trading date.
     if state.get("last_run_date") == today:
         print("Paper trader already processed", today)
         return
@@ -148,7 +155,7 @@ def main():
     }])
 
     print("LIVE-DATA PAPER TRADER — SIMULATION ONLY")
-    print("UTC date:", today)
+    print("Central trading date:", today)
     print("Ending paper value: $", round(ending_value, 2))
     print("Daily simulated P/L: $", round(daily_pnl, 2))
     print("Total paper return:", round(total_return, 2), "%")

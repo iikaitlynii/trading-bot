@@ -1,6 +1,7 @@
 import json
 import os
-from datetime import datetime, timezone
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 import pandas as pd
 import yfinance as yf
@@ -16,9 +17,14 @@ STATE_FILE = "crypto_paper/state.json"
 JOURNAL_FILE = "crypto_paper/journal.csv"
 SIGNALS_FILE = "crypto_paper/latest_signals.csv"
 PERFORMANCE_FILE = "crypto_paper/performance.csv"
+RUN_TIMEZONE = ZoneInfo("America/Chicago")
 
 # Simulation only. This program never connects to a crypto exchange
 # and never places real orders.
+#
+# Existing CSV files use the legacy column name "date_utc". For compatibility,
+# that column now stores the bot's Central Time trading date so a late-evening
+# manual run cannot appear as "tomorrow" to the user.
 
 
 def load_state():
@@ -71,7 +77,7 @@ def previous_value():
 def main():
     os.makedirs("crypto_paper", exist_ok=True)
     state = load_state()
-    today = datetime.now(timezone.utc).date().isoformat()
+    today = datetime.now(RUN_TIMEZONE).date().isoformat()
 
     if state.get("last_run_date") == today:
         print("Crypto paper trader already processed", today)
@@ -152,7 +158,7 @@ def main():
     }])
 
     print("MEMECOIN PAPER TRADER — SIMULATION ONLY")
-    print("UTC date:", today)
+    print("Central trading date:", today)
     print("Ending paper value: $", round(ending, 2))
     print("Cash: $", round(float(state["cash"]), 2))
     print("Open simulated positions:", list(state["positions"].keys()))

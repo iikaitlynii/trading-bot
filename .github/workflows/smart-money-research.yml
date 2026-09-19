@@ -2,7 +2,6 @@ name: Smart Money Research
 
 on:
   schedule:
-    # Read-only research checkpoint every 6 hours.
     - cron: '20 */6 * * *'
   workflow_dispatch:
 
@@ -33,6 +32,8 @@ jobs:
         run: python smart_money_candidate_builder.py
       - name: Evaluate public wallet candidates
         run: python smart_money/candidate_evaluator.py
+      - name: Compare paper signals with neutral control
+        run: python smart_money_paper_comparison.py
       - name: Build research health report
         run: python smart_money_health.py
       - name: Save research outputs

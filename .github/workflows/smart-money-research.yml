@@ -36,6 +36,9 @@ jobs:
       - name: Update source reputation from 24h outcomes
         run: python smart_money_reputation_update.py
 
+      - name: Build forward-tested wallet candidate metrics
+        run: python smart_money_candidate_builder.py
+
       - name: Evaluate public wallet candidates
         run: python smart_money/candidate_evaluator.py
 

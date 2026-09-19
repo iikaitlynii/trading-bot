@@ -24,6 +24,9 @@ jobs:
       - name: Collect public wallet activity (read-only)
         run: python solana_wallet_collector.py
 
+      - name: Build research observations from public events
+        run: python smart_money_observation_builder.py
+
       - name: Score research observations
         run: python smart_money_research.py
 
@@ -40,7 +43,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add smart_money/wallet_events.csv smart_money/wallet_collector_state.json smart_money/latest_scores.csv smart_money/outcomes.csv smart_money/source_reputation.json smart_money/candidate_scores.csv
+          git add -A smart_money/
           if git diff --cached --quiet; then
             echo "No smart-money research changes to save."
           else

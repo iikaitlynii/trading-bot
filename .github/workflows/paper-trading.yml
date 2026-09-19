@@ -31,14 +31,17 @@ jobs:
       - name: Build paper trading health report
         run: python paper_report.py
 
-      - name: Save paper account state, journal, and report
+      - name: Run parallel shadow-strategy research lab
+        run: python research_lab.py
+
+      - name: Save paper account state, journal, report, and research lab
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add paper/state.json paper/journal.csv paper/latest_signals.csv paper/performance.csv paper/report.txt
+          git add -A paper/ research_lab/
           if git diff --cached --quiet; then
-            echo "No paper-trading state changes to save."
+            echo "No paper-trading or research-lab changes to save."
           else
-            git commit -m "Update live paper-trading state [skip ci]"
+            git commit -m "Update paper trading and shadow research [skip ci]"
             git push
           fi

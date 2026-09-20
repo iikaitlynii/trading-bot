@@ -1,0 +1,12 @@
+SMART-MONEY PAPER VS CONTROL
+Simulation/research only — no trades executed.
+
+Qualifying 24h samples: 0
+Control 24h samples: 0
+Qualifying avg net return: 0.0000%
+Control avg net return: 0.0000%
+Qualifying win rate: 0.00%
+Control win rate: 0.00%
+
+EVIDENCE STATUS: TOO EARLY — keep collecting forward outcomes.
+This comparison is descriptive and does not predict future profits.

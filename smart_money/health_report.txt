@@ -1,0 +1,17 @@
+SMART-MONEY RESEARCH HEALTH REPORT
+Read-only research only — no transactions or wallet control.
+
+Wallets checked: 0
+Public wallet events: 0
+Research observations: 0
+Forward outcomes: 0
+1h / 24h / 7d outcomes: 0 / 0 / 0
+Candidate records: 0
+Research-candidate labels: 0
+More-data-needed labels: 0
+
+DATA QUALITY
+- No public wallet events collected yet.
+
+READINESS
+EARLY: fewer than 30 recorded 24h outcomes. Keep collecting forward evidence.

@@ -2,7 +2,6 @@ name: Live Paper Trading
 
 on:
   schedule:
-    # Weekdays at 22:15 UTC, after the U.S. market close.
     - cron: '15 22 * * 1-5'
   workflow_dispatch:
 
@@ -15,26 +14,22 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
           cache: 'pip'
-
       - name: Install dependencies
         run: pip install -r requirements.txt
-
       - name: Run simulation-only paper trader
         run: python paper_trader.py
-
       - name: Build paper trading health report
         run: python paper_report.py
-
-      - name: Run parallel shadow-strategy research lab
+      - name: Run parallel historical strategy research
         run: python research_lab.py
-
-      - name: Save paper account state, journal, report, and research lab
+      - name: Advance true forward shadow accounts
+        run: python forward_shadow.py
+      - name: Save paper and research outputs
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -42,6 +37,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No paper-trading or research-lab changes to save."
           else
-            git commit -m "Update paper trading and shadow research [skip ci]"
+            git commit -m "Update paper trading and forward research [skip ci]"
             git push
           fi

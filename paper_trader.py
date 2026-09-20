@@ -1,7 +1,5 @@
 import json
 import os
-from datetime import datetime
-from zoneinfo import ZoneInfo
 
 import pandas as pd
 import yfinance as yf
@@ -16,14 +14,10 @@ STATE_FILE = "paper/state.json"
 JOURNAL_FILE = "paper/journal.csv"
 SIGNALS_FILE = "paper/latest_signals.csv"
 PERFORMANCE_FILE = "paper/performance.csv"
-RUN_TIMEZONE = ZoneInfo("America/Chicago")
 
-# Safety: this program NEVER sends an order to a brokerage.
-# It only reads market data and records simulated decisions.
-#
-# Existing CSV files use the legacy column name "date_utc". For compatibility,
-# that column now stores the bot's Central Time trading date so a late-evening
-# manual run cannot appear as "tomorrow" to the user.
+# Safety: simulation only. No brokerage connection or order submission exists.
+# Legacy CSVs keep the column name "date_utc", but new rows store the actual
+# latest market-session date returned by the price data.
 
 
 def load_state():
@@ -43,9 +37,7 @@ def append_csv(path, rows):
     if not rows:
         return
     os.makedirs("paper", exist_ok=True)
-    df = pd.DataFrame(rows)
-    exists = os.path.exists(path)
-    df.to_csv(path, mode="a", header=not exists, index=False)
+    pd.DataFrame(rows).to_csv(path, mode="a", header=not os.path.exists(path), index=False)
 
 
 def get_data(ticker):
@@ -54,6 +46,13 @@ def get_data(ticker):
     if hasattr(close, "columns"):
         close = close.iloc[:, 0]
     return close.dropna()
+
+
+def session_date(close):
+    stamp = close.index[-1]
+    if hasattr(stamp, "date"):
+        return stamp.date().isoformat()
+    return str(stamp)[:10]
 
 
 def portfolio_value(state, prices):
@@ -68,9 +67,7 @@ def previous_paper_value():
         return STARTING_CASH
     try:
         df = pd.read_csv(PERFORMANCE_FILE)
-        if len(df) == 0:
-            return STARTING_CASH
-        return float(df.iloc[-1]["paper_value"])
+        return STARTING_CASH if len(df) == 0 else float(df.iloc[-1]["paper_value"])
     except Exception:
         return STARTING_CASH
 
@@ -78,20 +75,36 @@ def previous_paper_value():
 def main():
     os.makedirs("paper", exist_ok=True)
     state = load_state()
-    today = datetime.now(RUN_TIMEZONE).date().isoformat()
+    series = {}
+    dates = {}
 
-    # Prevent duplicate simulated trading if the workflow is re-run on the same
-    # Central Time trading date.
-    if state.get("last_run_date") == today:
-        print("Paper trader already processed", today)
-        return
-
-    market = {}
-    signals = []
     for ticker in TICKERS:
         close = get_data(ticker)
         if len(close) < REGIME_MA_DAYS:
             continue
+        series[ticker] = close
+        dates[ticker] = session_date(close)
+
+    if not series:
+        print("No complete market data available; no simulated session processed.")
+        return
+
+    # All tracked stocks should agree on the latest completed U.S. market session.
+    unique_dates = set(dates.values())
+    if len(unique_dates) != 1:
+        print("Market-session mismatch:", dates)
+        print("Skipping this run rather than mixing prices from different sessions.")
+        return
+    trading_date = next(iter(unique_dates))
+
+    # Guard on the actual market session, not the workflow's wall-clock date.
+    if state.get("last_run_date") == trading_date:
+        print("Paper trader already processed market session", trading_date)
+        return
+
+    market = {}
+    signals = []
+    for ticker, close in series.items():
         price = float(close.iloc[-1])
         fast = float(close.iloc[-FAST_MA:].mean())
         slow = float(close.iloc[-SLOW_MA:].mean())
@@ -99,41 +112,36 @@ def main():
         market[ticker] = price
         bullish = price > regime and fast > slow
         signals.append({
-            "date_utc": today,
-            "ticker": ticker,
-            "close": round(price, 4),
-            "ma20": round(fast, 4),
-            "ma50": round(slow, 4),
-            "ma200": round(regime, 4),
+            "date_utc": trading_date, "ticker": ticker, "close": round(price, 4),
+            "ma20": round(fast, 4), "ma50": round(slow, 4), "ma200": round(regime, 4),
             "signal": "BULLISH" if bullish else "DEFENSIVE",
         })
 
     pd.DataFrame(signals).to_csv(SIGNALS_FILE, index=False)
     journal = []
 
-    # Exits first.
     for row in signals:
         ticker = row["ticker"]
         if ticker in state["positions"] and row["signal"] == "DEFENSIVE":
             pos = state["positions"].pop(ticker)
             proceeds = float(pos["shares"]) * float(row["close"])
             state["cash"] += proceeds
-            journal.append({"date_utc": today, "ticker": ticker, "action": "SIM_SELL", "price": row["close"], "shares": pos["shares"], "reason": "defensive_signal"})
+            journal.append({"date_utc": trading_date, "ticker": ticker, "action": "SIM_SELL",
+                            "price": row["close"], "shares": pos["shares"], "reason": "defensive_signal"})
 
-    # Entries use a conservative 20% maximum target per stock.
     current_value = portfolio_value(state, market)
     for row in signals:
         ticker = row["ticker"]
         if row["signal"] != "BULLISH" or ticker in state["positions"]:
             continue
-        target_dollars = current_value * MAX_WEIGHT
-        amount = min(float(state["cash"]), target_dollars)
+        amount = min(float(state["cash"]), current_value * MAX_WEIGHT)
         if amount < 50:
             continue
         shares = amount / float(row["close"])
         state["cash"] -= amount
-        state["positions"][ticker] = {"shares": shares, "entry_price": float(row["close"]), "entry_date": today}
-        journal.append({"date_utc": today, "ticker": ticker, "action": "SIM_BUY", "price": row["close"], "shares": shares, "reason": "bullish_signal"})
+        state["positions"][ticker] = {"shares": shares, "entry_price": float(row["close"]), "entry_date": trading_date}
+        journal.append({"date_utc": trading_date, "ticker": ticker, "action": "SIM_BUY",
+                        "price": row["close"], "shares": shares, "reason": "bullish_signal"})
 
     ending_value = portfolio_value(state, market)
     previous_value = previous_paper_value()
@@ -141,21 +149,18 @@ def main():
     daily_return = (ending_value / previous_value - 1) * 100 if previous_value else 0.0
     total_return = (ending_value / STARTING_CASH - 1) * 100
 
-    state["last_run_date"] = today
+    state["last_run_date"] = trading_date
     save_state(state)
     append_csv(JOURNAL_FILE, journal)
     append_csv(PERFORMANCE_FILE, [{
-        "date_utc": today,
-        "paper_value": round(ending_value, 2),
-        "cash": round(float(state["cash"]), 2),
-        "open_positions": len(state["positions"]),
-        "daily_pnl": round(daily_pnl, 2),
-        "daily_return_pct": round(daily_return, 4),
+        "date_utc": trading_date, "paper_value": round(ending_value, 2),
+        "cash": round(float(state["cash"]), 2), "open_positions": len(state["positions"]),
+        "daily_pnl": round(daily_pnl, 2), "daily_return_pct": round(daily_return, 4),
         "total_return_pct": round(total_return, 4),
     }])
 
     print("LIVE-DATA PAPER TRADER — SIMULATION ONLY")
-    print("Central trading date:", today)
+    print("Latest completed market session:", trading_date)
     print("Ending paper value: $", round(ending_value, 2))
     print("Daily simulated P/L: $", round(daily_pnl, 2))
     print("Total paper return:", round(total_return, 2), "%")

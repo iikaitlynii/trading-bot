@@ -1,0 +1,11 @@
+SMART-MONEY SIGNAL DECAY REPORT
+Research only — descriptive forward evidence, not a trading recommendation.
+
+This compares recorded outcomes across 1h, 24h, and 7d checkpoints.
+Checkpoint delays are reported because measurements may occur after the target time.
+
+1h: 0 samples | avg % | median % | win rate % | avg delay h
+24h: 0 samples | avg % | median % | win rate % | avg delay h
+168h: 0 samples | avg % | median % | win rate % | avg delay h
+
+STATUS: TOO EARLY — collect at least 30 outcomes at every horizon before interpreting decay.

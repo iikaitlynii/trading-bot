@@ -1,0 +1,10 @@
+SMART-MONEY DATA INTEGRITY REPORT
+Research only — no transactions or wallet control.
+
+Observations checked: 0
+Outcomes checked: 0
+Status: OK
+Errors: 0
+Warnings: 0
+
+No integrity anomalies detected.

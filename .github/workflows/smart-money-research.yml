@@ -22,10 +22,12 @@ jobs:
         run: python solana_wallet_collector.py
       - name: Build research observations from public events
         run: python smart_money_observation_builder.py
-      - name: Score research observations
-        run: python smart_money_research.py
       - name: Track forward outcomes (research only)
         run: python smart_money_outcome_tracker.py
+      - name: Validate research data integrity
+        run: python smart_money_integrity.py
+      - name: Score research observations
+        run: python smart_money_research.py
       - name: Update source reputation from 24h outcomes
         run: python smart_money_reputation_update.py
       - name: Build forward-tested wallet candidate metrics
@@ -37,6 +39,7 @@ jobs:
       - name: Build research health report
         run: python smart_money_health.py
       - name: Save research outputs
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

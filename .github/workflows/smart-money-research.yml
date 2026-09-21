@@ -36,6 +36,8 @@ jobs:
         run: python smart_money/candidate_evaluator.py
       - name: Compare paper signals with neutral control
         run: python smart_money_paper_comparison.py
+      - name: Measure signal decay across checkpoints
+        run: python smart_money_signal_decay.py
       - name: Build research health report
         run: python smart_money_health.py
       - name: Save research outputs

@@ -1,0 +1,16 @@
+PARALLEL SHADOW STRATEGY RESEARCH LAB
+Simulation/research only — no brokerage orders are sent.
+
+Latest completed market session: 2026-09-18
+Historical backtests are snapshots, not independent forward-test samples.
+History stores at most one snapshot per market session/universe/variant.
+
+market_session      universe                 variant  ending_value  return_pct  cagr_pct  max_drawdown_pct  sharpe  completed_trades  win_rate_pct  profit_factor  avg_hold_days  benchmark_return_pct  excess_vs_benchmark_pct
+    2026-09-18         core4           current_20_50      29111.98    191.1198   12.3580           23.0200  0.8136               160       35.6250         2.1395          33.62             1860.8533               -1669.7335
+    2026-09-18         core4            faster_10_30      24156.10    141.5610    9.8708           19.6851  0.8867               257       31.1284         1.7940          20.82             2582.5156               -2440.9546
+    2026-09-18         core4      conservative_30_75      27868.23    178.6823   11.8243           24.5220  0.8640               133       35.3383         2.6701          42.93             1860.8533               -1682.1711
+    2026-09-18         core4 low_concentration_20_50      17709.46     77.0946    6.4303           13.0894  0.7827               160       35.6250         2.2757          33.62             1860.8533               -1783.7587
+    2026-09-18 diversified16           current_20_50      35278.69    252.7869   14.7368           26.7468  0.8272               278       35.6115         1.7791          37.56              646.6688                -393.8819
+    2026-09-18 diversified16            faster_10_30      37359.79    273.5979   15.1053           19.5774  0.9874               548       36.8613         1.7127          22.61              833.9622                -560.3643
+    2026-09-18 diversified16      conservative_30_75      36587.17    265.8717   15.1934           31.2791  0.8598               235       32.7660         2.1473          53.24              646.6688                -380.7971
+    2026-09-18 diversified16 low_concentration_20_50      28024.46    180.2446   11.8925           20.7518  0.8791               548       32.4818         1.8001          32.46              646.6688                -466.4242

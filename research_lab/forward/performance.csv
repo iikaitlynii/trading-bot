@@ -3,3 +3,7 @@ market_session,variant,paper_value,cash,open_positions,total_return_pct
 2026-09-18,faster_10_30,10000.0,7000.0,2,0.0
 2026-09-18,conservative_30_75,10000.0,4000.0,4,0.0
 2026-09-18,low_concentration_20_50,10000.0,6000.0,4,0.0
+2026-09-21,current_20_50,10132.02,2000.0,4,1.3202
+2026-09-21,faster_10_30,10036.5,7000.0,2,0.365
+2026-09-21,conservative_30_75,10099.01,4000.0,4,0.9901
+2026-09-21,low_concentration_20_50,10066.01,6000.0,4,0.6601

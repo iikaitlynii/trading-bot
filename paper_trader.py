@@ -98,8 +98,21 @@ def main():
     trading_date = next(iter(unique_dates))
 
     # Guard on the actual market session, not the workflow's wall-clock date.
-    if state.get("last_run_date") == trading_date:
-        print("Paper trader already processed market session", trading_date)
+    # Also protect against legacy rows that were labeled with a workflow date.
+    processed_dates = set()
+    if os.path.exists(PERFORMANCE_FILE):
+        try:
+            perf = pd.read_csv(PERFORMANCE_FILE)
+            processed_dates = set(perf.get("date_utc", pd.Series(dtype=str)).astype(str))
+        except Exception:
+            processed_dates = set()
+    if state.get("last_run_date") == trading_date or trading_date in processed_dates:
+        if state.get("last_run_date") != trading_date:
+            state["last_run_date"] = trading_date
+            save_state(state)
+            print("Normalized legacy state to already-recorded market session", trading_date)
+        else:
+            print("Paper trader already processed market session", trading_date)
         return
 
     market = {}

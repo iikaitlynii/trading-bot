@@ -25,6 +25,8 @@ jobs:
         run: python paper_trader.py
       - name: Analyze stock charts (research only)
         run: python chart_analysis.py
+      - name: Track chart-analysis forward outcomes
+        run: python chart_outcome_tracker.py
       - name: Build paper trading health report
         run: python paper_report.py
       - name: Run parallel historical strategy research

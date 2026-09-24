@@ -1,16 +1,11 @@
 {
-  "cash": 2069.745377657432,
-  "last_run_date": "2026-09-21",
+  "cash": 4021.2971743739754,
+  "last_run_date": "2026-09-22",
   "positions": {
     "AAPL": {
       "entry_date": "2026-09-17",
       "entry_price": 331.34,
       "shares": 5.980853794328443
-    },
-    "AMZN": {
-      "entry_date": "2026-08-17",
-      "entry_price": 261.31,
-      "shares": 7.65374459454288
     },
     "MSFT": {
       "entry_date": "2026-08-17",

@@ -23,6 +23,8 @@ jobs:
         run: pip install -r requirements.txt
       - name: Run simulation-only paper trader
         run: python paper_trader.py
+      - name: Analyze stock charts (research only)
+        run: python chart_analysis.py
       - name: Build paper trading health report
         run: python paper_report.py
       - name: Run parallel historical strategy research

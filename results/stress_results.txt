@@ -11,58 +11,58 @@ Running: MIXED-SECTOR STOCKS
 
 SCENARIO: BASELINE
 Stocks: AAPL, MSFT, NVDA, AMZN
-Bot ending simulated account: $ 20241.29
-Bot compounded return: 102.41 %
-Bot estimated CAGR: 9.29 %
-Bot max drawdown: 27.02 %
-Bot Sharpe: 0.54
-Completed trades: 119
-Equal-weight Buy & Hold ending value: $ 117162.05
-Equal-weight Buy & Hold return: 1071.62 %
+Bot ending simulated account: $ 19523.1
+Bot compounded return: 95.23 %
+Bot estimated CAGR: 8.8 %
+Bot max drawdown: 27.62 %
+Bot Sharpe: 0.5
+Completed trades: 125
+Equal-weight Buy & Hold ending value: $ 118700.27
+Equal-weight Buy & Hold return: 1087.0 %
 
 SCENARIO: 2X TRADING FRICTION
 Stocks: AAPL, MSFT, NVDA, AMZN
-Bot ending simulated account: $ 18073.69
-Bot compounded return: 80.74 %
-Bot estimated CAGR: 7.74 %
-Bot max drawdown: 33.96 %
-Bot Sharpe: 0.47
-Completed trades: 110
-Equal-weight Buy & Hold ending value: $ 117162.05
-Equal-weight Buy & Hold return: 1071.62 %
+Bot ending simulated account: $ 17546.11
+Bot compounded return: 75.46 %
+Bot estimated CAGR: 7.34 %
+Bot max drawdown: 33.81 %
+Bot Sharpe: 0.44
+Completed trades: 116
+Equal-weight Buy & Hold ending value: $ 118700.27
+Equal-weight Buy & Hold return: 1087.0 %
 
 SCENARIO: 3X TRADING FRICTION
 Stocks: AAPL, MSFT, NVDA, AMZN
-Bot ending simulated account: $ 16185.39
-Bot compounded return: 61.85 %
-Bot estimated CAGR: 6.26 %
-Bot max drawdown: 32.62 %
+Bot ending simulated account: $ 16348.21
+Bot compounded return: 63.48 %
+Bot estimated CAGR: 6.39 %
+Bot max drawdown: 32.28 %
 Bot Sharpe: 0.4
-Completed trades: 100
-Equal-weight Buy & Hold ending value: $ 117162.05
-Equal-weight Buy & Hold return: 1071.62 %
+Completed trades: 104
+Equal-weight Buy & Hold ending value: $ 118700.27
+Equal-weight Buy & Hold return: 1087.0 %
 
 SCENARIO: DIFFERENT LARGE-CAP STOCKS
 Stocks: GOOGL, META, JPM, XOM
-Bot ending simulated account: $ 12176.47
-Bot compounded return: 21.76 %
-Bot estimated CAGR: 2.51 %
-Bot max drawdown: 12.31 %
-Bot Sharpe: 0.44
-Completed trades: 97
-Equal-weight Buy & Hold ending value: $ 36432.77
-Equal-weight Buy & Hold return: 264.33 %
+Bot ending simulated account: $ 11370.85
+Bot compounded return: 13.71 %
+Bot estimated CAGR: 1.63 %
+Bot max drawdown: 12.27 %
+Bot Sharpe: 0.32
+Completed trades: 101
+Equal-weight Buy & Hold ending value: $ 35748.06
+Equal-weight Buy & Hold return: 257.48 %
 
 SCENARIO: MIXED-SECTOR STOCKS
 Stocks: KO, WMT, CAT, JNJ
-Bot ending simulated account: $ 13330.93
-Bot compounded return: 33.31 %
-Bot estimated CAGR: 3.69 %
-Bot max drawdown: 7.79 %
-Bot Sharpe: 0.52
-Completed trades: 72
-Equal-weight Buy & Hold ending value: $ 31419.14
-Equal-weight Buy & Hold return: 214.19 %
+Bot ending simulated account: $ 12759.33
+Bot compounded return: 27.59 %
+Bot estimated CAGR: 3.12 %
+Bot max drawdown: 10.75 %
+Bot Sharpe: 0.44
+Completed trades: 77
+Equal-weight Buy & Hold ending value: $ 31003.09
+Equal-weight Buy & Hold return: 210.03 %
 
 ========== ROBUSTNESS CHECK ==========
 Profitable scenarios: 5 of 5

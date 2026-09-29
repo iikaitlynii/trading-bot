@@ -1,7 +1,7 @@
 {
   "conservative_30_75": {
     "cash": 4000.0,
-    "last_session": "2026-09-24",
+    "last_session": "2026-09-28",
     "positions": {
       "AAPL": {
         "entry_price": 336.1300048828125,
@@ -27,7 +27,7 @@
   },
   "current_20_50": {
     "cash": 4010.011343502932,
-    "last_session": "2026-09-24",
+    "last_session": "2026-09-28",
     "positions": {
       "AAPL": {
         "entry_price": 336.1300048828125,
@@ -47,8 +47,8 @@
     }
   },
   "faster_10_30": {
-    "cash": 7000.0,
-    "last_session": "2026-09-24",
+    "cash": 5491.4449829705445,
+    "last_session": "2026-09-28",
     "positions": {
       "AAPL": {
         "entry_price": 336.1300048828125,
@@ -59,12 +59,17 @@
         "entry_price": 493.7799987792969,
         "entry_session": "2026-09-18",
         "shares": 3.0377901164653083
+      },
+      "NVDA": {
+        "entry_price": 228.86000061035156,
+        "entry_session": "2026-09-28",
+        "shares": 6.5916062789751715
       }
     }
   },
   "low_concentration_20_50": {
     "cash": 7005.005671751466,
-    "last_session": "2026-09-24",
+    "last_session": "2026-09-28",
     "positions": {
       "AAPL": {
         "entry_price": 336.1300048828125,

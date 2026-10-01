@@ -1,0 +1,5 @@
+market_session,ticker,horizon_sessions,outcome_session,entry_close,outcome_close,return_pct,trend,rsi14,momentum,volume_vs_20d,evidence_score
+2026-09-28,AAPL,1,2026-09-29,338.4,329.4,-2.6596,UP,76.3,POSITIVE,0.768,70
+2026-09-28,MSFT,1,2026-09-29,509.22,508.96,-0.0511,UP,59.04,NEGATIVE,0.919,60
+2026-09-28,NVDA,1,2026-09-29,228.86,227.21,-0.721,UP,53.79,POSITIVE,1.248,85
+2026-09-28,AMZN,1,2026-09-29,246.15,246.67,0.2113,MIXED,38.34,NEGATIVE,0.927,40

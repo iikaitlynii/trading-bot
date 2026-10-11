@@ -35,7 +35,8 @@ jobs:
         run: python research_lab.py
       - name: Advance true forward shadow accounts
         run: python forward_shadow.py
-      - name: Save paper and research outputs
+      - name: Save paper and research outputs even if a research step fails
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

@@ -1,17 +1,12 @@
 {
   "conservative_30_75": {
-    "cash": 4000.0,
-    "last_session": "2026-10-09",
+    "cash": 5534.4093172012335,
+    "last_session": "2026-10-12",
     "positions": {
       "AAPL": {
         "entry_price": 336.1300048828125,
         "entry_session": "2026-09-18",
         "shares": 4.462559064082828
-      },
-      "AMZN": {
-        "entry_price": 253.7100067138672,
-        "entry_session": "2026-09-18",
-        "shares": 5.912261874998459
       },
       "MSFT": {
         "entry_price": 493.7799987792969,
@@ -27,7 +22,7 @@
   },
   "current_20_50": {
     "cash": 4010.011343502932,
-    "last_session": "2026-10-09",
+    "last_session": "2026-10-12",
     "positions": {
       "AAPL": {
         "entry_price": 336.1300048828125,
@@ -47,13 +42,18 @@
     }
   },
   "faster_10_30": {
-    "cash": 5491.4449829705445,
-    "last_session": "2026-10-09",
+    "cash": 3969.1315335418917,
+    "last_session": "2026-10-12",
     "positions": {
       "AAPL": {
         "entry_price": 336.1300048828125,
         "entry_session": "2026-09-18",
         "shares": 4.462559064082828
+      },
+      "AMZN": {
+        "entry_price": 259.5299987792969,
+        "entry_session": "2026-10-12",
+        "shares": 5.86565505563471
       },
       "MSFT": {
         "entry_price": 493.7799987792969,
@@ -69,7 +69,7 @@
   },
   "low_concentration_20_50": {
     "cash": 7005.005671751466,
-    "last_session": "2026-10-09",
+    "last_session": "2026-10-12",
     "positions": {
       "AAPL": {
         "entry_price": 336.1300048828125,

@@ -1,14 +1,18 @@
 LIVE PAPER TRADING HEALTH REPORT
 Simulation only — no brokerage orders are sent.
 
-Last processed date: 2026-10-14
+Last processed date: 2026-10-15
 Cash: $4,021.30
 Open positions: 3
-Paper account value: $10,261.60
-Total return since launch: 2.62%
-Current drawdown from paper peak: 0.91%
+Paper account value: $10,243.63
+TOTAL SIMULATED PROFIT / LOSS: $+243.63
+Starting paper capital: $10,000.00
+Total return since launch: 2.44%
+Current drawdown from paper peak: 1.09%
 Maximum forward-test drawdown: 2.99%
-Forward-test days collected: 41
+Forward-test days collected: 42
+Realized simulated trade P/L (before fees): $+2.99
+Unrealized/other paper P/L (estimated): $+240.64
 Journal actions: 7 (5 buys, 2 sells)
 Latest signals: 3 bullish, 1 defensive
 

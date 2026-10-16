@@ -1,0 +1,8 @@
+asset,sessions,buy_hold_return_pct,buy_hold_invested_days,trend_return_pct,trend_invested_days,momentum_return_pct,momentum_invested_days
+AAPL,120,26.4,120,18.5,106,10.16,85
+MSFT,120,27.56,120,6.21,53,19.67,82
+NVDA,120,4.54,120,-5.0,90,-11.23,82
+AMZN,120,-3.5,120,-14.35,70,-10.27,62
+DOGE-USD,120,-5.21,120,-11.55,54,15.48,47
+SHIB-USD,120,2.8,120,-34.21,61,-61.42,42
+BONK-USD,120,-38.6,120,-43.75,15,-43.75,29

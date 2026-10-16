@@ -1,15 +1,15 @@
 PARALLEL SHADOW STRATEGY RESEARCH LAB
 Simulation/research only — no brokerage orders are sent.
 
-Latest completed market session: 2026-10-14
+Latest completed market session: 2026-10-15
 Historical backtests are snapshots, not independent forward-test samples.
 History stores at most one snapshot per market session/universe/variant.
 
 market_session      universe                 variant  ending_value  return_pct  cagr_pct  max_drawdown_pct  sharpe  completed_trades  win_rate_pct  profit_factor  avg_hold_days  benchmark_return_pct  excess_vs_benchmark_pct
-    2026-10-14         core4           current_20_50      29214.90    192.1490   12.3956           23.0200  0.8160               161       35.4037         2.1272          33.14             1763.3900               -1571.2411
-    2026-10-14         core4            faster_10_30      22799.22    127.9922    9.1908           19.6851  0.8375               258       30.2326         1.7473          20.49             2062.9941               -1935.0019
-    2026-10-14         core4      conservative_30_75      27978.22    179.7822   11.8670           24.5220  0.8669               133       35.3383         2.6676          42.68             1763.3900               -1583.6078
-    2026-10-14         core4 low_concentration_20_50      17738.17     77.3817    6.4462           13.0894  0.7849               161       35.4037         2.2569          33.14             1763.3900               -1686.0083
+    2026-10-15         core4           current_20_50      29156.24    191.5624   12.3653           23.0200  0.8144               161       35.4037         2.1272          33.14             1740.6624               -1549.1000
+    2026-10-15         core4            faster_10_30      22766.13    127.6613    9.1699           19.6851  0.8359               259       30.1158         1.7331          20.46             2035.1113               -1907.4500
+    2026-10-15         core4      conservative_30_75      27933.63    179.3363   11.8421           24.5220  0.8654               133       35.3383         2.6676          42.68             1740.6624               -1561.3261
+    2026-10-15         core4 low_concentration_20_50      17719.87     77.1987    6.4314           13.0894  0.7834               161       35.4037         2.2569          33.14             1740.6624               -1663.4638
     2026-10-14 diversified16           current_20_50      34857.96    248.5796   14.5801           26.7468  0.8205               282       36.5248         1.7705          37.38              616.8093                -368.2297
     2026-10-14 diversified16            faster_10_30      37291.13    272.9113   15.0758           19.5773  0.9868               552       36.4130         1.6867          22.48              703.2363                -430.3250
     2026-10-14 diversified16      conservative_30_75      37422.59    274.2259   15.4701           31.2790  0.8732               233       32.6180         2.1492          53.58              616.8093                -342.5835

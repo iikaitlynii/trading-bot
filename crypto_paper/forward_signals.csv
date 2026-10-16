@@ -1,0 +1,5 @@
+observed_date,ticker,signal,close,next_date,next_close,next_return_pct
+2026-10-14,DOGE-USD,BULLISH,0.0816200003,,,
+2026-10-14,SHIB-USD,BULLISH,5.05e-06,,,
+2026-10-14,PEPE-USD,NO_DATA,,,,
+2026-10-14,BONK-USD,DEFENSIVE,3.1e-06,,,

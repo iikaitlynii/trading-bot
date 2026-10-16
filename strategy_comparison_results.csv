@@ -1,8 +1,8 @@
-asset,sessions,buy_hold_return_pct,buy_hold_invested_days,trend_return_pct,trend_invested_days,momentum_return_pct,momentum_invested_days
-AAPL,120,26.4,120,18.5,106,10.16,85
-MSFT,120,27.56,120,6.21,53,19.67,82
-NVDA,120,4.54,120,-5.0,90,-11.23,82
-AMZN,120,-3.5,120,-14.35,70,-10.27,62
-DOGE-USD,120,-5.21,120,-11.55,54,15.48,47
-SHIB-USD,120,2.8,120,-34.21,61,-61.42,42
-BONK-USD,120,-38.6,120,-43.75,15,-43.75,29
+asset,sessions,as_of,buy_hold_return_pct,buy_hold_max_drawdown_pct,buy_hold_invested_days,buy_hold_position_changes,trend_return_pct,trend_max_drawdown_pct,trend_invested_days,trend_position_changes,momentum_return_pct,momentum_max_drawdown_pct,momentum_invested_days,momentum_position_changes
+AAPL,120,2026-10-15,26.14,-12.71,120,1,17.32,-12.71,106,5,8.61,-13.78,85,7
+MSFT,120,2026-10-15,27.3,-23.38,120,1,5.56,-6.18,53,3,15.66,-16.76,82,17
+NVDA,120,2026-10-15,4.34,-19.3,120,1,-5.56,-19.86,90,3,-13.86,-27.39,82,15
+AMZN,120,2026-10-15,-3.69,-17.58,120,1,-15.04,-21.01,70,4,-11.87,-16.47,62,9
+DOGE-USD,120,2026-10-16,-5.16,-19.76,120,1,-11.5,-18.76,54,1,13.66,-16.44,47,8
+SHIB-USD,120,2026-10-16,2.59,-20.16,120,1,-34.9,-36.67,61,5,-62.68,-62.68,42,16
+BONK-USD,120,2026-10-16,-38.52,-60.08,120,1,-44.2,-44.2,15,4,-44.64,-44.64,29,8

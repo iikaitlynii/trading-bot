@@ -1,0 +1,26 @@
+name: Token Discovery Research
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '25 22 * * *'
+permissions:
+  contents: write
+jobs:
+  observe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Collect public token profile snapshot
+        run: python token_discovery_research.py
+      - name: Save research snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add crypto_paper/discovered_tokens.csv
+          if ! git diff --cached --quiet; then
+            git commit -m "Update public token discovery research snapshot"
+            git push
+          fi

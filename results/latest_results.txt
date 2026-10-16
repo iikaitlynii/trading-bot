@@ -7,17 +7,17 @@ Risk limits: max 30% per stock, at least 15% cash capacity, 63-day volatility es
 ========== VERSION 8 PORTFOLIO SCOREBOARD ==========
 Unseen windows: 16 | Approx unseen years: 7.94
 Starting simulated account: $ 10000
-Bot ending simulated account: $ 17045.5
-Equal-weight Buy & Hold ending value: $ 114167.77
-Bot compounded total return: 70.45 %
-Equal-weight Buy & Hold return: 1041.68 %
-Bot estimated CAGR: 6.95 %
-Bot max daily portfolio drawdown: 28.87 %
-Bot annualized window volatility: 20.66 %
-Bot window-based Sharpe (0% risk-free assumption): 0.42
-Completed simulated trades: 135
+Bot ending simulated account: $ 17947.5
+Equal-weight Buy & Hold ending value: $ 132291.59
+Bot compounded total return: 79.48 %
+Equal-weight Buy & Hold return: 1222.92 %
+Bot estimated CAGR: 7.65 %
+Bot max daily portfolio drawdown: 27.58 %
+Bot annualized window volatility: 19.29 %
+Bot window-based Sharpe (0% risk-free assumption): 0.47
+Completed simulated trades: 127
 
 Last 3 walk-forward allocations:
-Window 14 : {'AAPL': ('Momentum 20d 5%', 0.0), 'MSFT': ('CASH', 0.0), 'NVDA': ('MA 20/50', 16.9), 'AMZN': ('MA 10/30', 30.0)}
-Window 15 : {'AAPL': ('CASH', 0.0), 'MSFT': ('Momentum 20d 5%', 30.0), 'NVDA': ('Momentum 10d 3%', 30.0), 'AMZN': ('MA 10/30', 25.0)}
+Window 14 : {'AAPL': ('Momentum 20d 5%', 0.0), 'MSFT': ('CASH', 0.0), 'NVDA': ('MA 20/50', 0.0), 'AMZN': ('MA 10/30', 30.0)}
+Window 15 : {'AAPL': ('CASH', 0.0), 'MSFT': ('Momentum 20d 5%', 30.0), 'NVDA': ('Momentum 30d 7%', 30.0), 'AMZN': ('MA 10/30', 25.0)}
 Window 16 : {'AAPL': ('CASH', 0.0), 'MSFT': ('CASH', 0.0), 'NVDA': ('Momentum 30d 7%', 0.0), 'AMZN': ('CASH', 0.0)}

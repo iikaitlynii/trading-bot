@@ -3,8 +3,8 @@ horizon_sessions,score_band,observations,starting_sessions,mean_return_pct,media
 1,medium,15,8,0.4922,0.9112,66.67
 1,high,15,8,-0.2003,0.0869,53.33
 5,low,2,2,2.2407,2.2407,100.0
-5,medium,6,4,2.5061,2.7424,100.0
-5,high,8,4,0.0593,0.8742,50.0
+5,medium,8,5,1.8322,2.3586,87.5
+5,high,10,5,-0.5593,0.2886,50.0
 20,low,0,0,,,
 20,medium,0,0,,,
 20,high,0,0,,,

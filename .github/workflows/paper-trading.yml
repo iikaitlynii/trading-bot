@@ -31,6 +31,8 @@ jobs:
         run: python chart_score_evaluation.py
       - name: Compare historical research signals (simulation only)
         run: python strategy_comparison.py
+      - name: Record memecoin forward signal observations
+        run: python memecoin_forward_research.py
       - name: Build paper trading health report
         run: python paper_report.py
       - name: Run parallel historical strategy research
@@ -42,7 +44,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A paper/ research_lab/ strategy_comparison_results.csv
+          git add -A paper/ research_lab/ crypto_paper/forward_signals.csv strategy_comparison_results.csv strategy_comparison_missing.csv
           if git diff --cached --quiet; then
             echo "No paper-trading or research-lab changes to save."
           else

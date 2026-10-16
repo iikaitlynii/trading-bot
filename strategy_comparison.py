@@ -1,77 +1,67 @@
-"""Read-only comparison of three research signals; never places trades.
-Run: python strategy_comparison.py
-Uses historical prices, shifted signals to avoid same-day lookahead, and
-reports rough buy/hold, trend, and momentum comparisons before fees.
-Not a realistic execution backtest; results are exploratory only.
-"""
+"""Read-only historical signal research; no exchange or brokerage actions."""
+import os
 import pandas as pd
 import yfinance as yf
 
 STOCKS = ["AAPL", "MSFT", "NVDA", "AMZN"]
 MEMECOINS = ["DOGE-USD", "SHIB-USD", "PEPE-USD", "BONK-USD"]
+FEE_BPS = 10  # hypothetical fee per position change
+SLIPPAGE_BPS = 10  # hypothetical adverse fill per position change
+WINDOW = 120
 
 
-def close_history(ticker):
-    frame = yf.download(ticker, period="2y", interval="1d", auto_adjust=True, progress=False)
-    if frame.empty:
-        return pd.Series(dtype=float)
-    close = frame["Close"]
+def history(ticker):
+    raw = yf.download(ticker, period="2y", interval="1d", auto_adjust=True, progress=False)
+    if raw.empty:
+        raise ValueError("empty price history")
+    close = raw["Close"]
     if isinstance(close, pd.DataFrame):
         close = close.iloc[:, 0]
     return close.dropna().astype(float)
 
 
-def evaluate(close, regime_days):
-    if len(close) < max(200, regime_days) + 30:
-        return None
-    # Restrict all comparisons to the same recent window.
-    close = close.iloc[-180:]
-    daily = close.pct_change().fillna(0)
-    fast = close.rolling(20, min_periods=20).mean()
-    slow = close.rolling(50, min_periods=50).mean()
-    regime = close.rolling(regime_days, min_periods=regime_days).mean()
-    # Long-only research signals, held in cash otherwise.
-    # Build indicators on full history below to avoid missing warmup.
-    return daily
-
-
-def compare(ticker, regime_days):
-    close = close_history(ticker)
+def calculate(ticker, close):
     if len(close) < 230:
-        return None
-    fast = close.rolling(20).mean()
-    slow = close.rolling(50).mean()
-    regime = close.rolling(regime_days).mean()
-    trend = ((close > regime) & (fast > slow)).astype(float).shift(1).fillna(0)
-    momentum = (close.pct_change(20) > 0).astype(float).shift(1).fillna(0)
-    buyhold = pd.Series(1.0, index=close.index)
-    returns = close.pct_change().fillna(0)
-    window = returns.index[-120:]
-    out = {"asset": ticker, "sessions": len(window)}
-    for name, exposure in [("buy_hold", buyhold), ("trend", trend), ("momentum", momentum)]:
-        strategy_returns = returns.loc[window] * exposure.loc[window]
-        out[name + "_return_pct"] = round(((1 + strategy_returns).prod() - 1) * 100, 2)
-        out[name + "_invested_days"] = int(exposure.loc[window].sum())
-    return out
+        raise ValueError(f"insufficient history: {len(close)} rows (need 230)")
+    fast, slow = close.rolling(20).mean(), close.rolling(50).mean()
+    regime = close.rolling(100 if ticker in MEMECOINS else 200).mean()
+    signals = {
+        "buy_hold": pd.Series(1.0, index=close.index),
+        "trend": ((close > regime) & (fast > slow)).astype(float).shift(1).fillna(0),
+        "momentum": (close.pct_change(20) > 0).astype(float).shift(1).fillna(0),
+    }
+    daily = close.pct_change().fillna(0)
+    idx = close.index[-WINDOW:]
+    result = {"asset": ticker, "sessions": len(idx), "as_of": str(idx[-1].date())}
+    for name, exposure in signals.items():
+        held = exposure.loc[idx]
+        # Opening position on the first session counts as one entry.
+        turnover = held.diff().abs().fillna(held.iloc[0])
+        costs = turnover * (FEE_BPS + SLIPPAGE_BPS) / 10000
+        net_daily = daily.loc[idx] * held - costs
+        equity = (1 + net_daily).cumprod()
+        drawdown = equity / equity.cummax().clip(lower=1) - 1
+        result[name + "_return_pct"] = round((equity.iloc[-1] - 1) * 100, 2)
+        result[name + "_max_drawdown_pct"] = round(drawdown.min() * 100, 2)
+        result[name + "_invested_days"] = int(held.sum())
+        result[name + "_position_changes"] = int(turnover.sum())
+    return result
 
 
 def main():
-    results = []
+    results, errors = [], []
     for ticker in STOCKS + MEMECOINS:
         try:
-            row = compare(ticker, 100 if ticker in MEMECOINS else 200)
-            if row is not None:
-                results.append(row)
+            results.append(calculate(ticker, history(ticker)))
         except Exception as exc:
-            print(f"{ticker}: data unavailable ({type(exc).__name__})")
+            errors.append({"asset": ticker, "reason": str(exc)})
+            print(f"{ticker}: {exc}")
     if not results:
-        print("No comparable historical data available.")
-        return
-    output = pd.DataFrame(results)
-    print("EXPLORATORY SIGNAL COMPARISON — NO FEES, SLIPPAGE OR EXECUTION")
-    print(output.to_string(index=False))
-    output.to_csv("strategy_comparison_results.csv", index=False)
-    print("Saved strategy_comparison_results.csv (local research output).")
+        raise RuntimeError("No historical comparisons available")
+    pd.DataFrame(results).to_csv("strategy_comparison_results.csv", index=False)
+    pd.DataFrame(errors, columns=["asset", "reason"]).to_csv("strategy_comparison_missing.csv", index=False)
+    print("Research only: hypothetical 10 bps fee + 10 bps slippage per entry/exit.")
+    print(pd.DataFrame(results).to_string(index=False))
 
 
 if __name__ == "__main__":

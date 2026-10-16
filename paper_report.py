@@ -1,5 +1,6 @@
 import json
 import os
+import math
 import pandas as pd
 
 STATE_FILE = "paper/state.json"
@@ -68,13 +69,44 @@ def build_report():
             running_peak = value if running_peak is None else max(running_peak, value)
             dd = (running_peak - value) / running_peak * 100 if running_peak > 0 else 0.0
             max_dd = max(max_dd, dd)
+        total_profit = current - STARTING_CASH
         lines.append(f"Paper account value: ${current:,.2f}")
+        lines.append(f"TOTAL SIMULATED PROFIT / LOSS: ${total_profit:+,.2f}")
+        lines.append(f"Starting paper capital: ${STARTING_CASH:,.2f}")
         lines.append(f"Total return since launch: {total_return:.2f}%")
         lines.append(f"Current drawdown from paper peak: {drawdown:.2f}%")
         lines.append(f"Maximum forward-test drawdown: {max_dd:.2f}%")
         lines.append(f"Forward-test days collected: {len(perf)}")
 
     if not journal.empty:
+        realized = 0.0
+        lots = {}
+        for _, trade in journal.iterrows():
+            try:
+                ticker = str(trade["ticker"])
+                action = str(trade["action"])
+                price = float(trade["price"])
+                shares = float(trade["shares"])
+                if not (math.isfinite(price) and math.isfinite(shares) and price > 0 and shares > 0):
+                    raise ValueError("invalid journal trade")
+                if action == "SIM_BUY":
+                    lots.setdefault(ticker, []).append([shares, price])
+                elif action == "SIM_SELL":
+                    remaining = shares
+                    for lot in lots.get(ticker, []):
+                        used = min(remaining, lot[0])
+                        realized += used * (price - lot[1])
+                        lot[0] -= used
+                        remaining -= used
+                        if remaining < 1e-8:
+                            break
+                    if remaining > 1e-6:
+                        issues.append(f"sell quantity exceeds recorded buys: {ticker}")
+            except (KeyError, ValueError, TypeError):
+                issues.append("invalid journal entry")
+        lines.append(f"Realized simulated trade P/L (before fees): ${realized:+,.2f}")
+        if not perf.empty:
+            lines.append(f"Unrealized/other paper P/L (estimated): ${total_profit - realized:+,.2f}")
         buys = int((journal["action"] == "SIM_BUY").sum()) if "action" in journal else 0
         sells = int((journal["action"] == "SIM_SELL").sum()) if "action" in journal else 0
         lines.append(f"Journal actions: {len(journal)} ({buys} buys, {sells} sells)")

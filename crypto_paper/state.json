@@ -1,11 +1,5 @@
 {
-  "cash": 4386.776400063505,
-  "last_run_date": "2026-10-18",
-  "positions": {
-    "SHIB-USD": {
-      "entry_date": "2026-08-22",
-      "entry_price": 5.440000222733943e-06,
-      "units": 91911760.94267115
-    }
-  }
+  "cash": 4846.335193167429,
+  "last_run_date": "2026-10-19",
+  "positions": {}
 }

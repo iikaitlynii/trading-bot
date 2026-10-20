@@ -3,13 +3,13 @@ Observations may overlap and are not independent. These are descriptive results,
 
 1-session outcomes:
   low: 2 observations, 2 starting sessions; mean 0.7683%; early data
-  medium: 15 observations, 8 starting sessions; mean 0.4922%; early data
-  high: 15 observations, 8 starting sessions; mean -0.2003%; early data
+  medium: 17 observations, 9 starting sessions; mean 0.2404%; early data
+  high: 17 observations, 9 starting sessions; mean -0.265%; early data
 
 5-session outcomes:
   low: 2 observations, 2 starting sessions; mean 2.2407%; early data
-  medium: 10 observations, 6 starting sessions; mean 1.5397%; early data
-  high: 12 observations, 6 starting sessions; mean -0.6768%; early data
+  medium: 12 observations, 7 starting sessions; mean 1.0572%; early data
+  high: 14 observations, 7 starting sessions; mean -1.1324%; early data
 
 20-session outcomes:
   low: 0 observations, 0 starting sessions; mean %; early data

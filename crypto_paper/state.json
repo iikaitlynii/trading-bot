@@ -1,11 +1,5 @@
 {
-  "cash": 4361.701673850686,
-  "last_run_date": "2026-10-21",
-  "positions": {
-    "BONK-USD": {
-      "entry_date": "2026-10-20",
-      "entry_price": 3.079999942201539e-06,
-      "units": 157348548.18546975
-    }
-  }
+  "cash": 4849.4821666275775,
+  "last_run_date": "2026-10-22",
+  "positions": {}
 }

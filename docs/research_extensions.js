@@ -169,4 +169,42 @@ async function cryptoHealth(){
 }
 cryptoHealth();
 
+
+let weeklySummary="";
+async function loadWeeklyReport(){
+ const get=id=>el(id),currency=n=>(n<0?"−":"+")+usd(Math.abs(n));
+ try{
+ const [performance,journal]=await Promise.all([read("paper/performance.csv"),read("paper/journal.csv")]);
+ const rows=performance.filter(r=>Number.isFinite(Number(r.paper_value))&&Number(r.paper_value)>0&&/^\d{4}-\d{2}-\d{2}$/.test(r.date_utc)).sort((a,b)=>a.date_utc.localeCompare(b.date_utc));
+ if(!rows.length)throw Error("No valid portfolio history.");
+ const starting=10000,weekKey=date=>{const d=new Date(date+"T00:00:00Z");d.setUTCDate(d.getUTCDate()-(d.getUTCDay()+6)%7);return d.toISOString().slice(0,10)};
+ const weeks=new Map();for(const r of rows){const key=weekKey(r.date_utc);if(!weeks.has(key))weeks.set(key,{key,sessions:0,last:starting});const w=weeks.get(key);w.sessions++;w.last=Number(r.paper_value)}
+ let previous=starting;for(const w of weeks.values()){w.change=w.last-previous;previous=w.last;w.realized=0}
+ const lots=new Map();let realized=0,unmatched=0;
+ for(const r of [...journal].sort((a,b)=>String(a.date_utc).localeCompare(String(b.date_utc)))){
+ const qty=Number(r.shares),price=Number(r.price);if(!r.ticker||!Number.isFinite(qty)||qty<=0||!Number.isFinite(price)||price<=0)continue;
+ if(r.action==="SIM_BUY"){if(!lots.has(r.ticker))lots.set(r.ticker,[]);lots.get(r.ticker).push({qty,price})}
+ if(r.action==="SIM_SELL"){let remaining=qty;const queue=lots.get(r.ticker)||[];while(remaining>1e-8&&queue.length){const lot=queue[0],used=Math.min(lot.qty,remaining),profit=(price-lot.price)*used;realized+=profit;const w=weeks.get(weekKey(r.date_utc));if(w)w.realized+=profit;lot.qty-=used;remaining-=used;if(lot.qty<1e-8)queue.shift()}if(remaining>1e-8)unmatched++}
+ }
+ const series=[...weeks.values()],total=rows.at(-1).paper_value-starting,average=total/series.length,positive=series.filter(w=>w.change>0).length;
+ get("weekly-average").textContent=currency(average);get("weekly-period").textContent="Across "+series.length+" recorded calendar weeks";
+ get("weekly-total").textContent=currency(total);get("weekly-total-pct").textContent=(total/starting*100).toFixed(2)+"% from $10,000 simulated starting capital";
+ get("weekly-positive").textContent=positive+" / "+series.length;
+ get("weekly-realized").textContent=currency(realized);
+ const body=get("weekly-rows"),bars=get("weekly-bars");body.replaceChildren();bars.replaceChildren();
+ const max=Math.max(1,...series.map(w=>Math.abs(w.change)));
+ for(const w of [...series].reverse()){
+ const tr=document.createElement("tr");for(const value of [w.key,w.sessions,currency(w.change),currency(w.realized),usd(w.last)]){const td=document.createElement("td");td.textContent=String(value);tr.appendChild(td)}body.appendChild(tr);
+ const line=document.createElement("div");line.style.cssText="display:grid;grid-template-columns:86px minmax(0,1fr) 90px;gap:10px;align-items:center;font-size:12px";
+ const label=document.createElement("span");label.textContent=w.key.slice(5);const track=document.createElement("div");track.style.cssText="background:#261822;border-radius:7px;overflow:hidden;height:14px";const fill=document.createElement("div");fill.style.cssText="height:100%;border-radius:7px;background:"+(w.change>=0?"#d9a1bc":"#a45c76")+";width:"+Math.max(1,100*Math.abs(w.change)/max).toFixed(2)+"%";track.appendChild(fill);const amount=document.createElement("span");amount.textContent=currency(w.change);amount.style.textAlign="right";line.append(label,track,amount);bars.appendChild(line)
+ }
+ const first=rows[0].date_utc,last=rows.at(-1).date_utc;
+ get("weekly-notes").textContent="Recorded sessions: "+first+" to "+last+". Weeks with missing sessions are not filled in. Portfolio changes include unrealized P/L and may not equal closed-trade profits. Realized P/L excludes fees, slippage, and taxes."+(unmatched?" "+unmatched+" unmatched sell record(s); realized total may be incomplete.":"");
+ weeklySummary="Kaitlyn's Trading — simulated stock results ("+first+" to "+last+"): Starting portfolio $10,000; latest "+usd(Number(rows.at(-1).paper_value))+"; total "+currency(total)+" ("+(total/starting*100).toFixed(2)+"%); average recorded calendar week "+currency(average)+" over "+series.length+" weeks; "+positive+" profitable weeks; realized completed-sale P/L "+currency(realized)+" before costs. Paper trading only; weekly portfolio changes include unrealized P/L and are not guaranteed income.";
+ }catch(e){get("weekly-notes").textContent="Weekly report unavailable: "+e.message}
+}
+getWeeklyCopy();
+function getWeeklyCopy(){el("weekly-copy")?.addEventListener("click",async()=>{const status=el("weekly-copy-status");if(!weeklySummary){status.textContent="Report not ready.";return}try{await navigator.clipboard.writeText(weeklySummary);status.textContent="Summary copied."}catch(e){status.textContent="Copy unavailable in this browser."}})}
+loadWeeklyReport();
+
 })();

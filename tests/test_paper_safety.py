@@ -28,7 +28,7 @@ class PaperSafetyTests(unittest.TestCase):
     def history(days=220, value=10.0):
         today = datetime.now(crypto.RUN_TIMEZONE).date()
         dates = pd.date_range(end=today, periods=days, freq="D")
-        return pd.Series([value] * days, index=dates, dtype=float)
+        return pd.Series([value + i * 0.1 for i in range(days)], index=dates, dtype=float)
 
     def test_crypto_missing_unheld_asset_does_not_sell_held_asset(self):
         Path("crypto_paper").mkdir()

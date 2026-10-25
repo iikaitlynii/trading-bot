@@ -32,4 +32,33 @@ let cryptoRisk=[];
 function renderCryptoRisk(){const body=el("crypto-risk-rows");if(!body)return;body.replaceChildren();const minimum=Number(el("crypto-min-liquidity").value),filtered=cryptoRisk.filter(r=>r.liquidity_usd!==""&&Number.isFinite(Number(r.liquidity_usd))&&Number(r.liquidity_usd)>=minimum);for(const r of filtered.slice(0,40)){const liq=Number(r.liquidity_usd),vol=r.volume_24h_usd!==""?Number(r.volume_24h_usd):NaN,change=r.price_change_24h_pct!==""?Number(r.price_change_24h_pct):NaN;const ratio=Number.isFinite(vol)&&liq>0?(vol/liq).toFixed(2)+"×":"Unknown";const tr=document.createElement("tr");for(const value of [r.symbol||"Unnamed",usd(liq),Number.isFinite(change)?change.toFixed(1)+"%":"Unknown",ratio,(r.research_flags||"Unverified").replaceAll("|",", ")]){const td=document.createElement("td");td.textContent=value;tr.appendChild(td)}body.appendChild(tr)}const missing=cryptoRisk.filter(r=>r.liquidity_usd===""||!Number.isFinite(Number(r.liquidity_usd))).length;el("crypto-risk-status").textContent=filtered.length+" of "+cryptoRisk.length+" observations with reported liquidity meet this filter; "+missing+" have missing liquidity and are excluded. Data as of "+(cryptoRisk[0]?.observed_utc||"unknown")+". Not a token recommendation."}
 async function loadCryptoRisk(){try{cryptoRisk=await read("crypto_paper/discovered_tokens.csv");renderCryptoRisk()}catch(e){el("crypto-risk-status").textContent="Crypto snapshot unavailable."}}el("crypto-min-liquidity")?.addEventListener("change",renderCryptoRisk);loadCryptoRisk();
 
+
+let screenerData=[];
+function renderScreener(){
+ const body=el("screener-rows"),status=el("screener-status");if(!body||!status)return;
+ body.replaceChildren();
+ const trend=el("screener-trend").value,minScore=Number(el("screener-score").value),rsiMode=el("screener-rsi").value;
+ const num=x=>x===undefined||x===null||String(x).trim()===""?NaN:Number(x);
+ const rows=screenerData.filter(r=>{
+  const t=String(r.trend||"").toLowerCase(),score=num(r.evidence_score),rsi=num(r.rsi14);
+  if(trend==="bull"&&!/(up|bull|positive)/.test(t))return false;
+  if(trend==="bear"&&!/(down|bear|negative)/.test(t))return false;
+  if(minScore&&(!Number.isFinite(score)||score<minScore))return false;
+  if(rsiMode!=="all"&&(!Number.isFinite(rsi)||(rsiMode==="low"&&rsi>=30)||(rsiMode==="mid"&&(rsi<30||rsi>70))||(rsiMode==="high"&&rsi<=70)))return false;
+  return true;
+ }).sort((a,b)=>(num(b.evidence_score)||0)-(num(a.evidence_score)||0));
+ for(const r of rows){
+  const tr=document.createElement("tr");
+  const cells=[r.ticker||"—",r.date||"—",Number.isFinite(num(r.close))?usd(num(r.close)):"—",r.trend||"—",Number.isFinite(num(r.rsi14))?num(r.rsi14).toFixed(1):"—",Number.isFinite(num(r.volume_vs_20d))?num(r.volume_vs_20d).toFixed(2)+"×":"—",Number.isFinite(num(r.evidence_score))?num(r.evidence_score).toFixed(0)+"/100":"—"];
+  for(const value of cells){const td=document.createElement("td");td.textContent=value;tr.appendChild(td)}
+  body.appendChild(tr);
+ }
+ if(!rows.length){const tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=7;td.textContent="No saved observations match these filters.";tr.appendChild(td);body.appendChild(tr)}
+ const dates=screenerData.map(r=>r.date).filter(Boolean).sort();
+ status.textContent=rows.length+" of "+screenerData.length+" saved observations match. Latest recorded session: "+(dates.at(-1)||"unknown")+". Not live market data.";
+}
+async function loadScreener(){try{const rows=await read("paper/chart_analysis.csv");const latest=new Map();for(const r of rows){if(!r.ticker)continue;const old=latest.get(r.ticker);if(!old||String(r.date||"")>String(old.date||""))latest.set(r.ticker,r)}screenerData=[...latest.values()];renderScreener()}catch(e){const s=el("screener-status");if(s)s.textContent="Saved stock analysis is currently unavailable."}}
+for(const id of ["screener-trend","screener-score","screener-rsi"])el(id)?.addEventListener("change",renderScreener);
+loadScreener();
+
 })();

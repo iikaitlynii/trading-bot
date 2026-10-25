@@ -1,8 +1,12 @@
 import json
 import os
+from datetime import datetime, time, timedelta
+from zoneinfo import ZoneInfo
 
 import pandas as pd
 import yfinance as yf
+
+from market_data import completed_history, extract_close
 
 TICKERS = ["AAPL", "MSFT", "NVDA", "AMZN"]
 STARTING_CASH = 10000.0
@@ -14,6 +18,8 @@ STATE_FILE = "paper/state.json"
 JOURNAL_FILE = "paper/journal.csv"
 SIGNALS_FILE = "paper/latest_signals.csv"
 PERFORMANCE_FILE = "paper/performance.csv"
+MARKET_TIMEZONE = ZoneInfo("America/New_York")
+MAX_PRICE_AGE_DAYS = 4  # Allows weekends and a holiday; not an exchange calendar.
 
 # Safety: simulation only. No brokerage connection or order submission exists.
 # Legacy CSVs keep the column name "date_utc", but new rows store the actual
@@ -42,10 +48,7 @@ def append_csv(path, rows):
 
 def get_data(ticker):
     data = yf.download(ticker, period="2y", interval="1d", auto_adjust=False, progress=False)
-    close = data["Close"]
-    if hasattr(close, "columns"):
-        close = close.iloc[:, 0]
-    return close.dropna()
+    return extract_close(data, ticker)
 
 
 def session_date(close):
@@ -58,7 +61,7 @@ def session_date(close):
 def portfolio_value(state, prices):
     value = float(state["cash"])
     for ticker, pos in state["positions"].items():
-        value += float(pos["shares"]) * float(prices.get(ticker, pos["entry_price"]))
+        value += float(pos["shares"]) * float(prices[ticker])
     return value
 
 
@@ -77,15 +80,21 @@ def main():
     state = load_state()
     series = {}
     dates = {}
+    now = datetime.now(MARKET_TIMEZONE)
+    today = now.date()
+    completed_through = today if now.time() >= time(16) else today - timedelta(days=1)
 
     for ticker in TICKERS:
         try:
             close = get_data(ticker)
+            close = completed_history(
+                close, minimum=REGIME_MA_DAYS, today=today,
+                completed_through=completed_through, max_age_days=MAX_PRICE_AGE_DAYS,
+                weekdays_only=True,
+            )
         except Exception as exc:
             print("Stock data unavailable for", ticker, ":", exc)
-            close = pd.Series(dtype=float)
-        if len(close) < REGIME_MA_DAYS:
-            print("Insufficient history for", ticker, "- skipping entire simulated session.")
+            print("Skipping entire simulated session.")
             return
         series[ticker] = close
         dates[ticker] = session_date(close)
@@ -101,6 +110,12 @@ def main():
         print("Skipping this run rather than mixing prices from different sessions.")
         return
     trading_date = next(iter(unique_dates))
+    if any(ticker not in series for ticker in state["positions"]):
+        print("Skipping session: cannot price every held simulated stock.")
+        return
+    if state.get("last_run_date") and trading_date < state["last_run_date"]:
+        print("Skipping market session older than the last processed session.")
+        return
 
     # Guard on the actual market session, not the workflow's wall-clock date.
     # Also protect against legacy rows that were labeled with a workflow date.
@@ -142,10 +157,10 @@ def main():
         ticker = row["ticker"]
         if ticker in state["positions"] and row["signal"] == "DEFENSIVE":
             pos = state["positions"].pop(ticker)
-            proceeds = float(pos["shares"]) * float(row["close"])
+            proceeds = float(pos["shares"]) * market[ticker]
             state["cash"] += proceeds
             journal.append({"date_utc": trading_date, "ticker": ticker, "action": "SIM_SELL",
-                            "price": row["close"], "shares": pos["shares"], "reason": "defensive_signal"})
+                            "price": market[ticker], "shares": pos["shares"], "reason": "defensive_signal"})
 
     current_value = portfolio_value(state, market)
     for row in signals:
@@ -155,11 +170,11 @@ def main():
         amount = min(float(state["cash"]), current_value * MAX_WEIGHT)
         if amount < 50:
             continue
-        shares = amount / float(row["close"])
+        shares = amount / market[ticker]
         state["cash"] -= amount
-        state["positions"][ticker] = {"shares": shares, "entry_price": float(row["close"]), "entry_date": trading_date}
+        state["positions"][ticker] = {"shares": shares, "entry_price": market[ticker], "entry_date": trading_date}
         journal.append({"date_utc": trading_date, "ticker": ticker, "action": "SIM_BUY",
-                        "price": row["close"], "shares": shares, "reason": "bullish_signal"})
+                        "price": market[ticker], "shares": shares, "reason": "bullish_signal"})
 
     ending_value = portfolio_value(state, market)
     previous_value = previous_paper_value()

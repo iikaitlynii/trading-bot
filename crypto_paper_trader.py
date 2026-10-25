@@ -1,11 +1,13 @@
 import json
 import os
 import math
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
 import pandas as pd
 import yfinance as yf
+
+from market_data import completed_history, extract_close
 
 TICKERS = ["DOGE-USD", "SHIB-USD", "PEPE-USD", "BONK-USD"]
 STARTING_CASH = 5000.0
@@ -52,17 +54,13 @@ def append_csv(path, rows):
 
 def get_close(ticker):
     data = yf.download(ticker, period="1y", interval="1d", auto_adjust=False, progress=False)
-    close = data["Close"]
-    if hasattr(close, "columns"):
-        close = close.iloc[:, 0]
-    close = pd.to_numeric(close, errors="coerce").dropna()
-    return close[close > 0]
+    return extract_close(data, ticker)
 
 
 def portfolio_value(state, prices):
     value = float(state["cash"])
     for ticker, pos in state["positions"].items():
-        value += float(pos["units"]) * float(prices.get(ticker, pos["entry_price"]))
+        value += float(pos["units"]) * float(prices[ticker])
     return value
 
 
@@ -80,6 +78,7 @@ def main():
     os.makedirs("crypto_paper", exist_ok=True)
     state = load_state()
     today = datetime.now(RUN_TIMEZONE).date().isoformat()
+    price_today = datetime.now(timezone.utc).date()
 
     if state.get("last_run_date") == today:
         print("Crypto paper trader already processed", today)
@@ -88,19 +87,20 @@ def main():
     prices = {}
     signals = []
     missing = []
+    sessions = {}
 
     for ticker in TICKERS:
         try:
             close = get_close(ticker)
+            close = completed_history(
+                close, minimum=REGIME_MA_DAYS, today=price_today,
+                completed_through=price_today - timedelta(days=1), max_age_days=2,
+                daily=True,
+            )
         except Exception as exc:
             print("Price feed unavailable for", ticker, ":", exc)
-            close = pd.Series(dtype=float)
-        # Never trade on incomplete or stale daily price history.
-        latest_date = str(close.index[-1])[:10] if len(close) else ""
-        age_days = (datetime.now(RUN_TIMEZONE).date() - pd.Timestamp(latest_date).date()).days if latest_date else 999
-        if len(close) < REGIME_MA_DAYS or age_days < 0 or age_days > 2:
             missing.append(ticker)
-            signals.append({"date_utc": today, "ticker": ticker, "close": None,
+            signals.append({"date_utc": today, "price_session": None, "ticker": ticker, "close": None,
                             "ma20": None, "ma50": None, "ma100": None, "signal": "NO_DATA"})
             continue
         price = float(close.iloc[-1])
@@ -109,8 +109,10 @@ def main():
         regime = float(close.iloc[-REGIME_MA_DAYS:].mean())
         bullish = price > regime and fast > slow
         prices[ticker] = price
+        sessions[ticker] = close.index[-1].date().isoformat()
         signals.append({
             "date_utc": today,
+            "price_session": sessions[ticker],
             "ticker": ticker,
             "close": round(price, 10),
             "ma20": round(fast, 10),
@@ -119,9 +121,16 @@ def main():
             "signal": "BULLISH" if bullish else "DEFENSIVE",
         })
 
+    if len(set(sessions.values())) > 1:
+        print("Crypto market-session mismatch:", sessions)
+        print("Skipping entire session rather than mixing daily closing prices.")
+        return
     pd.DataFrame(signals).to_csv(SIGNALS_FILE, index=False)
     if missing:
         print("Data-quality HOLD: no orders for unavailable assets:", missing)
+    if not prices:
+        print("Skipping entire session: no usable daily closing prices.")
+        return
     if state.get("positions") and any(ticker not in prices for ticker in state["positions"]):
         print("Skipping entire session: cannot safely value every open simulated position.")
         return

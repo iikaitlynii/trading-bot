@@ -25,9 +25,9 @@ class PaperSafetyTests(unittest.TestCase):
         self.tmp.cleanup()
 
     @staticmethod
-    def history(days=220, value=10.0):
+    def history(days=220, value=10.0, business_days=False):
         today = datetime.now(crypto.RUN_TIMEZONE).date()
-        dates = pd.date_range(end=today, periods=days, freq="D")
+        dates = pd.date_range(end=today, periods=days, freq="B" if business_days else "D")
         return pd.Series([value + i * 0.1 for i in range(days)], index=dates, dtype=float)
 
     def test_crypto_missing_unheld_asset_does_not_sell_held_asset(self):
@@ -67,7 +67,7 @@ class PaperSafetyTests(unittest.TestCase):
         Path("paper").mkdir()
         original = {"cash": 10000.0, "positions": {}, "last_run_date": None}
         Path("paper/state.json").write_text(json.dumps(original))
-        with patch.object(stock, "get_data", side_effect=lambda t: pd.Series(dtype=float) if t == "MSFT" else self.history()):
+        with patch.object(stock, "get_data", side_effect=lambda t: pd.Series(dtype=float) if t == "MSFT" else self.history(business_days=True)):
             stock.main()
         self.assertEqual(json.loads(Path("paper/state.json").read_text()), original)
         self.assertFalse(Path("paper/performance.csv").exists())

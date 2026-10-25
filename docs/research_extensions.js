@@ -61,4 +61,26 @@ async function loadScreener(){try{const rows=await read("paper/chart_analysis.cs
 for(const id of ["screener-trend","screener-score","screener-rsi"])el(id)?.addEventListener("change",renderScreener);
 loadScreener();
 
+
+let markerHistory=[];
+function renderPaperMarkers(){
+ const ticker=el("paper-marker-ticker")?.value,svg=el("paper-marker-chart"),body=el("paper-marker-rows"),status=el("paper-marker-status");if(!svg||!body||!status)return;
+ svg.replaceChildren();body.replaceChildren();
+ const rows=markerHistory.filter(r=>r.ticker===ticker).sort((a,b)=>a.date.localeCompare(b.date));
+ if(rows.length<55){status.textContent="Not enough historical observations for this simulation.";return}
+ const closes=rows.map(r=>Number(r.close)),avg=(i,n)=>{if(i<n-1)return NaN;let sum=0;for(let j=i-n+1;j<=i;j++)sum+=closes[j];return sum/n};
+ const sma20=closes.map((_,i)=>avg(i,20)),sma50=closes.map((_,i)=>avg(i,50));
+ const trades=[];let previous=false;
+ for(let i=51;i<rows.length;i++){const holding=sma20[i-2]>sma50[i-2];if(holding!==previous){trades.push({i,action:holding?"BUY":"SELL",date:rows[i].date,close:closes[i]});previous=holding}}
+ const W=760,H=260,pad=32,min=Math.min(...closes),max=Math.max(...closes),range=Math.max(max-min,0.01),x=i=>pad+(W-2*pad)*i/(rows.length-1),y=v=>H-pad-(H-2*pad)*(v-min)/range;
+ const ns="http://www.w3.org/2000/svg",node=(tag,attrs)=>{const n=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attrs))n.setAttribute(k,String(v));svg.appendChild(n);return n};
+ node("polyline",{points:closes.map((v,i)=>x(i).toFixed(1)+","+y(v).toFixed(1)).join(" "),fill:"none",stroke:"#dce7ff","stroke-width":1.7});
+ for(const t of trades){const buy=t.action==="BUY",color=buy?"#48d6a1":"#ff9b75",cy=y(t.close);node("line",{x1:x(t.i),y1:cy+(buy?10:-10),x2:x(t.i),y2:cy+(buy?23:-23),stroke:color,"stroke-width":2});node("circle",{cx:x(t.i),cy,r:5,fill:color});const title=document.createElementNS(ns,"title");title.textContent=t.date+" simulated "+t.action+" at "+usd(t.close);svg.lastChild.appendChild(title)}
+ const shown=trades.slice(-30).reverse();for(const t of shown){const tr=document.createElement("tr");for(const value of [t.date,ticker,t.action,usd(t.close)]){const td=document.createElement("td");td.textContent=value;tr.appendChild(td)}body.appendChild(tr)}
+ if(!trades.length){const tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=4;td.textContent="No position changes in this sample.";tr.appendChild(td);body.appendChild(tr)}
+ status.textContent=ticker+": "+rows.length+" historical sessions; "+trades.length+" simulated transitions. Green dots = BUY, orange dots = SELL. Showing the latest "+shown.length+" log entries. These are model signals, not broker executions.";
+}
+async function loadPaperMarkers(){try{markerHistory=await read("research/stock_history.csv");renderPaperMarkers()}catch(e){const s=el("paper-marker-status");if(s)s.textContent="Historical paper marker data unavailable."}}
+el("paper-marker-ticker")?.addEventListener("change",renderPaperMarkers);loadPaperMarkers();
+
 })();

@@ -83,4 +83,49 @@ function renderPaperMarkers(){
 async function loadPaperMarkers(){try{markerHistory=await read("research/stock_history.csv");renderPaperMarkers()}catch(e){const s=el("paper-marker-status");if(s)s.textContent="Historical paper marker data unavailable."}}
 el("paper-marker-ticker")?.addEventListener("change",renderPaperMarkers);loadPaperMarkers();
 
+
+let activitySignals=[],activityJournal=[],watchRows=[];
+const activityNumber=x=>x===undefined||x===null||String(x).trim()===""?NaN:Number(x);
+const activityCell=(tr,v)=>{const td=document.createElement("td");td.textContent=String(v??"—");tr.appendChild(td)};
+function activityTable(id,rows){const body=el(id);if(!body)return;body.replaceChildren();for(const values of rows){const tr=document.createElement("tr");for(const v of values)activityCell(tr,v);body.appendChild(tr)}if(!rows.length){const tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=id==="activity-journal-rows"?5:4;td.textContent="No recorded entries.";tr.appendChild(td);body.appendChild(tr)}}
+function renderActivity(){
+ const signals=[...activitySignals].sort((a,b)=>String(b.date_utc).localeCompare(String(a.date_utc)));
+ const newest=signals[0]?.date_utc||"—";el("activity-date").textContent=newest;el("activity-freshness").textContent="Latest saved session (not real time)";
+ activityTable("activity-signal-rows",signals.map(r=>[r.ticker,r.signal,Number.isFinite(activityNumber(r.close))?usd(Number(r.close)):"—",r.date_utc]));
+ el("activity-signal-status").textContent=signals.length+" latest saved observations. A signal is not a trade.";
+ const journal=[...activityJournal].sort((a,b)=>String(b.date_utc).localeCompare(String(a.date_utc)));
+ activityTable("activity-journal-rows",journal.slice(0,30).map(r=>[r.date_utc,r.ticker,r.action,Number.isFinite(activityNumber(r.price))?usd(Number(r.price)):"—",Number.isFinite(activityNumber(r.shares))?Number(r.shares).toFixed(3):"—"]));
+ el("activity-count").textContent=String(journal.length);
+ el("activity-journal-status").textContent="Showing "+Math.min(journal.length,30)+" of "+journal.length+" recorded simulated orders. No real broker connection.";
+ const lots=new Map();let winners=0,completed=0,realized=0,unmatched=0;
+ for(const r of [...activityJournal].sort((a,b)=>String(a.date_utc).localeCompare(String(b.date_utc)))){
+  const p=activityNumber(r.price),q=activityNumber(r.shares),ticker=r.ticker;if(!ticker||!Number.isFinite(p)||!Number.isFinite(q)||q<=0||p<=0)continue;
+  if(r.action==="SIM_BUY"){if(!lots.has(ticker))lots.set(ticker,[]);lots.get(ticker).push({p,q})}
+  if(r.action==="SIM_SELL"){let remaining=q;const queue=lots.get(ticker)||[];while(remaining>1e-8&&queue.length){const lot=queue[0],used=Math.min(remaining,lot.q),pnl=(p-lot.p)*used;realized+=pnl;completed++;if(pnl>0)winners++;lot.q-=used;remaining-=used;if(lot.q<1e-8)queue.shift()}if(remaining>1e-8)unmatched++}
+ }
+ el("activity-winrate").textContent=completed?(100*winners/completed).toFixed(1)+"%":"—";
+ el("activity-average").textContent=completed?usd(realized/completed):"—";
+ if(unmatched)el("activity-journal-status").textContent+=" "+unmatched+" unmatched sells; analytics may be incomplete.";
+}
+function renderWatch(){
+ const body=el("watch-alert-rows"),status=el("watch-alert-status");if(!body||!status)return;
+ body.replaceChildren();const score=Number(el("watch-score").value),trend=el("watch-trend").value,maxRsi=Number(el("watch-rsi").value);
+ const latest=new Map();for(const r of watchRows){const old=latest.get(r.ticker);if(r.ticker&&(!old||String(r.market_session||r.date||"")>String(old.market_session||old.date||"")))latest.set(r.ticker,r)}
+ const matching=[...latest.values()].filter(r=>{const s=activityNumber(r.evidence_score),rsi=activityNumber(r.rsi14);return Number.isFinite(s)&&s>=score&&Number.isFinite(rsi)&&rsi<=maxRsi&&(trend==="ALL"||String(r.trend||"").toUpperCase()===trend)});
+ for(const r of matching){const tr=document.createElement("tr");for(const v of [r.ticker,r.trend,Number(r.rsi14).toFixed(1),Number(r.evidence_score).toFixed(0)+"/100",r.market_session||r.date||"—"])activityCell(tr,v);body.appendChild(tr)}
+ if(!matching.length){const tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=5;td.textContent="No saved stocks currently match your research filters.";tr.appendChild(td);body.appendChild(tr)}
+ const dates=[...latest.values()].map(r=>r.market_session||r.date).filter(Boolean).sort();status.textContent=matching.length+" of "+latest.size+" stocks match based on the saved session "+(dates.at(-1)||"unknown")+". These are on-page research alerts, not notifications or buy instructions.";
+}
+async function loadActivity(){
+ const tasks=await Promise.allSettled([read("paper/latest_signals.csv"),read("paper/journal.csv"),read("paper/chart_analysis.csv")]);
+ if(tasks[0].status==="fulfilled")activitySignals=tasks[0].value;else el("activity-signal-status").textContent="Signals unavailable.";
+ if(tasks[1].status==="fulfilled")activityJournal=tasks[1].value;else el("activity-journal-status").textContent="Paper journal unavailable.";
+ if(tasks[2].status==="fulfilled")watchRows=tasks[2].value;else el("watch-alert-status").textContent="Indicator research unavailable.";
+ if(tasks[0].status==="fulfilled"&&tasks[1].status==="fulfilled")renderActivity();
+ if(tasks[2].status==="fulfilled")renderWatch();
+}
+for(const id of ["watch-score","watch-trend","watch-rsi"])el(id)?.addEventListener("change",renderWatch);
+el("activity-refresh")?.addEventListener("click",loadActivity);
+loadActivity();
+
 })();

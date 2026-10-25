@@ -1,5 +1,6 @@
 import json
 import os
+import math
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
@@ -54,7 +55,8 @@ def get_close(ticker):
     close = data["Close"]
     if hasattr(close, "columns"):
         close = close.iloc[:, 0]
-    return close.dropna()
+    close = pd.to_numeric(close, errors="coerce").dropna()
+    return close[close > 0]
 
 
 def portfolio_value(state, prices):
@@ -85,11 +87,21 @@ def main():
 
     prices = {}
     signals = []
+    missing = []
 
     for ticker in TICKERS:
-        close = get_close(ticker)
-        if len(close) < REGIME_MA_DAYS:
-            signals.append({"date_utc": today, "ticker": ticker, "signal": "NO_DATA"})
+        try:
+            close = get_close(ticker)
+        except Exception as exc:
+            print("Price feed unavailable for", ticker, ":", exc)
+            close = pd.Series(dtype=float)
+        # Never trade on incomplete or stale daily price history.
+        latest_date = str(close.index[-1])[:10] if len(close) else ""
+        age_days = (datetime.now(RUN_TIMEZONE).date() - pd.Timestamp(latest_date).date()).days if latest_date else 999
+        if len(close) < REGIME_MA_DAYS or age_days < 0 or age_days > 2:
+            missing.append(ticker)
+            signals.append({"date_utc": today, "ticker": ticker, "close": None,
+                            "ma20": None, "ma50": None, "ma100": None, "signal": "NO_DATA"})
             continue
         price = float(close.iloc[-1])
         fast = float(close.iloc[-FAST_MA:].mean())
@@ -108,16 +120,21 @@ def main():
         })
 
     pd.DataFrame(signals).to_csv(SIGNALS_FILE, index=False)
+    if missing:
+        print("Data-quality HOLD: no orders for unavailable assets:", missing)
+    if state.get("positions") and any(ticker not in prices for ticker in state["positions"]):
+        print("Skipping entire session: cannot safely value every open simulated position.")
+        return
     journal = []
 
     for row in signals:
         ticker = row["ticker"]
-        if ticker in state["positions"] and row.get("signal") != "BULLISH":
+        if ticker in state["positions"] and row.get("signal") == "DEFENSIVE":
             pos = state["positions"].pop(ticker)
             price = float(prices.get(ticker, pos["entry_price"]))
             proceeds = float(pos["units"]) * price
             state["cash"] += proceeds
-            journal.append({"date_utc": today, "ticker": ticker, "action": "SIM_SELL", "price": price, "units": pos["units"], "reason": "defensive_or_missing_signal"})
+            journal.append({"date_utc": today, "ticker": ticker, "action": "SIM_SELL", "price": price, "units": pos["units"], "reason": "defensive_signal"})
 
     account_value = portfolio_value(state, prices)
     max_invested = account_value * (1 - MIN_CASH_RESERVE)

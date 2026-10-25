@@ -1,0 +1,40 @@
+/* Navigation and reflow shared by all existing research panels. */
+.dashboard-layout{display:grid;grid-template-columns:200px minmax(0,1fr);max-width:1480px;margin:auto;align-items:start}
+.container{width:100%;min-width:0}
+.sidebar{position:sticky;top:16px;padding:32px 12px 20px 20px}
+.sidebar nav{display:grid;gap:8px}
+.nav-title{font-size:14px;color:#f4dce8;margin:0 0 8px}
+.sidebar a{display:flex;align-items:center;min-height:44px;padding:10px 12px;border:1px solid #503544;border-radius:10px;text-decoration:none;background:#1c131a}
+.sidebar a:hover,.sidebar a[aria-current="location"]{background:#38202f;border-color:#e7b4ca}
+.sidebar p{margin-top:8px}
+.skip-link{position:fixed;top:8px;left:8px;transform:translateY(-160%);z-index:10;padding:12px;background:#f9edf3;color:#180d14;border-radius:8px}
+.skip-link:focus{transform:translateY(0)}
+:focus-visible{outline:3px solid #f3c4d8;outline-offset:3px}
+[id]{scroll-margin-top:24px}
+.portfolio-context{margin:0 0 18px;color:#efc9da;font-weight:600}
+.card,.grid>*{min-width:0}
+.metric,.stat,.card p{overflow-wrap:anywhere}
+.stat strong{text-align:right}
+button,select,input{font:inherit;min-height:44px;max-width:100%}
+.grid>label{display:flex;flex-direction:column;gap:8px}
+.table-wrap{max-width:100%;overscroll-behavior-x:contain}
+.table-wrap:focus-visible{outline-offset:-3px}
+.chart{overflow:hidden}
+header{flex-wrap:wrap}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.main{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:760px){
+ .dashboard-layout{display:block}
+ .sidebar{position:static;padding:20px 20px 0}
+ .sidebar nav{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .nav-title,.sidebar p{grid-column:1/-1}
+ .sidebar a{justify-content:center;text-align:center;padding:10px 6px}
+ .container{padding-top:24px}
+}
+@media(max-width:480px){
+ .grid{grid-template-columns:minmax(0,1fr)}
+ .sidebar nav{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .brand{min-width:0}header .brand{font-size:16px;letter-spacing:.5px}
+ .stat{flex-wrap:wrap}.stat strong{margin-left:auto}
+ .chart{height:auto;min-height:160px}
+}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}

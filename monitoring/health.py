@@ -5,28 +5,12 @@ import hashlib
 import json
 import math
 import os
-from datetime import datetime, timedelta, timezone
+from dataclasses import dataclass
+from datetime import date, datetime, timezone
 from pathlib import Path
 from urllib.request import Request, urlopen
 
-from pandas.tseries.holiday import (
-    AbstractHolidayCalendar, Holiday, nearest_workday, USMartinLutherKingJr,
-    USPresidentsDay, GoodFriday, USMemorialDay, USLaborDay, USThanksgivingDay,
-)
-
-
-def new_year_observance(day):
-    # NYSE does not close the preceding Friday when January 1 is Saturday.
-    return day + timedelta(days=1) if day.weekday() == 6 else day
-
-
-class StockHolidays(AbstractHolidayCalendar):
-    rules = [Holiday('New Year', month=1, day=1, observance=new_year_observance),
-             USMartinLutherKingJr, USPresidentsDay, GoodFriday, USMemorialDay,
-             Holiday('Juneteenth', month=6, day=19, start_date='2022-01-01', observance=nearest_workday),
-             Holiday('Independence', month=7, day=4, observance=nearest_workday),
-             USLaborDay, USThanksgivingDay,
-             Holiday('Christmas', month=12, day=25, observance=nearest_workday)]
+from data_contracts.sessions import VERSION, latest_completed, session_close
 
 
 # Explicit contracts: output existence does not prove a successful market refresh.
@@ -43,23 +27,42 @@ OUTPUTS = {
     'performance-reports.yml': ['reports/stocks.json', 'reports/crypto.json'],
     'backtest.yml': ['results/latest_results.txt', 'results/stress_results.txt'],
 }
-SOURCES = [
-    ('paper/latest_signals.csv', 'price_session', 'ticker', 'stock'),
-    ('crypto_paper/latest_signals.csv', 'price_session', 'ticker', 'crypto'),
-    ('research/stock_history.csv', 'date', 'ticker', 'stock'),
-    ('strategy_comparison_results.csv', 'as_of', 'asset', 'mixed'),
-]
+# Independent requested universes: never infer coverage from the rows that survived.
+# Regression tests compare these manifests with the producer configuration.
+STOCK_SYMBOLS = ('AAPL', 'MSFT', 'NVDA', 'AMZN')
+CRYPTO_SYMBOLS = ('DOGE-USD', 'SHIB-USD', 'PEPE-USD', 'BONK-USD')
+VARIANTS = ('current_20_50', 'faster_10_30', 'conservative_30_75', 'low_concentration_20_50')
+
+
+@dataclass(frozen=True)
+class SourceContract:
+    date_column: str
+    symbol_columns: tuple
+    market: str
+    expected_symbols: tuple
+    value_column: str = 'close'
+    history: bool = False
+
+
+SOURCES = {
+    'paper/latest_signals.csv': SourceContract('price_session', ('ticker',), 'stock', STOCK_SYMBOLS),
+    'crypto_paper/latest_signals.csv': SourceContract('price_session', ('ticker',), 'crypto', CRYPTO_SYMBOLS),
+    'research/stock_history.csv': SourceContract('date', ('ticker',), 'stock', STOCK_SYMBOLS, history=True),
+    # A comparison has no close column. Require a positive session count instead.
+    'strategy_comparison_results.csv': SourceContract('as_of', ('asset',), 'mixed',
+                                                     STOCK_SYMBOLS + CRYPTO_SYMBOLS, 'sessions'),
+    'research_lab/latest_shadow_results.csv': SourceContract(
+        'market_session', ('universe', 'variant'), 'stock',
+        tuple(f'{universe}/{variant}' for universe in ('core4', 'diversified16') for variant in VARIANTS),
+        'ending_value'),
+    'research_lab/forward/performance.csv': SourceContract(
+        'market_session', ('variant',), 'stock', VARIANTS, 'paper_value', history=True),
+}
 
 
 def expected_session(now, market):
-    """Completed UTC crypto day; stock close with conservative 23:00 UTC grace."""
-    day = now.date() - timedelta(days=1 if market == 'crypto' or now.hour < 23 else 0)
-    if market == 'crypto':
-        return day
-    holidays = set(StockHolidays().holidays(start=day - timedelta(days=15), end=day).date)
-    while day.weekday() >= 5 or day in holidays:
-        day -= timedelta(days=1)
-    return day
+    """Use the shared bounded XNYS/UTC contract, with exact close boundaries."""
+    return latest_completed(now, market)
 
 
 def file_evidence(root, path):
@@ -81,35 +84,88 @@ def file_evidence(root, path):
         return {'status': 'INVALID'}
 
 
-def source_evidence(root, path, column, symbol, market, now):
+def source_evidence(root, path, column, symbol, market, now, *, expected_symbols=None,
+                    value_column='close', history=False):
+    """Validate schema, requested coverage and records before making freshness claims.
+
+    Unknown output paths require an explicit expected universe; observed rows cannot
+    establish that an asset was not omitted. Snapshot duplicates are rejected even
+    across dates; history permits multiple sessions but never duplicate keys.
+    """
     result = file_evidence(root, path)
     if result['status'] != 'PRESENT':
         return result
+    contract = SOURCES.get(path)
+    if expected_symbols is None and contract:
+        expected_symbols = contract.expected_symbols
+    if contract:
+        value_column, history = contract.value_column, contract.history
+    if not expected_symbols:
+        return dict(result, status='UNKNOWN_COVERAGE')
+    symbol_columns = (symbol,) if isinstance(symbol, str) else symbol
+    expected_symbols = set(expected_symbols)
+    latest, seen, observed, no_data = {}, set(), set(), set()
+    issues = set()
     try:
         with (root / path).open(newline='', encoding='utf-8-sig') as handle:
-            rows = list(csv.DictReader(handle))
-        latest = {}
-        invalid = False
-        for row in rows:
-            name = row[symbol]
-            # Legacy run-date columns are deliberately not a source-date fallback.
-            session = datetime.strptime(row[column], '%Y-%m-%d').date()
-            kind = 'crypto' if market == 'mixed' and name.endswith('-USD') else market
-            kind = 'stock' if kind == 'mixed' else kind
-            expected = expected_session(now, kind)
-            if session > expected or (kind == 'stock' and session.weekday() > 4):
-                invalid = True
-            if 'close' in row:
-                price = float(row['close'])
-                invalid |= not math.isfinite(price) or price <= 0 or row.get('signal') == 'NO_DATA'
-            latest[name] = max(latest.get(name, session), session)
-        stale = [name for name, day in latest.items() if day < expected_session(
-            now, 'crypto' if market == 'crypto' or (market == 'mixed' and name.endswith('-USD')) else 'stock')]
-        result.update(status='INVALID' if invalid else 'STALE' if stale else 'FRESH',
+            reader = csv.DictReader(handle)
+            fields = reader.fieldnames or []
+            if len(set(fields)) != len(fields):
+                issues.add('DUPLICATE_COLUMNS')
+            required = {column, value_column, *symbol_columns}
+            if required - set(fields):
+                issues.add('MISSING_REQUIRED_COLUMNS')
+            for row in reader:
+                if None in row or any(value is None for value in row.values()):
+                    issues.add('MALFORMED_ROW')
+                parts = [row.get(key) for key in symbol_columns]
+                if any(not part or not part.strip() or part != part.strip() for part in parts):
+                    issues.add('INVALID_SYMBOL')
+                    continue
+                name = '/'.join(parts)
+                observed.add(name)
+                # NO_DATA is an availability state, never a successful observation,
+                # even when the producer omits close/price_session or includes a price.
+                if (row.get('signal') or '').strip().upper() == 'NO_DATA':
+                    no_data.add(name)
+                    continue
+                try:
+                    session = date.fromisoformat(row[column])
+                    if session.isoformat() != row[column]:
+                        raise ValueError('noncanonical source session')
+                    value = float(row[value_column])
+                    if not math.isfinite(value) or (value_column in ('close', 'sessions') and value <= 0):
+                        raise ValueError('nonpositive or nonfinite value')
+                except (KeyError, TypeError, ValueError):
+                    issues.add('INVALID_SOURCE_DATE_OR_VALUE')
+                    continue
+                kind = 'crypto' if market == 'crypto' or (market == 'mixed' and name.endswith('-USD')) else 'stock'
+                # Reject holidays and unfinished source bars, not merely stale dates.
+                close = session_close(session, kind)
+                if close is None or close > now or session > expected_session(now, kind):
+                    issues.add('INVALID_OR_UNFINISHED_SESSION')
+                key = (name, session) if history else name
+                if key in seen:
+                    issues.add('DUPLICATE_RECORD')
+                seen.add(key)
+                latest[name] = max(latest.get(name, session), session)
+        missing = expected_symbols - observed
+        unexpected = observed - expected_symbols
+        if missing:
+            issues.add('MISSING_ASSETS')
+        if unexpected:
+            issues.add('UNEXPECTED_ASSETS')
+        stale = sorted(name for name, day in latest.items() if day < expected_session(
+            now, 'crypto' if market == 'crypto' or (market == 'mixed' and name.endswith('-USD')) else 'stock'))
+        # NO_DATA takes precedence over price-schema errors so unavailable feeds have
+        # an honest status. Issues still disclose malformed records and omissions.
+        status = ('NO_DATA' if no_data else 'INVALID' if issues else 'STALE' if stale else 'FRESH')
+        result.update(status=status, issues=sorted(issues), missing_symbols=sorted(missing),
+                      unexpected_symbols=sorted(unexpected), no_data_symbols=sorted(no_data),
                       source_sessions={name: day.isoformat() for name, day in sorted(latest.items())},
-                      stale_symbols=sorted(stale))
-    except (KeyError, TypeError, ValueError):
-        result['status'] = 'UNKNOWN_SOURCE_DATE_OR_INVALID_DATA'
+                      stale_symbols=stale, calendar_version=VERSION if market != 'crypto' else 'utc-daily-v1')
+    except (KeyError, TypeError, ValueError, OSError, csv.Error) as exc:
+        result.update(status='UNKNOWN_SOURCE_DATE_OR_INVALID_DATA', issues=[type(exc).__name__])
     return result
 
 
@@ -159,8 +215,11 @@ def collect_actions(repository, token):
 
 def build_report(root, now, actions, previous=None):
     files = {path: file_evidence(root, path) for paths in OUTPUTS.values() for path in paths}
-    sources = {path: source_evidence(root, path, col, symbol, market, now)
-               for path, col, symbol, market in SOURCES}
+    sources = {path: source_evidence(root, path, spec.date_column, spec.symbol_columns, spec.market, now,
+                                    expected_symbols=spec.expected_symbols,
+                                    value_column=spec.value_column, history=spec.history)
+               for path, spec in SOURCES.items()}
+    actions = {name: actions.get(name, {'status': 'UNKNOWN'}) for name in OUTPUTS}
     alerts = {}
     for category, entries, healthy in [('workflows', actions, {'SUCCESS'}),
                                        ('outputs', files, {'PRESENT'}), ('sources', sources, {'FRESH'})]:

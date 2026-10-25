@@ -128,4 +128,12 @@ for(const id of ["watch-score","watch-trend","watch-rsi"])el(id)?.addEventListen
 el("activity-refresh")?.addEventListener("click",loadActivity);
 loadActivity();
 
+
+function updateTradingViewSymbol(){
+ const ticker=el("tradingview-ticker")?.value,frame=el("tradingview-frame");if(!ticker||!frame)return;
+ const url=new URL(frame.getAttribute("src"),location.href);url.searchParams.set("symbol",ticker);frame.src=url.toString();
+ const paper=el("paper-marker-ticker");if(paper){paper.value=ticker.split(":").at(-1);renderPaperMarkers()}
+}
+el("tradingview-ticker")?.addEventListener("change",updateTradingViewSymbol);
+
 })();

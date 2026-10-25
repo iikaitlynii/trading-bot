@@ -1,0 +1,29 @@
+{
+  "source": "Yahoo Finance public chart API",
+  "url": "https://query2.finance.yahoo.com/v8/finance/chart/BTC-USD?interval=1m&range=7d",
+  "retrieved_at": "2026-10-25T03:05:41.325077+00:00",
+  "sha256": "d66895be70157c566acaaf66792826198ad419b9d9b612d3f57ac8ec7ceb9757",
+  "periods": [
+    {
+      "name": "development",
+      "start": "2026-10-19T00:00:00Z",
+      "end": "2026-10-20T00:00:00Z"
+    },
+    {
+      "name": "validation",
+      "start": "2026-10-20T00:00:00Z",
+      "end": "2026-10-21T00:00:00Z"
+    },
+    {
+      "name": "out_of_sample",
+      "start": "2026-10-21T00:00:00Z",
+      "end": "2026-10-22T00:00:00Z"
+    }
+  ],
+  "symbol": "BTC-USD",
+  "interval": "1m",
+  "timestamp_convention": "UTC bar-open Unix seconds; [start,end) windows",
+  "price_basis": "Unadjusted provider quote OHLC; no HA execution prices",
+  "volume_basis": "Provider aggregate volume, not venue-specific traded size",
+  "period_policy": "Fixed consecutive UTC days, independent 200-bar warmups; no fitting, selection or threshold tuning; retrospective holdout, not preregistered or prospective"
+}

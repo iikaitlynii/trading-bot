@@ -207,4 +207,22 @@ getWeeklyCopy();
 function getWeeklyCopy(){el("weekly-copy")?.addEventListener("click",async()=>{const status=el("weekly-copy-status");if(!weeklySummary){status.textContent="Report not ready.";return}try{await navigator.clipboard.writeText(weeklySummary);status.textContent="Summary copied."}catch(e){status.textContent="Copy unavailable in this browser."}})}
 loadWeeklyReport();
 
+
+async function benchmarkResearch(){
+ const host=el("benchmark-rows");if(!host)return;
+ try{
+ const [data,missing]=await Promise.all([read("strategy_comparison_results.csv"),read("strategy_comparison_missing.csv")]);
+ const valid=data.filter(r=>Number.isFinite(Number(r.buy_hold_return_pct))&&Number.isFinite(Number(r.trend_return_pct)));
+ el("benchmark-count").textContent=String(valid.length);
+ const beats=valid.filter(r=>Number(r.trend_return_pct)>Number(r.buy_hold_return_pct)).length;
+ el("benchmark-beats").textContent=beats+" / "+valid.length;
+ el("benchmark-date").textContent=valid.reduce((a,r)=>r.as_of>a?r.as_of:a,"")||"—";
+ host.replaceChildren();
+ for(const r of valid){const tr=document.createElement("tr");const diff=Number(r.trend_return_pct)-Number(r.buy_hold_return_pct);for(const value of [r.asset,Number(r.buy_hold_return_pct).toFixed(2)+"%",Number(r.trend_return_pct).toFixed(2)+"%",Number(r.momentum_return_pct).toFixed(2)+"%",(diff>=0?"+":"")+diff.toFixed(2)+" pp",Number(r.trend_max_drawdown_pct).toFixed(2)+"%"]){const td=document.createElement("td");td.textContent=value;tr.appendChild(td)}host.appendChild(tr)}
+ const unavailable=missing.filter(r=>r.asset);
+ el("benchmark-notes").textContent="Source: saved strategy_comparison_results.csv. Hypothetical per-asset tests, not the actual paper bot; signals are delayed one session, with estimated fees and slippage. These results do not establish out-of-sample profitability."+(unavailable.length?" Unavailable assets: "+unavailable.map(r=>r.asset).join(", ")+".":"");
+ }catch(e){el("benchmark-notes").textContent="Benchmark comparison unavailable: "+e.message}
+}
+benchmarkResearch();
+
 })();

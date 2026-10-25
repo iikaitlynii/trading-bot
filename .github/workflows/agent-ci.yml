@@ -8,6 +8,7 @@ on:
       - 'paper_trader.py'
       - 'crypto_paper_trader.py'
       - 'strategy_comparison.py'
+      - 'market_data.py'
       - 'tests/**'
       - '.github/workflows/agent-ci.yml'
   workflow_dispatch:

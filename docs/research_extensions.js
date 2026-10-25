@@ -136,4 +136,37 @@ function updateTradingViewSymbol(){
 }
 el("tradingview-ticker")?.addEventListener("change",updateTradingViewSymbol);
 
+
+async function cryptoHealth(){
+ const get=id=>el(id),findings=[],rows=get("crypto-health-trade-rows");if(!rows)return;
+ try{
+  const [perf,journal,signals]=await Promise.all([read("crypto_paper/performance.csv"),read("crypto_paper/journal.csv"),read("crypto_paper/latest_signals.csv")]);
+  const values=perf.map(r=>Number(r.paper_value)).filter(n=>Number.isFinite(n)&&n>0),first=values[0],last=values.at(-1);
+  get("crypto-health-return").textContent=first&&last?((last/first-1)*100).toFixed(2)+"%":"—";
+  let peak=0,dd=0;for(const v of values){peak=Math.max(peak,v);if(peak>0)dd=Math.max(dd,100*(peak-v)/peak)}
+  get("crypto-health-dd").textContent=dd.toFixed(2)+"%";
+  get("crypto-health-asof").textContent="Last saved portfolio session: "+(perf.at(-1)?.date_utc||"unknown")+". Historical snapshots, not live prices.";
+  const flags=signals.filter(r=>r.signal==="NO_DATA"||!Number.isFinite(Number(r.close))||Number(r.close)<=0);
+  get("crypto-health-flags").textContent=String(flags.length);
+  if(flags.length)findings.push("Missing or invalid latest prices: "+flags.map(r=>r.ticker).join(", ")+". Inspect data availability; do not treat missing data as a sell signal.");
+  const queues=new Map(),closed=[];let unmatched=0;
+  for(const r of journal){const ticker=r.ticker,price=Number(r.price),qty=Number(r.units);if(!ticker||!Number.isFinite(price)||price<=0||!Number.isFinite(qty)||qty<=0)continue;
+   if(r.action==="SIM_BUY"){if(!queues.has(ticker))queues.set(ticker,[]);queues.get(ticker).push({price,qty,date:r.date_utc})}
+   else if(r.action==="SIM_SELL"){let left=qty;const q=queues.get(ticker)||[];while(left>1e-7&&q.length){const lot=q[0],taken=Math.min(left,lot.qty);closed.push({ticker,entry:lot.date,exit:r.date_utc,ret:100*(price/lot.price-1),reason:r.reason||"—",pnl:(price-lot.price)*taken});lot.qty-=taken;left-=taken;if(lot.qty<1e-7)q.shift()}if(left>1e-7)unmatched++}
+  }
+  get("crypto-health-trades").textContent=String(closed.length);rows.replaceChildren();
+  for(const r of closed.slice(-20).reverse()){const tr=document.createElement("tr");for(const v of [r.ticker,r.entry,r.exit,r.ret.toFixed(2)+"%",r.reason]){const td=document.createElement("td");td.textContent=v;tr.appendChild(td)}rows.appendChild(tr)}
+  if(!closed.length){const tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=5;td.textContent="No matched completed trades.";tr.appendChild(td);rows.appendChild(tr)}
+  const losers=closed.filter(r=>r.pnl<0),wins=closed.filter(r=>r.pnl>0);
+  if(closed.length)findings.push(wins.length+" profitable and "+losers.length+" losing matched paper trades; win rate "+(100*wins.length/closed.length).toFixed(1)+"%. This small sample cannot establish predictive performance.");
+  if(losers.length)findings.push("Largest recorded losing close: "+[...losers].sort((a,b)=>a.pnl-b.pnl)[0].ticker+" ("+usd([...losers].sort((a,b)=>a.pnl-b.pnl)[0].pnl)+"). Review entry and exit timing against market conditions.");
+  if(journal.some(r=>String(r.reason).includes("missing_signal")))findings.push("Some exits are labeled defensive_or_missing_signal: the journal cannot distinguish market weakness from missing data. Separate these reasons in future logging.");
+  if(unmatched)findings.push(unmatched+" unmatched sell records. Review journal completeness.");
+  if(dd>2)findings.push("Recorded drawdown exceeds 2%. Compare against a cash baseline and a buy-and-hold benchmark before concluding whether the strategy helps.");
+  findings.push("Research checks to prioritize: transaction fees and slippage, no-look-ahead backtesting, out-of-sample validation, and price-data quality. No rule changes were made to the trading engine.");
+  const host=get("crypto-health-findings");host.replaceChildren();const ul=document.createElement("ul");for(const message of findings){const li=document.createElement("li");li.textContent=message;ul.appendChild(li)}host.appendChild(ul);
+ }catch(e){get("crypto-health-findings").textContent="Unable to load crypto diagnostic snapshots: "+e.message}
+}
+cryptoHealth();
+
 })();

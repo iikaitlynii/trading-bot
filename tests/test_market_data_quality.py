@@ -152,9 +152,8 @@ class MarketDataQualityTests(unittest.TestCase):
                     state = json.loads(Path(crypto.STATE_FILE).read_text())
                     self.assertIn("DOGE-USD", state["positions"])
                     self.assertNotIn("PEPE-USD", state["positions"])
-                    journal = pd.read_csv(crypto.JOURNAL_FILE)
-                    self.assertNotIn("SIM_SELL", set(journal.action))
-                    self.assertNotIn("PEPE-USD", set(journal.ticker))
+                    self.assertFalse(Path(crypto.JOURNAL_FILE).exists())
+                    self.assertFalse(Path(crypto.PERFORMANCE_FILE).exists())
 
     def test_crypto_all_missing_does_not_consume_daily_run(self):
         with self.account(crypto) as original:

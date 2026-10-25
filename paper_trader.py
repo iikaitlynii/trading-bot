@@ -7,6 +7,7 @@ import pandas as pd
 import yfinance as yf
 
 from market_data import completed_history, extract_close
+from paper_risk import Limits, snapshot, buy_budget, record_risk
 
 TICKERS = ["AAPL", "MSFT", "NVDA", "AMZN"]
 STARTING_CASH = 10000.0
@@ -78,6 +79,7 @@ def previous_paper_value():
 def main():
     os.makedirs("paper", exist_ok=True)
     state = load_state()
+    limits = Limits.from_env("STOCK_PAPER", MAX_WEIGHT, 0.80)
     series = {}
     dates = {}
     now = datetime.now(MARKET_TIMEZONE)
@@ -150,6 +152,7 @@ def main():
             "signal": "BULLISH" if bullish else "DEFENSIVE",
         })
 
+    snapshot(state, market, "shares")
     pd.DataFrame(signals).to_csv(SIGNALS_FILE, index=False)
     journal = []
 
@@ -167,7 +170,8 @@ def main():
         ticker = row["ticker"]
         if row["signal"] != "BULLISH" or ticker in state["positions"]:
             continue
-        amount = min(float(state["cash"]), current_value * MAX_WEIGHT)
+        _, invested, _ = snapshot(state, market, "shares")
+        amount = buy_budget(current_value, float(state["cash"]), invested, limits)
         if amount < 50:
             continue
         shares = amount / market[ticker]
@@ -182,6 +186,7 @@ def main():
     daily_return = (ending_value / previous_value - 1) * 100 if previous_value else 0.0
     total_return = (ending_value / STARTING_CASH - 1) * 100
 
+    record_risk(state, market, "shares", limits, STARTING_CASH)
     state["last_run_date"] = trading_date
     save_state(state)
     append_csv(JOURNAL_FILE, journal)

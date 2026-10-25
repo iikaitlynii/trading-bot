@@ -3,6 +3,8 @@ import copy
 import json
 from pathlib import Path
 import tempfile
+import subprocess
+import sys
 import unittest
 from unittest.mock import patch
 
@@ -117,6 +119,66 @@ class ValidationProtocolTests(unittest.TestCase):
         self.save(self.cfg)
         with self.assertRaisesRegex(ValueError, 'finite'):
             v.load_inputs(self.path)
+
+    def test_relabelled_synthetic_is_never_historical(self):
+        # A caller controls all these assertions; none verifies the provider.
+        for acceptance in (None, False, True, 'reviewed',
+                           {'verified': True, 'review_url': 'https://github.com/example/review'}):
+            cfg = copy.deepcopy(self.cfg)
+            cfg.update(evidence='historical', snapshot_acceptance=acceptance,
+                       source='https://query1.finance.yahoo.com/v8/finance/chart/AAPL',
+                       retrieved_at='2026-10-24T22:00:00+00:00',
+                       adjustment_basis='adjusted_close', session_convention='XNYS regular session')
+            self.save(cfg)
+            with self.subTest(acceptance=acceptance), self.assertRaisesRegex(
+                    ValueError, 'historical evaluation unsupported'):
+                v.evaluate(self.path)
+
+    def test_claimed_contract_and_hashes_do_not_verify_history(self):
+        cfg = copy.deepcopy(self.cfg)
+        # Contract-shaped metadata, rehashed payloads and a schema version are
+        # integrity claims, not independently verified origin or an adapter.
+        snapshot = dict(schema_version=1, calendar_version='utc-daily-v1',
+                        provenance=dict(classification='historical research',
+                                        source_url='https://query1.finance.yahoo.com/v8/finance/chart/BTC-USD'))
+        cfg.update(evidence='historical', snapshot_acceptance=True,
+                   provenance=snapshot, dataset_contract=dict(schema_version=1,
+                       verified=True, sha256=v.digest(v.encoded(snapshot))))
+        self.save(cfg)
+        with self.assertRaisesRegex(ValueError, 'historical evaluation unsupported'):
+            v.evaluate(self.path)
+
+    def test_historical_block_precedes_price_io_and_calculation(self):
+        self.save(dict(evidence='historical', snapshot_acceptance=True,
+                       dataset='does-not-exist.csv'))
+        with patch.object(v, 'exposures', side_effect=AssertionError('must not calculate')):
+            with self.assertRaisesRegex(ValueError, 'historical evaluation unsupported'):
+                v.evaluate(self.path)
+
+    def test_synthetic_acceptance_flag_is_not_a_trust_mechanism(self):
+        self.cfg['snapshot_acceptance'] = True
+        self.save(self.cfg)
+        with self.assertRaisesRegex(ValueError, 'snapshot_acceptance is unsupported'):
+            v.evaluate(self.path)
+
+    def test_historical_cli_fails_without_creating_or_replacing_reports(self):
+        cfg = copy.deepcopy(self.cfg)
+        cfg.update(evidence='historical', snapshot_acceptance=True)
+        self.save(cfg)
+        destination = self.root/'report.json'
+        for existing in (False, True):
+            if existing:
+                destination.write_bytes(b'previous synthetic evidence\n')
+            result = subprocess.run([sys.executable, '-m', 'research.validation.evaluate',
+                                     str(self.path), '--output', str(destination)],
+                                    cwd=v.ROOT, capture_output=True, text=True)
+            with self.subTest(existing=existing):
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn('historical evaluation unsupported', result.stderr)
+                if existing:
+                    self.assertEqual(destination.read_bytes(), b'previous synthetic evidence\n')
+                else:
+                    self.assertFalse(destination.exists())
 
     def test_periods_start_fresh_and_use_only_preceding_close_return(self):
         report = v.evaluate(self.path)

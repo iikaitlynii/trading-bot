@@ -13,6 +13,7 @@ import strategy_comparison as rules
 ROOT = Path(__file__).resolve().parents[2]
 RULE_SHA256 = hashlib.sha256((ROOT / 'strategy_comparison.py').read_bytes()).hexdigest()
 UNIVERSE = rules.STOCKS + rules.MEMECOINS
+HISTORICAL_STATUS = 'unavailable: historical evaluation unsupported; verified daily data-contract adapter required'
 
 
 def digest(data):
@@ -73,16 +74,21 @@ def load_inputs(config_path):
     config_path = Path(config_path)
     raw = config_path.read_bytes()
     cfg = json.loads(raw)
+    # PR #15 validates integrity/session eligibility, not provider authenticity.
+    # This rectangular CSV runner has no reviewed adapter for those snapshots.
+    # Fail before dataset IO or computation regardless of self-asserted metadata.
+    if cfg.get('evidence') == 'historical':
+        raise ValueError(HISTORICAL_STATUS)
+    if cfg.get('evidence') != 'synthetic':
+        raise ValueError('unknown evidence type; only synthetic evaluation is supported')
+    if 'snapshot_acceptance' in cfg:
+        raise ValueError('snapshot_acceptance is unsupported; metadata cannot verify provenance')
     if cfg['universe'] != UNIVERSE:
         raise ValueError('universe must match the frozen existing comparison universe')
     if cfg['rule_sha256'] != RULE_SHA256:
         raise ValueError('rule version mismatch')
     if cfg['evaluator_sha256'] != digest(Path(__file__).read_bytes()):
         raise ValueError('evaluator version mismatch')
-    if cfg['evidence'] not in ('synthetic', 'historical'):
-        raise ValueError('unknown evidence type')
-    if cfg['evidence'] == 'historical' and not cfg.get('snapshot_acceptance'):
-        raise ValueError('historical snapshot acceptance required before evaluation')
     for cost in ('fee_bps', 'slippage_bps'):
         if not isinstance(cfg[cost], (int, float)) or isinstance(cfg[cost], bool) or not np.isfinite(cfg[cost]) or not 0 <= cfg[cost] < 5000:
             raise ValueError('invalid cost assumption')
@@ -137,8 +143,8 @@ def evaluate(config_path):
             changed.loc[changed.index > cut] *= 17
             pd.testing.assert_frame_equal(signal.loc[:cut], exposures(asset, changed).loc[:cut])
             pd.testing.assert_frame_equal(signal.loc[:cut], exposures(asset, close.loc[:cut]))
-    return dict(schema_version=1, evidence=cfg['evidence'],
-                historical_status='unavailable: accepted Task 2 snapshot not supplied' if cfg['evidence']=='synthetic' else 'accepted snapshot historical estimates',
+    return dict(schema_version=1, evidence='synthetic',
+                historical_status=HISTORICAL_STATUS,
                 config_sha256=config_hash, dataset_sha256=cfg['dataset_sha256'],
                 rule_sha256=RULE_SHA256, evaluator_sha256=digest(Path(__file__).read_bytes()),
                 periods=cfg['periods'], universe=UNIVERSE,
@@ -149,7 +155,7 @@ def evaluate(config_path):
                 environment=dict(python=platform.python_version(), **{p: importlib.metadata.version(p) for p in ('pandas','numpy','yfinance')}),
                 checks=dict(future_perturbation='passed', prefix_invariance='passed', independent_cost_accounting='passed'),
                 cap_impact=dict(status='unavailable', reason='no accepted portfolio weights, cap contract or risk-control replay; per-asset rules only'),
-                attribution_status='synthetic illustration only' if cfg['evidence']=='synthetic' else 'per-asset and per-signal; not portfolio attribution',
+                attribution_status='synthetic illustration only',
                 results=rows, daily=daily)
 
 

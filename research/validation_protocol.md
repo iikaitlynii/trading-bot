@@ -9,14 +9,22 @@ Scope follows `research/next_round/03-oos-validation.md`. No task is marked comp
 ## Evidence and prerequisites
 
 This PR supplies **synthetic demonstration evidence only**. It does not establish
-historical out-of-sample performance or profitability. The accepted Task 2 frozen
-dataset/session contract was not supplied. Historical evaluation must wait for it.
-The runner rejects historical configs without `snapshot_acceptance`; that field
-must reference genuine human acceptance evidence, and is not itself authentication.
-Do not relabel the synthetic fixture as historical. The existing historical summary
-CSVs are not daily price snapshots and cannot substitute for accepted inputs.
+historical out-of-sample performance or profitability. All `evidence: historical`
+requests are rejected before price reads or signal calculations, regardless of
+acceptance flags, source URLs, provenance claims or hashes. `snapshot_acceptance`
+is unsupported even on synthetic protocols; it never conveys trust. Successful
+reports are always labeled synthetic and historical performance remains unavailable.
 
-Base main: `3a9d20878ab31a267e43cf2b65efe63b441bf75d`. Existing paper traders,
+PR #15 has merged the daily `data_contracts` boundary and synthetic snapshot archives.
+That contract validates integrity and session eligibility, not provider authenticity.
+This CSV runner has no verified daily data-contract adapter, so **even a valid
+contract snapshot cannot enable historical evaluation here**. There is no config
+switch or acceptance-string bypass. The existing historical summary CSVs likewise
+cannot substitute for verified daily snapshots.
+
+Original base main: `3a9d20878ab31a267e43cf2b65efe63b441bf75d`.
+Historical-gate revision integration-tested with merged PR #15 main
+`0cd6613fbcbe41279d837d4b6e6e75e890789c73`. Existing paper traders,
 risk controls and `strategy_comparison.py` are unchanged. The evaluated strategies
 are specifically the comparison module's **trend** and **momentum** rules, not a
 replay of the stock/crypto paper-account engines or their risk controls.
@@ -88,14 +96,34 @@ CSV columns are `date` followed by the frozen ordered asset universe. Prices mus
 be finite, positive, daily, unique and increasing. Every expected session must be
 present, every asset must cover it, and the dataset hash must match. There is no
 filling, dropping invalid rows, or missing-data sale. Omitted sessions are rejected
-against the supplied session list. Correctness of that list requires Task 2's
-accepted holiday, early-close, UTC completed-day and corporate-action contract.
+against the supplied session list. Correctness of that list cannot be certified by caller-supplied metadata.
+It is used only for the synthetic demonstration; historical runs are blocked.
 The included fixture uses artificial weekdays for both stocks and crypto; it is
 not a market calendar. The current rectangular adapter therefore cannot directly
 represent stock holidays alongside seven-day crypto calendars without an accepted
 common-session policy. A per-market session adapter is future integration work.
-Source staleness, unfinished bars and adjustment validity require accepted external
+Source staleness, unfinished bars and adjustment validity require verified external
 provenance; presence of a metadata string does not validate them.
+
+### Coordination with merged PR #15
+
+See [Daily research dataset contract v1](datasets/README.md). Its `load` API checks
+content-addressed canonical snapshots and calls `validate`; `validate_comparison`
+checks common clocks, windows, adjustment bases and evidence classifications.
+`data_contracts/sessions.py` supports XNYS stock sessions only in 2024–2027 and
+completed UTC crypto days. It deliberately permits different interior calendars,
+which this rectangular CSV runner does not handle. The artificial 2020–2022 fixture
+uses neither that stock calendar nor independently retrieved provider data.
+
+Enabling historical evaluation requires a separately reviewed adapter that loads
+and validates those immutable snapshots, validates comparisons, maps per-market
+sessions without filling or inventing returns, enforces adjusted-close compatibility
+with the comparison rules, and connects independently verified provider provenance
+and acceptance evidence to the exact data/code hashes. A valid hash, classification
+string or contract schema is insufficient: PR #15 explicitly does not authenticate
+provider origin. Its checked-in SPY/ETH/BTC snapshots remain synthetic, including
+when a caller rewrites their classification and recomputes the hash. Do not modify
+the data contract or its fixtures to bypass this runner's historical block.
 
 `results` reports net/gross return, drawdown from initial capital, turnover, invested
 sessions, losing sessions and estimated costs separately by asset/signal/period.
@@ -103,8 +131,8 @@ sessions, losing sessions and estimated costs separately by asset/signal/period.
 within the same asset and period to cash/buy-and-hold; never pool train returns
 into held-out performance. These are stand-alone per-asset accounts, not portfolio
 weights or causal signal attribution. Losing rows on synthetic prices illustrate
-accounting only. Historical asset/signal loss attribution is unavailable until
-snapshot acceptance. Portfolio cap impact is explicitly `unavailable`: no accepted
+accounting only. Historical asset/signal loss attribution is unavailable while historical runs
+are unsupported; acceptance metadata alone cannot change that status. Portfolio cap impact is explicitly `unavailable`: no accepted
 weights, risk-control replay or cap contract exists in this scope. Low trade counts
 and short periods require an insufficient-data assessment before inference; no
 confidence intervals or statistical significance claims are supplied.
@@ -134,7 +162,8 @@ and prohibit downloads. Future perturbations and truncated prefixes must preserv
 past exposures; a deliberate unlagged future-signal mutation must fail. Full-price
 validation is allowed to reject corrupt future rows; it must not trade on them.
 
-Local evidence: 74 unittests passed, handbook compile check passed, roadmap evidence
-check passed. This is software correctness evidence; hosted CI and independent human
+Original local evidence: 74 unittests passed, handbook compile check passed, roadmap
+evidence check passed. Revision checks and PR #15 compatibility are documented in
+[historical gate regression evidence](validation/review_fixes.md). This is software correctness evidence; hosted CI and independent human
 review remain separate. No issues were closed, no roadmap checkboxes were changed,
 and nothing was merged.

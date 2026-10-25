@@ -17,7 +17,7 @@
     "independent_cost_accounting": "passed",
     "prefix_invariance": "passed"
   },
-  "config_sha256": "a5bb7282d80ca0eb65c8f26a576727fbc830a4a6cfa68af26f524915f3180eaf",
+  "config_sha256": "6b82fcfbb6d86575b0f936217b4e68d1bc5a638a2745105c89ff7cd028ea5bf1",
   "dataset_sha256": "80b31ad49d2eba4b5258ca6ad2a47f229e02b78811c6bac09e02cd027a26b68f",
   "environment": {
     "numpy": "2.5.4",
@@ -25,10 +25,10 @@
     "python": "3.12.14",
     "yfinance": "1.7.0"
   },
-  "evaluator_sha256": "f3fee888b960d7778eac90c981ffb60ee8d42d792c9c5676fa51cf93f02173eb",
+  "evaluator_sha256": "bc46fbc362d9133c4e073e2e74f1ab75b3fb187b92170764668ea3135ceaaf58",
   "evidence": "synthetic",
-  "full_report_sha256": "4eba4e9bf1873d1a3aed46ff6fa66c323b0dcf848a010f5539ce946bb1875f14",
-  "historical_status": "unavailable: accepted Task 2 snapshot not supplied",
+  "full_report_sha256": "c490eed336631f6c7fcbfabf9b2c57e2ef8ca5facb863cebf44a253b2a46c891",
+  "historical_status": "unavailable: historical evaluation unsupported; verified daily data-contract adapter required",
   "periods": {
     "evaluation": [
       "2021-11-03",

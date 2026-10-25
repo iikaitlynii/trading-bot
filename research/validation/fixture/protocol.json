@@ -2,7 +2,7 @@
   "adjustment_basis": "none: artificial prices",
   "dataset": "synthetic.csv",
   "dataset_sha256": "80b31ad49d2eba4b5258ca6ad2a47f229e02b78811c6bac09e02cd027a26b68f",
-  "evaluator_sha256": "f3fee888b960d7778eac90c981ffb60ee8d42d792c9c5676fa51cf93f02173eb",
+  "evaluator_sha256": "bc46fbc362d9133c4e073e2e74f1ab75b3fb187b92170764668ea3135ceaaf58",
   "evidence": "synthetic",
   "expected_sessions": [
     "2020-01-01",

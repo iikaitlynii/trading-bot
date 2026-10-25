@@ -8,6 +8,7 @@ import pandas as pd
 import yfinance as yf
 
 from market_data import completed_history, extract_close
+from paper_risk import Limits, snapshot, buy_budget, record_risk
 
 TICKERS = ["DOGE-USD", "SHIB-USD", "PEPE-USD", "BONK-USD"]
 STARTING_CASH = 5000.0
@@ -77,6 +78,7 @@ def previous_value():
 def main():
     os.makedirs("crypto_paper", exist_ok=True)
     state = load_state()
+    limits = Limits.from_env("CRYPTO_PAPER", MAX_WEIGHT, 1 - MIN_CASH_RESERVE)
     today = datetime.now(RUN_TIMEZONE).date().isoformat()
     price_today = datetime.now(timezone.utc).date()
 
@@ -127,13 +129,15 @@ def main():
         return
     pd.DataFrame(signals).to_csv(SIGNALS_FILE, index=False)
     if missing:
-        print("Data-quality HOLD: no orders for unavailable assets:", missing)
+        print("SIMULATED TRADING PAUSED: incomplete market data:", missing)
+        return
     if not prices:
         print("Skipping entire session: no usable daily closing prices.")
         return
     if state.get("positions") and any(ticker not in prices for ticker in state["positions"]):
         print("Skipping entire session: cannot safely value every open simulated position.")
         return
+    snapshot(state, prices, "units")
     journal = []
 
     for row in signals:
@@ -146,15 +150,13 @@ def main():
             journal.append({"date_utc": today, "ticker": ticker, "action": "SIM_SELL", "price": price, "units": pos["units"], "reason": "defensive_signal"})
 
     account_value = portfolio_value(state, prices)
-    max_invested = account_value * (1 - MIN_CASH_RESERVE)
     current_invested = account_value - float(state["cash"])
 
     for row in signals:
         ticker = row["ticker"]
         if row.get("signal") != "BULLISH" or ticker in state["positions"] or ticker not in prices:
             continue
-        available_risk_capital = max(0.0, max_invested - current_invested)
-        target = min(account_value * MAX_WEIGHT, available_risk_capital, float(state["cash"]))
+        target = buy_budget(account_value, float(state["cash"]), current_invested, limits)
         if target < 25:
             continue
         price = float(prices[ticker])
@@ -170,6 +172,7 @@ def main():
     daily_return = (ending / prev - 1) * 100 if prev else 0.0
     total_return = (ending / STARTING_CASH - 1) * 100
 
+    record_risk(state, prices, "units", limits, STARTING_CASH)
     state["last_run_date"] = today
     save_state(state)
     append_csv(JOURNAL_FILE, journal)

@@ -79,14 +79,19 @@ def main():
     dates = {}
 
     for ticker in TICKERS:
-        close = get_data(ticker)
+        try:
+            close = get_data(ticker)
+        except Exception as exc:
+            print("Stock data unavailable for", ticker, ":", exc)
+            close = pd.Series(dtype=float)
         if len(close) < REGIME_MA_DAYS:
-            continue
+            print("Insufficient history for", ticker, "- skipping entire simulated session.")
+            return
         series[ticker] = close
         dates[ticker] = session_date(close)
 
-    if not series:
-        print("No complete market data available; no simulated session processed.")
+    if len(series) != len(TICKERS):
+        print("Incomplete ticker coverage; no simulated session processed.")
         return
 
     # All tracked stocks should agree on the latest completed U.S. market session.

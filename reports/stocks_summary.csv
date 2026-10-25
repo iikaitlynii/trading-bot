@@ -1,0 +1,21 @@
+metric,value,classification
+portfolio_value,10159.76,simulated forward paper records
+total_portfolio_change,159.76000000000022,simulated forward paper records
+total_return_pct,1.5976000000000021,simulated forward paper records
+cash_return_pct,0.0,simulated forward paper records
+excess_vs_cash_pct,1.5976000000000021,simulated forward paper records
+cash_value,10000.0,simulated forward paper records
+max_drawdown_pct,2.739037567533618,simulated forward paper records
+observations,45,simulated forward paper records
+realized_pnl,2.993270586761831,simulated forward paper records
+unrealized_pnl,156.76390378721317,simulated forward paper records
+unreconciled_change,0.0028256260252135235,simulated forward paper records
+winning_sells,1,simulated forward paper records
+losing_sells,1,simulated forward paper records
+excess_vs_buy_hold_pct,-1.541875190593922,simulated forward paper records
+comparison_return_pct,1.597599999999999,simulated forward paper records
+buy_hold_return_pct,3.139475190593921,"Equal-weight initial allocation, raw close price return, no rebalancing/dividends/fees; exact recorded endpoints"
+warning,Valuations were out of chronological order; sorted for reporting,simulated forward paper records
+warning,Ambiguous duplicate valuation dates excluded: 2026-09-18,simulated forward paper records
+warning,"Recorded equity/close prices are not independently verified marks; fees, dividends and external cash flows are not recorded",simulated forward paper records
+warning,Stock valuations include weekend dates; legacy session labels need review,simulated forward paper records

@@ -29,7 +29,7 @@ with sync_playwright() as p:
     page.route('https://s.tradingview.com/**', lambda route: route.fulfill(body='<p>External chart omitted in offline verification.</p>', content_type='text/html'))
     page.goto(url)
     expect(page.locator('#status')).to_have_text('Loaded')
-    assert page.locator('main h2').count() == 19
+    assert page.locator('main h2').count() == 20
     for kind, folder in [('crypto','crypto_paper'),('stocks','paper')]:
         page.locator('#'+kind).click()
         expect(page.locator('#status')).to_have_text('Loaded')

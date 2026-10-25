@@ -8,6 +8,8 @@ on:
       - 'paper_trader.py'
       - 'crypto_paper_trader.py'
       - 'strategy_comparison.py'
+      - 'heikin_ashi_research.py'
+      - 'research/heikin_ashi/**'
       - 'market_data.py'
       - 'paper_risk.py'
       - 'performance_reports.py'
@@ -38,7 +40,7 @@ jobs:
       - name: Install research dependencies
         run: python -m pip install -r requirements.txt
       - name: Verify Python syntax
-        run: python -m compileall -q paper_trader.py crypto_paper_trader.py strategy_comparison.py paper_risk.py performance_reports.py paper_report.py scripts tests
+        run: python -m compileall -q paper_trader.py crypto_paper_trader.py strategy_comparison.py heikin_ashi_research.py paper_risk.py performance_reports.py paper_report.py scripts tests
       - name: Check roadmap completion evidence
         run: python scripts/check_roadmap.py
       - name: Check dashboard JavaScript syntax

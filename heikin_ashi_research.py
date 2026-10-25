@@ -140,9 +140,48 @@ def simulate(frame, intent, brackets=False):
                 costs=costs, trades=trades)
 
 
-def run():
-    manifest = json.loads((ROOT/'manifest.json').read_text())
-    raw = (ROOT/'source.json').read_bytes()
+def validate_periods(manifest):
+    """Validate the entire temporal split before any historical simulation.
+
+    Roles occur exactly once in development/validation/out-of-sample order.
+    Windows are half-open, so adjacent endpoints are allowed; gaps are allowed.
+    """
+    periods = manifest.get('periods')
+    roles = ('development', 'validation', 'out_of_sample')
+    if (not isinstance(periods, list) or len(periods) != len(roles)
+            or any(not isinstance(p, dict) for p in periods)
+            or tuple(p.get('name') for p in periods) != roles):
+        raise ValueError('require unique development, validation, out_of_sample roles in order')
+
+    def timestamp(value):
+        if not isinstance(value, str):
+            raise ValueError('period clocks must be timezone-aware timestamp strings')
+        try:
+            stamp = pd.Timestamp(value)
+        except (ValueError, TypeError) as exc:
+            raise ValueError('invalid period clock') from exc
+        if pd.isna(stamp) or stamp.tzinfo is None:
+            raise ValueError('period clocks must be valid and timezone-aware')
+        return stamp.tz_convert('UTC')
+
+    completed_through = timestamp(manifest.get('retrieved_at')).floor('min')
+    previous_end = None
+    for period in periods:
+        start, end = timestamp(period.get('start')), timestamp(period.get('end'))
+        if start != start.floor('min') or end != end.floor('min') or start >= end:
+            raise ValueError('periods require increasing minute-aligned boundaries')
+        if previous_end is not None and start < previous_end:
+            raise ValueError('periods overlap, duplicate a window or are chronologically reordered')
+        if end > completed_through:
+            raise ValueError('unfinished historical window')
+        previous_end = end
+
+
+def run(*, root=ROOT, output_path=None):
+    root = Path(root)
+    manifest = json.loads((root/'manifest.json').read_text())
+    validate_periods(manifest)
+    raw = (root/'source.json').read_bytes()
     if hashlib.sha256(raw).hexdigest() != manifest['sha256']:
         raise ValueError('source hash mismatch')
     source = json.loads(raw)['chart']['result'][0]
@@ -152,10 +191,9 @@ def run():
                          index=pd.to_datetime(source['timestamp'], unit='s', utc=True))
     results = []
     for period in manifest['periods']:
-        start, end = period['start'], period['end']
-        if pd.Timestamp(end) > pd.Timestamp(manifest['retrieved_at']).floor('min'):
-            raise ValueError('unfinished historical window')
-        subset = frame.loc[(frame.index >= pd.Timestamp(start)) & (frame.index < pd.Timestamp(end))]
+        start = pd.Timestamp(period['start']).tz_convert('UTC')
+        end = pd.Timestamp(period['end']).tz_convert('UTC')
+        subset = frame.loc[(frame.index >= start) & (frame.index < end)]
         try:
             validate(subset, start, end)
         except ValueError as exc:
@@ -173,7 +211,8 @@ def run():
                              ('minute_momentum_adaptation', momentum)]:
             results.append(dict(period=period, strategy=name,
                                 **simulate(subset, signal, name == 'ha_pullback')))
-    (ROOT/'results.json').write_text(json.dumps(results, indent=2, allow_nan=False)+'\n')
+    output = root/'results.json' if output_path is None else Path(output_path)
+    output.write_text(json.dumps(results, indent=2, allow_nan=False)+'\n')
     for row in results:
         print({k:v for k,v in row.items() if k != 'trades'})
 

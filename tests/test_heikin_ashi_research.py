@@ -1,5 +1,10 @@
 """Synthetic unit cases are separate from the frozen genuine historical run."""
 import json
+import copy
+import contextlib
+import io
+from pathlib import Path
+import tempfile
 import unittest
 from unittest.mock import patch
 
@@ -15,6 +20,86 @@ def fixture():
 
 
 class HeikinAshiTests(unittest.TestCase):
+    def manifest(self):
+        return json.loads((r.ROOT/'manifest.json').read_text())
+
+    def assert_invalid_periods(self, manifest):
+        # No source file is needed: the full split must fail before data/simulation.
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'manifest.json').write_text(json.dumps(manifest))
+            output = root/'temporary-results.json'
+            output.write_text('existing output must survive rejection')
+            with patch.object(r, 'simulate') as simulate:
+                with self.assertRaises(ValueError):
+                    r.run(root=root, output_path=output)
+                simulate.assert_not_called()
+            self.assertEqual(output.read_text(), 'existing output must survive rejection')
+
+    def test_rejects_duplicate_period_roles(self):
+        manifest = self.manifest()
+        manifest['periods'][2]['name'] = 'validation'
+        self.assert_invalid_periods(manifest)
+
+    def test_rejects_missing_period_roles(self):
+        for index in range(3):
+            with self.subTest(missing=index):
+                manifest = self.manifest()
+                del manifest['periods'][index]
+                self.assert_invalid_periods(manifest)
+
+    def test_rejects_unknown_period_roles(self):
+        manifest = self.manifest()
+        manifest['periods'][2]['name'] = 'test'
+        self.assert_invalid_periods(manifest)
+
+    def test_rejects_reordered_period_roles(self):
+        manifest = self.manifest()
+        manifest['periods'].reverse()
+        self.assert_invalid_periods(manifest)
+
+    def test_rejects_overlapping_periods(self):
+        manifest = self.manifest()
+        # Invalid final period must block simulations of the earlier valid days.
+        manifest['periods'][2]['start'] = '2026-10-20T23:59:00Z'
+        self.assert_invalid_periods(manifest)
+
+    def test_rejects_duplicated_period_windows(self):
+        manifest = self.manifest()
+        manifest['periods'][2].update({key: manifest['periods'][1][key]
+                                     for key in ('start', 'end')})
+        self.assert_invalid_periods(manifest)
+        manifest = self.manifest()
+        manifest['periods'].append(copy.deepcopy(manifest['periods'][2]))
+        self.assert_invalid_periods(manifest)
+
+    def test_rejects_chronologically_reordered_windows(self):
+        manifest = self.manifest()
+        # Keep roles ordered, exchange the validation and holdout dates.
+        left, right = manifest['periods'][1:]
+        for key in ('start', 'end'):
+            left[key], right[key] = right[key], left[key]
+        self.assert_invalid_periods(manifest)
+
+    def test_rejects_invalid_period_clocks_before_simulation(self):
+        for start, end in [('2026-10-22T00:00:00Z', '2026-10-21T00:00:00Z'),
+                           ('2026-10-21T00:00:00Z', '2026-10-21T00:00:00Z'),
+                           ('2026-10-21T00:00:01Z', '2026-10-22T00:00:00Z'),
+                           ('2026-10-21T00:00:00', '2026-10-22T00:00:00Z'),
+                           ('NaT', '2026-10-22T00:00:00Z'),
+                           ('invalid', '2026-10-22T00:00:00Z'),
+                           ('2026-10-21T00:00:00Z', '2026-10-26T00:00:00Z')]:
+            with self.subTest(start=start, end=end):
+                manifest = self.manifest()
+                manifest['periods'][2].update(start=start, end=end)
+                self.assert_invalid_periods(manifest)
+
+    def test_accepts_adjacent_and_gapped_period_windows(self):
+        manifest = self.manifest()
+        r.validate_periods(manifest)
+        manifest['periods'][1]['start'] = '2026-10-20T00:01:00Z'
+        r.validate_periods(manifest)
+
     def test_validation_rejects_bad_inputs(self):
         f = fixture()
         start, end = f.index[0], f.index[-1] + pd.Timedelta(minutes=1)
@@ -106,7 +191,11 @@ class HeikinAshiTests(unittest.TestCase):
 
     def test_frozen_historical_regression_and_reconciliation(self):
         before = (r.ROOT/'results.json').read_bytes()
-        r.run()
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)/'results.json'
+            with contextlib.redirect_stdout(io.StringIO()):
+                r.run(output_path=output)
+            self.assertEqual(before, output.read_bytes())
         self.assertEqual(before, (r.ROOT/'results.json').read_bytes())
         rows = json.loads(before)
         ha = [x for x in rows if x.get('strategy') == 'ha_pullback']

@@ -1,0 +1,687 @@
+{
+  "schema_version": 1,
+  "audited_commit": "af90a9f11dc273dc16cbbe1c93297709e342b94a",
+  "audit_date": "2026-10-24",
+  "completion_policy": "Merged implementation, passing relevant CI, task evidence, and explicit human confirmation required; this file does not authenticate remote evidence.",
+  "prs": [
+    {
+      "number": 7,
+      "head_sha": "a7e006bb5677590a61d43fddfdef742e6e0abcca",
+      "merge_sha": "ef789ab706a852ec5d74aa48385e3496405d39f1",
+      "merged": true,
+      "ci_url": "https://github.com/iikaitlynii/trading-bot/actions/runs/40150207133",
+      "ci_conclusion": "success"
+    },
+    {
+      "number": 8,
+      "head_sha": "03f6eb19bd41724707c41b01e7f36183f8492ecd",
+      "merge_sha": "85d62703c9678d42ef7fc7e97e1bef4615ff391d",
+      "merged": true,
+      "ci_url": "https://github.com/iikaitlynii/trading-bot/actions/runs/40150742079",
+      "ci_conclusion": "success"
+    },
+    {
+      "number": 9,
+      "head_sha": "5f7c4c0280b74a126f2af3c91b7291c3f08b266f",
+      "merge_sha": "d187d9b01138757cd24645e21db171bb1774e3d0",
+      "merged": true,
+      "ci_url": "https://github.com/iikaitlynii/trading-bot/actions/runs/40150916816",
+      "ci_conclusion": "success"
+    },
+    {
+      "number": 10,
+      "head_sha": "38ca276da7a8e8650ea7aa656c9e49d53a9c6ec0",
+      "merge_sha": "f91b3fc94470779d7788259445627519258ed88d",
+      "merged": true,
+      "ci_url": "https://github.com/iikaitlynii/trading-bot/actions/runs/40152600433",
+      "ci_conclusion": "success"
+    },
+    {
+      "number": 11,
+      "head_sha": "018396d6f63ca35a543cf107efeb59a390e8984e",
+      "merge_sha": "af90a9f11dc273dc16cbbe1c93297709e342b94a",
+      "merged": true,
+      "ci_url": "https://github.com/iikaitlynii/trading-bot/actions/runs/40153746893",
+      "ci_conclusion": "success"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "P1-1",
+      "phase": 1,
+      "task": "Audit stock and crypto entry/exit logic",
+      "assessment": "partial",
+      "prs": [
+        7,
+        8
+      ],
+      "tests": [
+        "tests/test_market_data_quality.py",
+        "tests/test_strategy_comparison.py"
+      ],
+      "remaining": "Missing-data and comparison timing audited; complete paper-engine entry/exit audit and human acceptance remain. Same-close execution assumptions are not executable-fill evidence.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P1-2",
+      "phase": 1,
+      "task": "Separate missing price data from defensive sell signals",
+      "assessment": "implemented_pending_review",
+      "prs": [
+        7,
+        10
+      ],
+      "tests": [
+        "tests/test_market_data_quality.py",
+        "tests/test_paper_safety.py",
+        "tests/test_paper_risk.py"
+      ],
+      "remaining": "Human evidence confirmation required; PR #10 supersedes #7 by pausing all crypto trading on any unavailable configured feed.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P1-3",
+      "phase": 1,
+      "task": "Identify assets and signals causing the largest losses",
+      "assessment": "partial",
+      "prs": [
+        11
+      ],
+      "tests": [
+        "tests/test_performance_reports.py"
+      ],
+      "remaining": "Aggregate FIFO and winning/losing sell counts exist; no verified per-asset/signal largest-loss attribution.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P1-4",
+      "phase": 1,
+      "task": "Check missing, stale, duplicate records",
+      "assessment": "partial",
+      "prs": [
+        7,
+        8,
+        11
+      ],
+      "tests": [
+        "tests/test_market_data_quality.py",
+        "tests/test_strategy_comparison.py",
+        "tests/test_performance_reports.py"
+      ],
+      "remaining": "Trader corruption checks work; exact stock holiday/early-close calendar, comparison omitted/stale/unfinished sessions and provider/corporate-action verification remain.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P1-5",
+      "phase": 1,
+      "task": "Compare strategies against buy-and-hold and cash",
+      "assessment": "implemented_pending_review",
+      "prs": [
+        8,
+        11
+      ],
+      "tests": [
+        "tests/test_strategy_comparison.py",
+        "tests/test_performance_reports.py"
+      ],
+      "remaining": "Human acceptance required for illustrative fixed-cost comparison versus buy-and-hold and zero-interest cash. Forward crypto benchmark unavailable; no profitability claim.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P1-6",
+      "phase": 1,
+      "task": "Model fees and slippage",
+      "assessment": "implemented_pending_review",
+      "prs": [
+        8
+      ],
+      "tests": [
+        "tests/test_strategy_comparison.py"
+      ],
+      "remaining": "Human acceptance required for fixed 10bps fee + 10bps slippage estimates. No realistic liquidity/impact ledger or paper-engine transaction costs.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P1-7",
+      "phase": 1,
+      "task": "Evaluate on out-of-sample periods",
+      "assessment": "unverified",
+      "prs": [
+        8
+      ],
+      "tests": [],
+      "remaining": "Rolling 120-session comparison is not a frozen out-of-sample selection/evaluation protocol.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P1-8",
+      "phase": 1,
+      "task": "Maintain strategy version and comparison history",
+      "assessment": "unverified",
+      "prs": [
+        8
+      ],
+      "tests": [],
+      "remaining": "Identical-input repeatability exists; immutable datasets, dependency locks, strategy versions and comparison archives do not.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P2-1",
+      "phase": 2,
+      "task": "Configurable simulated position-size limits",
+      "assessment": "implemented_pending_review",
+      "prs": [
+        10
+      ],
+      "tests": [
+        "tests/test_paper_risk.py",
+        "tests/test_market_data_quality.py"
+      ],
+      "remaining": "Entry-only configurable caps; drift is warned, not liquidated. Human acceptance required.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P2-2",
+      "phase": 2,
+      "task": "Evaluate stop-loss and trailing exits",
+      "assessment": "unverified",
+      "prs": [],
+      "tests": [],
+      "remaining": "No task-specific implementation and acceptance evidence verified in PRs #7–#11.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P2-3",
+      "phase": 2,
+      "task": "Track asset concentration",
+      "assessment": "implemented_pending_review",
+      "prs": [
+        10
+      ],
+      "tests": [
+        "tests/test_paper_risk.py",
+        "tests/test_market_data_quality.py"
+      ],
+      "remaining": "Per-asset weights and aggregate exposure persisted; independent accounts. Human acceptance required.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P2-4",
+      "phase": 2,
+      "task": "Simulated drawdown warnings",
+      "assessment": "implemented_pending_review",
+      "prs": [
+        10
+      ],
+      "tests": [
+        "tests/test_paper_risk.py",
+        "tests/test_market_data_quality.py"
+      ],
+      "remaining": "Inclusive advisory threshold and persisted peaks verified; legacy peaks not reconstructed. Human acceptance required.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P2-5",
+      "phase": 2,
+      "task": "Paper-only pause for unreliable data",
+      "assessment": "implemented_pending_review",
+      "prs": [
+        10
+      ],
+      "tests": [
+        "tests/test_paper_risk.py",
+        "tests/test_market_data_quality.py"
+      ],
+      "remaining": "All configured/held feeds required before account mutation; retry remains available. Human acceptance required.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P2-6",
+      "phase": 2,
+      "task": "Measure risk-control impact on returns",
+      "assessment": "unverified",
+      "prs": [],
+      "tests": [],
+      "remaining": "No task-specific implementation and acceptance evidence verified in PRs #7–#11.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P2-7",
+      "phase": 2,
+      "task": "Risk scorecard per strategy",
+      "assessment": "unverified",
+      "prs": [],
+      "tests": [],
+      "remaining": "No task-specific implementation and acceptance evidence verified in PRs #7–#11.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P3-1",
+      "phase": 3,
+      "task": "Indicators alongside paper trade markers",
+      "assessment": "unverified",
+      "prs": [],
+      "tests": [],
+      "remaining": "No task-specific implementation and acceptance evidence verified in PRs #7–#11.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P3-2",
+      "phase": 3,
+      "task": "Multiple chart timeframes",
+      "assessment": "unverified",
+      "prs": [],
+      "tests": [],
+      "remaining": "No task-specific implementation and acceptance evidence verified in PRs #7–#11.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P3-3",
+      "phase": 3,
+      "task": "Explain simulated signals",
+      "assessment": "unverified",
+      "prs": [],
+      "tests": [],
+      "remaining": "No task-specific implementation and acceptance evidence verified in PRs #7–#11.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P3-4",
+      "phase": 3,
+      "task": "Side-by-side asset comparison",
+      "assessment": "unverified",
+      "prs": [],
+      "tests": [],
+      "remaining": "No task-specific implementation and acceptance evidence verified in PRs #7–#11.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P3-5",
+      "phase": 3,
+      "task": "Volume and volatility analysis",
+      "assessment": "unverified",
+      "prs": [],
+      "tests": [],
+      "remaining": "No task-specific implementation and acceptance evidence verified in PRs #7–#11.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P3-6",
+      "phase": 3,
+      "task": "Market-regime dashboard",
+      "assessment": "unverified",
+      "prs": [],
+      "tests": [],
+      "remaining": "No task-specific implementation and acceptance evidence verified in PRs #7–#11.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P3-7",
+      "phase": 3,
+      "task": "Signal history timeline",
+      "assessment": "unverified",
+      "prs": [],
+      "tests": [],
+      "remaining": "No task-specific implementation and acceptance evidence verified in PRs #7–#11.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P3-8",
+      "phase": 3,
+      "task": "Downloadable research charts",
+      "assessment": "unverified",
+      "prs": [],
+      "tests": [],
+      "remaining": "No task-specific implementation and acceptance evidence verified in PRs #7–#11.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P4-1",
+      "phase": 4,
+      "task": "Navigation sidebar",
+      "assessment": "implemented_pending_review",
+      "prs": [
+        9
+      ],
+      "tests": [
+        "tests/dashboard_browser.py"
+      ],
+      "remaining": "Human acceptance required. Prior PR browser evidence exists; current browser rerun blocked by missing Playwright.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P4-2",
+      "phase": 4,
+      "task": "Stocks, Crypto, Research and Reports sections",
+      "assessment": "implemented_pending_review",
+      "prs": [
+        9
+      ],
+      "tests": [
+        "tests/dashboard_browser.py"
+      ],
+      "remaining": "Native section links and portfolio controls implemented. Human acceptance and integrated browser rerun required.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P4-3",
+      "phase": 4,
+      "task": "Monthly and yearly performance reports",
+      "assessment": "partial",
+      "prs": [
+        11
+      ],
+      "tests": [
+        "tests/test_performance_reports.py"
+      ],
+      "remaining": "Monthly only; yearly summaries and cross-year tests absent.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P4-4",
+      "phase": 4,
+      "task": "Strategy comparison leaderboard",
+      "assessment": "partial",
+      "prs": [
+        8,
+        9
+      ],
+      "tests": [
+        "tests/test_strategy_comparison.py"
+      ],
+      "remaining": "Asset benchmark table exists; no task-specific verified ranked strategy leaderboard and missing/stale eligibility policy.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P4-5",
+      "phase": 4,
+      "task": "Realized versus unrealized P/L",
+      "assessment": "implemented_pending_review",
+      "prs": [
+        11
+      ],
+      "tests": [
+        "tests/test_performance_reports.py",
+        "tests/performance_dashboard_test.js"
+      ],
+      "remaining": "FIFO and reconciled unrealized values verified; unavailable crypto breakdown is correctly suppressed. Human acceptance required; saved marks are not independently repriced.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P4-6",
+      "phase": 4,
+      "task": "CSV and PDF exports",
+      "assessment": "partial",
+      "prs": [
+        11
+      ],
+      "tests": [
+        "tests/test_performance_reports.py",
+        "tests/performance_dashboard_test.js"
+      ],
+      "remaining": "Daily/monthly/summary CSV implemented; PDF absent.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P4-7",
+      "phase": 4,
+      "task": "Mobile layout and accessibility",
+      "assessment": "partial",
+      "prs": [
+        9,
+        11
+      ],
+      "tests": [
+        "tests/dashboard_browser.py",
+        "tests/performance_dashboard_test.js"
+      ],
+      "remaining": "PR #9 targeted seven-width/keyboard evidence predates new report panel. Current browser rerun blocked by missing Playwright; integrated report-panel browser and accessibility acceptance remain.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P4-8",
+      "phase": 4,
+      "task": "Trading terminology glossary",
+      "assessment": "unverified",
+      "prs": [],
+      "tests": [],
+      "remaining": "No task-specific implementation and acceptance evidence verified in PRs #7–#11.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P5-1",
+      "phase": 5,
+      "task": "Monitor scheduled GitHub Actions failures",
+      "assessment": "unverified",
+      "prs": [],
+      "tests": [],
+      "remaining": "No task-specific implementation and acceptance evidence verified in PRs #7–#11.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P5-2",
+      "phase": 5,
+      "task": "Last successful data refresh indicator",
+      "assessment": "partial",
+      "prs": [
+        9,
+        11
+      ],
+      "tests": [
+        "tests/performance_dashboard_test.js"
+      ],
+      "remaining": "Saved as-of labels exist; not a verified last-successful-refresh indicator tied to workflow outcome.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P5-3",
+      "phase": 5,
+      "task": "Stale or missing data alerts",
+      "assessment": "partial",
+      "prs": [
+        7,
+        10,
+        11
+      ],
+      "tests": [
+        "tests/test_market_data_quality.py",
+        "tests/test_paper_risk.py",
+        "tests/test_performance_reports.py"
+      ],
+      "remaining": "Holds and report warnings exist; no verified durable alert lifecycle/operational notification.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P5-4",
+      "phase": 5,
+      "task": "Optional research email summaries",
+      "assessment": "unverified",
+      "prs": [],
+      "tests": [],
+      "remaining": "No task-specific implementation and acceptance evidence verified in PRs #7–#11.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P5-5",
+      "phase": 5,
+      "task": "Weekly family performance summaries",
+      "assessment": "partial",
+      "prs": [
+        9
+      ],
+      "tests": [
+        "tests/dashboard_browser.py"
+      ],
+      "remaining": "Existing weekly UI is smoke-tested; independent weekly reconciliation and delivery acceptance unverified.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P5-6",
+      "phase": 5,
+      "task": "Research-condition alerts",
+      "assessment": "partial",
+      "prs": [
+        9
+      ],
+      "tests": [
+        "tests/dashboard_browser.py"
+      ],
+      "remaining": "Existing on-page saved-observation filters are smoke-tested; no task-specific condition/threshold/staleness acceptance.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P5-7",
+      "phase": 5,
+      "task": "Automated strategy quality checks",
+      "assessment": "partial",
+      "prs": [
+        7,
+        8,
+        10,
+        11
+      ],
+      "tests": [
+        "tests/test_strategy_comparison.py"
+      ],
+      "remaining": "CI regressions verify mechanics; do not establish automated strategy quality gates for fresh, held-out performance.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P5-8",
+      "phase": 5,
+      "task": "Strategy change audit log",
+      "assessment": "unverified",
+      "prs": [],
+      "tests": [],
+      "remaining": "No task-specific implementation and acceptance evidence verified in PRs #7–#11.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P6-1",
+      "phase": 6,
+      "task": "Walk-forward validation",
+      "assessment": "unverified",
+      "prs": [],
+      "tests": [],
+      "remaining": "No task-specific implementation and acceptance evidence verified in PRs #7–#11.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P6-2",
+      "phase": 6,
+      "task": "Trend versus mean-reversion research",
+      "assessment": "unverified",
+      "prs": [],
+      "tests": [],
+      "remaining": "No task-specific implementation and acceptance evidence verified in PRs #7–#11.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P6-3",
+      "phase": 6,
+      "task": "Bull, bear and sideways regime analysis",
+      "assessment": "unverified",
+      "prs": [],
+      "tests": [],
+      "remaining": "No task-specific implementation and acceptance evidence verified in PRs #7–#11.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P6-4",
+      "phase": 6,
+      "task": "Cross-asset correlation analysis",
+      "assessment": "unverified",
+      "prs": [],
+      "tests": [],
+      "remaining": "No task-specific implementation and acceptance evidence verified in PRs #7–#11.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P6-5",
+      "phase": 6,
+      "task": "Diversified ETF benchmark",
+      "assessment": "unverified",
+      "prs": [],
+      "tests": [],
+      "remaining": "No task-specific implementation and acceptance evidence verified in PRs #7–#11.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P6-6",
+      "phase": 6,
+      "task": "Crypto liquidity and volatility research",
+      "assessment": "unverified",
+      "prs": [],
+      "tests": [],
+      "remaining": "No task-specific implementation and acceptance evidence verified in PRs #7–#11.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P6-7",
+      "phase": 6,
+      "task": "Paper-only strategy experiments",
+      "assessment": "unverified",
+      "prs": [],
+      "tests": [],
+      "remaining": "No task-specific implementation and acceptance evidence verified in PRs #7–#11.",
+      "human_review": null,
+      "complete": false
+    },
+    {
+      "id": "P6-8",
+      "phase": 6,
+      "task": "Evaluate ML against simple baselines",
+      "assessment": "unverified",
+      "prs": [],
+      "tests": [],
+      "remaining": "No task-specific implementation and acceptance evidence verified in PRs #7–#11.",
+      "human_review": null,
+      "complete": false
+    }
+  ]
+}

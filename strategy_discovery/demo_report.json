@@ -1,0 +1,461 @@
+{
+  "candidates": [
+    {
+      "candidate": {
+        "config": {
+          "fast": 10,
+          "max_weight": 0.15,
+          "regime": 150,
+          "slow": 30,
+          "stop": 0.03
+        },
+        "evidence": {
+          "entry": [
+            {
+              "end": 28,
+              "quote": "Entry: close above regime SMA and fast SMA above slow SMA.",
+              "start": 20,
+              "url": "https://www.youtube.com/watch?v=SYNTH000001&t=20",
+              "values": []
+            }
+          ],
+          "execution": [
+            {
+              "end": 58,
+              "quote": "Execution: long only, same close, no leverage, same-session reentry permitted.",
+              "start": 50,
+              "url": "https://www.youtube.com/watch?v=SYNTH000001&t=50",
+              "values": []
+            }
+          ],
+          "exit": [
+            {
+              "end": 38,
+              "quote": "Exit: fast SMA below slow SMA or close below regime SMA.",
+              "start": 30,
+              "url": "https://www.youtube.com/watch?v=SYNTH000001&t=30",
+              "values": []
+            }
+          ],
+          "indicators": [
+            {
+              "end": 18,
+              "quote": "Indicators: SMA(10), SMA(30), SMA(150).",
+              "start": 10,
+              "url": "https://www.youtube.com/watch?v=SYNTH000001&t=10",
+              "values": [
+                "10",
+                "30",
+                "150"
+              ]
+            }
+          ],
+          "risk": [
+            {
+              "end": 48,
+              "quote": "Risk: stop 3 percent below entry fill; max weight 15 percent.",
+              "start": 40,
+              "url": "https://www.youtube.com/watch?v=SYNTH000001&t=40",
+              "values": [
+                "3",
+                "15"
+              ]
+            }
+          ],
+          "timeframe": [
+            {
+              "end": 8,
+              "quote": "Timeframe: daily.",
+              "start": 0,
+              "url": "https://www.youtube.com/watch?v=SYNTH000001&t=0",
+              "values": [
+                "daily"
+              ]
+            }
+          ]
+        },
+        "parser": "controlled-transcript-v1",
+        "source": {
+          "id": "synthetic-complete",
+          "metadata_source": "author-created public-metadata-shaped fixture; no actual video asserted",
+          "permission": {
+            "basis": "author-created fixture",
+            "reference": "samples/README.md: original synthetic text, CC0-1.0"
+          },
+          "retrieved_at": "2026-10-25T00:00:00Z",
+          "segments": [
+            {
+              "end": 8,
+              "start": 0,
+              "text": "Timeframe: daily."
+            },
+            {
+              "end": 18,
+              "start": 10,
+              "text": "Indicators: SMA(10), SMA(30), SMA(150)."
+            },
+            {
+              "end": 28,
+              "start": 20,
+              "text": "Entry: close above regime SMA and fast SMA above slow SMA."
+            },
+            {
+              "end": 38,
+              "start": 30,
+              "text": "Exit: fast SMA below slow SMA or close below regime SMA."
+            },
+            {
+              "end": 48,
+              "start": 40,
+              "text": "Risk: stop 3 percent below entry fill; max weight 15 percent."
+            },
+            {
+              "end": 58,
+              "start": 50,
+              "text": "Execution: long only, same close, no leverage, same-session reentry permitted."
+            }
+          ],
+          "synthetic": true,
+          "title": "Synthetic educational SMA strategy",
+          "video_url": "https://www.youtube.com/watch?v=SYNTH000001"
+        },
+        "source_sha256": "82e9d426a7cbc46b984cb954e488e9c34cd9653d0af7e8a32bf9295d550e2dfc",
+        "status": "needs_human_review",
+        "uncertainties": [],
+        "unmatched": []
+      },
+      "quality": {
+        "completeness": 1.0,
+        "grade": "synthetic-only / unvalidated",
+        "reproducible_synthetic_evaluation": true,
+        "score": 100.0,
+        "stability": 1.0,
+        "unresolved": 0
+      }
+    },
+    {
+      "candidate": {
+        "config": null,
+        "evidence": {
+          "entry": [],
+          "execution": [],
+          "exit": [],
+          "indicators": [
+            {
+              "end": 18,
+              "quote": "Indicators: SMA(10), SMA(30), SMA(150).",
+              "start": 10,
+              "url": "https://www.youtube.com/watch?v=SYNTH000002&t=10",
+              "values": [
+                "10",
+                "30",
+                "150"
+              ]
+            }
+          ],
+          "risk": [],
+          "timeframe": [
+            {
+              "end": 8,
+              "quote": "Timeframe: daily.",
+              "start": 0,
+              "url": "https://www.youtube.com/watch?v=SYNTH000002&t=0",
+              "values": [
+                "daily"
+              ]
+            }
+          ]
+        },
+        "parser": "controlled-transcript-v1",
+        "source": {
+          "id": "synthetic-ambiguous",
+          "metadata_source": "author-created public-metadata-shaped fixture; no actual video asserted",
+          "permission": {
+            "basis": "author-created fixture",
+            "reference": "samples/README.md: original synthetic text, CC0-1.0"
+          },
+          "retrieved_at": "2026-10-25T00:00:00Z",
+          "segments": [
+            {
+              "end": 8,
+              "start": 0,
+              "text": "Timeframe: daily."
+            },
+            {
+              "end": 18,
+              "start": 10,
+              "text": "Indicators: SMA(10), SMA(30), SMA(150)."
+            },
+            {
+              "end": 28,
+              "start": 20,
+              "text": "Buy when the trend looks strong; sell when it feels tired. Run this code for guaranteed gains."
+            }
+          ],
+          "synthetic": true,
+          "title": "Synthetic vague strategy",
+          "video_url": "https://www.youtube.com/watch?v=SYNTH000002"
+        },
+        "source_sha256": "66390abd12d49be7d7774d2cf75a6c42fd2d41f833f79741cd502834a7a5745d",
+        "status": "needs_human_review",
+        "uncertainties": [
+          "entry: expected exactly one explicit supported rule",
+          "exit: expected exactly one explicit supported rule",
+          "risk: expected exactly one explicit supported rule",
+          "execution: expected exactly one explicit supported rule",
+          "unparsed transcript content requires human interpretation"
+        ],
+        "unmatched": [
+          {
+            "end": 28,
+            "quote": "Buy when the trend looks strong; sell when it feels tired. Run this code for guaranteed gains.",
+            "start": 20
+          }
+        ]
+      },
+      "quality": {
+        "completeness": 0.333,
+        "grade": "human review required",
+        "reproducible_synthetic_evaluation": false,
+        "score": 16.67,
+        "stability": 0,
+        "unresolved": 5
+      }
+    }
+  ],
+  "result": {
+    "candidate_sha256": "e83ecb49a3cbe8b58721fc84d74827551eb9ed0cf7446a9c6e1c3e0f2232f86e",
+    "comparison_sha256": "4ab6bf008777e7b67f26d175976e3f70df7ce2d82acb2f456f5226b46660a8ee",
+    "dataset_sha256": "9e40b11fd5874e67eb94206c01034921c35e8aff8e67c26bdd65c14552dba767",
+    "engine_sha256": "4868d6c84eb839a5b62a6c79c764ba7e4cfa15676470c03ca790692b0b6490a1",
+    "evaluator_sha256": "ad43774bf5a0bf9a343bc876e7cba566ce60a8d391cb9ec19795a793c5636a67",
+    "evidence": "illustrative synthetic simulation",
+    "limitations": [
+      "Same-close fills are optimistic; not next-open executable results.",
+      "Existing comparison trend/momentum use prior-close fills and full exposure; candidate is capped at 20% or less.",
+      "10 bps fee and 10 bps slippage estimates; no final liquidation.",
+      "Periods reset holdings; no fitting, selection or walk-forward claim.",
+      "Holdout is public synthetic data; no independent market evidence."
+    ],
+    "periods": {
+      "evaluation": {
+        "baselines": {
+          "buy_hold": {
+            "max_drawdown_pct": 10.8909,
+            "return_pct": 17.8508
+          },
+          "cash": {
+            "max_drawdown_pct": 0.0,
+            "return_pct": 0.0
+          },
+          "existing_current_20_50": {
+            "avg_hold_days": 0,
+            "benchmark_return_pct": 18.0867,
+            "cagr_pct": 6.3126,
+            "completed_trades": 0,
+            "ending_value": 10295.78,
+            "excess_vs_benchmark_pct": -15.1289,
+            "max_drawdown_pct": 0.04,
+            "profit_factor": 0,
+            "return_pct": 2.9578,
+            "sharpe": 7.0814,
+            "win_rate_pct": 0
+          },
+          "existing_momentum": {
+            "momentum_invested_days": 66,
+            "momentum_max_drawdown_pct": -2.32,
+            "momentum_position_changes": 3,
+            "momentum_return_pct": 23.81
+          },
+          "existing_trend": {
+            "trend_invested_days": 36,
+            "trend_max_drawdown_pct": -0.18,
+            "trend_position_changes": 1,
+            "trend_return_pct": 14.79
+          }
+        },
+        "candidate": {
+          "avg_hold_days": 0,
+          "benchmark_return_pct": 18.0867,
+          "cagr_pct": 4.9003,
+          "completed_trades": 0,
+          "ending_value": 10230.43,
+          "excess_vs_benchmark_pct": -15.7824,
+          "max_drawdown_pct": 0.03,
+          "profit_factor": 0,
+          "return_pct": 2.3043,
+          "sharpe": 7.271,
+          "win_rate_pct": 0
+        },
+        "end": "2021-09-01",
+        "start": "2021-05-05"
+      },
+      "selection": {
+        "baselines": {
+          "buy_hold": {
+            "max_drawdown_pct": 14.5905,
+            "return_pct": 11.6811
+          },
+          "cash": {
+            "max_drawdown_pct": 0.0,
+            "return_pct": 0.0
+          },
+          "existing_current_20_50": {
+            "avg_hold_days": 84.0,
+            "benchmark_return_pct": 11.9047,
+            "cagr_pct": 4.2456,
+            "completed_trades": 1,
+            "ending_value": 10199.97,
+            "excess_vs_benchmark_pct": -9.905,
+            "max_drawdown_pct": 1.907,
+            "profit_factor": 999,
+            "return_pct": 1.9997,
+            "sharpe": 3.2334,
+            "win_rate_pct": 100.0
+          },
+          "existing_momentum": {
+            "momentum_invested_days": 81,
+            "momentum_max_drawdown_pct": -4.16,
+            "momentum_position_changes": 4,
+            "momentum_return_pct": 22.39
+          },
+          "existing_trend": {
+            "trend_invested_days": 84,
+            "trend_max_drawdown_pct": -8.27,
+            "trend_position_changes": 2,
+            "trend_return_pct": 10.0
+          }
+        },
+        "candidate": {
+          "avg_hold_days": 25.33,
+          "benchmark_return_pct": 11.9047,
+          "cagr_pct": 3.6862,
+          "completed_trades": 3,
+          "ending_value": 10173.87,
+          "excess_vs_benchmark_pct": -10.166,
+          "max_drawdown_pct": 0.9877,
+          "profit_factor": 3.399,
+          "return_pct": 1.7387,
+          "sharpe": 3.966,
+          "win_rate_pct": 33.3333
+        },
+        "end": "2021-05-04",
+        "start": "2021-01-05"
+      },
+      "train": {
+        "baselines": {
+          "buy_hold": {
+            "max_drawdown_pct": 24.0199,
+            "return_pct": -17.9498
+          },
+          "cash": {
+            "max_drawdown_pct": 0.0,
+            "return_pct": 0.0
+          },
+          "existing_current_20_50": {
+            "avg_hold_days": 11.0,
+            "benchmark_return_pct": -17.7855,
+            "cagr_pct": -2.662,
+            "completed_trades": 2,
+            "ending_value": 9872.34,
+            "excess_vs_benchmark_pct": 16.5089,
+            "max_drawdown_pct": 1.6683,
+            "profit_factor": 0.0,
+            "return_pct": -1.2766,
+            "sharpe": -3.6662,
+            "win_rate_pct": 0.0
+          },
+          "existing_momentum": {
+            "momentum_invested_days": 33,
+            "momentum_max_drawdown_pct": -3.73,
+            "momentum_position_changes": 3,
+            "momentum_return_pct": -2.26
+          },
+          "existing_trend": {
+            "trend_invested_days": 23,
+            "trend_max_drawdown_pct": -7.78,
+            "trend_position_changes": 2,
+            "trend_return_pct": -5.56
+          }
+        },
+        "candidate": {
+          "avg_hold_days": 7.0,
+          "benchmark_return_pct": -17.7855,
+          "cagr_pct": -1.956,
+          "completed_trades": 2,
+          "ending_value": 9906.37,
+          "excess_vs_benchmark_pct": 16.8492,
+          "max_drawdown_pct": 0.9536,
+          "profit_factor": 0.0,
+          "return_pct": -0.9363,
+          "sharpe": -4.3168,
+          "win_rate_pct": 0.0
+        },
+        "end": "2021-01-04",
+        "start": "2020-09-07"
+      }
+    },
+    "python": "3.12.14",
+    "robustness": {
+      "drawdown_spread_pct": 0.0,
+      "grade": "synthetic-only / unvalidated",
+      "historical_evidence": false,
+      "independent_datasets": 0,
+      "sensitivity_trials": 2
+    },
+    "sensitivity": [
+      {
+        "fast": 9,
+        "result": {
+          "avg_hold_days": 0,
+          "benchmark_return_pct": 18.0867,
+          "cagr_pct": 4.9003,
+          "completed_trades": 0,
+          "ending_value": 10230.43,
+          "excess_vs_benchmark_pct": -15.7824,
+          "max_drawdown_pct": 0.03,
+          "profit_factor": 0,
+          "return_pct": 2.3043,
+          "sharpe": 7.271,
+          "win_rate_pct": 0
+        }
+      },
+      {
+        "fast": 11,
+        "result": {
+          "avg_hold_days": 0,
+          "benchmark_return_pct": 18.0867,
+          "cagr_pct": 4.9003,
+          "completed_trades": 0,
+          "ending_value": 10230.43,
+          "excess_vs_benchmark_pct": -15.7824,
+          "max_drawdown_pct": 0.03,
+          "profit_factor": 0,
+          "return_pct": 2.3043,
+          "sharpe": 7.271,
+          "win_rate_pct": 0
+        }
+      }
+    ],
+    "spec_sha256": "ecaa2bb02522913048761394c8355b14756e024f78a5c7bcdc45c3b56a86a9f3",
+    "versions": {
+      "numpy": "2.5.4",
+      "pandas": "3.1.0",
+      "yfinance": "1.7.0"
+    }
+  },
+  "simulation_only": true,
+  "submission": {
+    "dataset_sha256": "9e40b11fd5874e67eb94206c01034921c35e8aff8e67c26bdd65c14552dba767",
+    "note": "Queue manifest only. PR #13 currently supports existing fixed rules, not discovered candidates.",
+    "prerequisites": [
+      "PR #13 reviewed and integrated with an allowlisted candidate adapter",
+      "PR #15 accepted historical snapshot/session contract",
+      "Human review of specification, fills, risk semantics and independent holdout"
+    ],
+    "simulation_only": true,
+    "spec_sha256": "ecaa2bb02522913048761394c8355b14756e024f78a5c7bcdc45c3b56a86a9f3",
+    "status": "blocked_pending_human_integration",
+    "target": "PR #13 frozen evaluation framework"
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "candidate": {
+    "config": {
+      "fast": 10,
+      "max_weight": 0.15,
+      "regime": 150,
+      "slow": 30,
+      "stop": 0.03
+    },
+    "evidence": {
+      "entry": [
+        {
+          "end": 28,
+          "quote": "Entry: close above regime SMA and fast SMA above slow SMA.",
+          "start": 20,
+          "url": "https://www.youtube.com/watch?v=SYNTH000001&t=20",
+          "values": []
+        }
+      ],
+      "execution": [
+        {
+          "end": 58,
+          "quote": "Execution: long only, same close, no leverage, same-session reentry permitted.",
+          "start": 50,
+          "url": "https://www.youtube.com/watch?v=SYNTH000001&t=50",
+          "values": []
+        }
+      ],
+      "exit": [
+        {
+          "end": 38,
+          "quote": "Exit: fast SMA below slow SMA or close below regime SMA.",
+          "start": 30,
+          "url": "https://www.youtube.com/watch?v=SYNTH000001&t=30",
+          "values": []
+        }
+      ],
+      "indicators": [
+        {
+          "end": 18,
+          "quote": "Indicators: SMA(10), SMA(30), SMA(150).",
+          "start": 10,
+          "url": "https://www.youtube.com/watch?v=SYNTH000001&t=10",
+          "values": [
+            "10",
+            "30",
+            "150"
+          ]
+        }
+      ],
+      "risk": [
+        {
+          "end": 48,
+          "quote": "Risk: stop 3 percent below entry fill; max weight 15 percent.",
+          "start": 40,
+          "url": "https://www.youtube.com/watch?v=SYNTH000001&t=40",
+          "values": [
+            "3",
+            "15"
+          ]
+        }
+      ],
+      "timeframe": [
+        {
+          "end": 8,
+          "quote": "Timeframe: daily.",
+          "start": 0,
+          "url": "https://www.youtube.com/watch?v=SYNTH000001&t=0",
+          "values": [
+            "daily"
+          ]
+        }
+      ]
+    },
+    "parser": "controlled-transcript-v1",
+    "source": {
+      "id": "synthetic-complete",
+      "metadata_source": "author-created public-metadata-shaped fixture; no actual video asserted",
+      "permission": {
+        "basis": "author-created fixture",
+        "reference": "samples/README.md: original synthetic text, CC0-1.0"
+      },
+      "retrieved_at": "2026-10-25T00:00:00Z",
+      "segments": [
+        {
+          "end": 8,
+          "start": 0,
+          "text": "Timeframe: daily."
+        },
+        {
+          "end": 18,
+          "start": 10,
+          "text": "Indicators: SMA(10), SMA(30), SMA(150)."
+        },
+        {
+          "end": 28,
+          "start": 20,
+          "text": "Entry: close above regime SMA and fast SMA above slow SMA."
+        },
+        {
+          "end": 38,
+          "start": 30,
+          "text": "Exit: fast SMA below slow SMA or close below regime SMA."
+        },
+        {
+          "end": 48,
+          "start": 40,
+          "text": "Risk: stop 3 percent below entry fill; max weight 15 percent."
+        },
+        {
+          "end": 58,
+          "start": 50,
+          "text": "Execution: long only, same close, no leverage, same-session reentry permitted."
+        }
+      ],
+      "synthetic": true,
+      "title": "Synthetic educational SMA strategy",
+      "video_url": "https://www.youtube.com/watch?v=SYNTH000001"
+    },
+    "source_sha256": "82e9d426a7cbc46b984cb954e488e9c34cd9653d0af7e8a32bf9295d550e2dfc",
+    "status": "needs_human_review",
+    "uncertainties": [],
+    "unmatched": []
+  },
+  "review": {
+    "candidate_sha256": "e83ecb49a3cbe8b58721fc84d74827551eb9ed0cf7446a9c6e1c3e0f2232f86e",
+    "decision": "approve",
+    "rationale": "Demo only: exercise the review gate with complete original synthetic rules; no real strategy approval.",
+    "reviewed_at": "2026-10-25T00:00:00Z",
+    "reviewer": "fixture-reviewer (synthetic test attestation, not human acceptance)"
+  },
+  "schema": 1,
+  "simulation_only": true,
+  "template": "sma_regime_v1"
+}

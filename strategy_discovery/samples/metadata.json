@@ -1,0 +1,16 @@
+[
+  {
+    "description": "Educational strategy fixture",
+    "id": "synthetic-complete",
+    "provenance": "author-created public-metadata-shaped fixture; no actual video asserted",
+    "title": "Synthetic educational SMA strategy",
+    "video_url": "https://www.youtube.com/watch?v=SYNTH000001"
+  },
+  {
+    "description": "Educational strategy fixture",
+    "id": "synthetic-ambiguous",
+    "provenance": "author-created public-metadata-shaped fixture; no actual video asserted",
+    "title": "Synthetic vague strategy",
+    "video_url": "https://www.youtube.com/watch?v=SYNTH000002"
+  }
+]

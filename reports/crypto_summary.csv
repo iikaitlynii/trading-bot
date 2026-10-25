@@ -1,0 +1,21 @@
+metric,value,classification
+portfolio_value,4849.48,simulated forward paper records
+total_portfolio_change,-150.52000000000044,simulated forward paper records
+total_return_pct,-3.0104000000000086,simulated forward paper records
+cash_return_pct,0.0,simulated forward paper records
+excess_vs_cash_pct,-3.0104000000000086,simulated forward paper records
+cash_value,5000.0,simulated forward paper records
+max_drawdown_pct,6.22665102648379,simulated forward paper records
+observations,63,simulated forward paper records
+realized_pnl,-150.51783337242256,simulated forward paper records
+unrealized_pnl,0.0,simulated forward paper records
+unreconciled_change,-0.002166627577878444,simulated forward paper records
+winning_sells,1,simulated forward paper records
+losing_sells,3,simulated forward paper records
+excess_vs_buy_hold_pct,,simulated forward paper records
+comparison_return_pct,-3.010400000000013,simulated forward paper records
+buy_hold_return_pct,,"Equal-weight initial allocation, raw close price return, no rebalancing/dividends/fees; exact recorded endpoints"
+warning,Unavailable crypto_history.csv: FileNotFoundError,simulated forward paper records
+warning,"Recorded equity/close prices are not independently verified marks; fees, dividends and external cash flows are not recorded",simulated forward paper records
+warning,"Gaps between recorded valuations; monthly changes cover observations, not verified complete sessions",simulated forward paper records
+warning,"Buy-and-hold unavailable: missing, invalid, or duplicate exact-date benchmark prices",simulated forward paper records

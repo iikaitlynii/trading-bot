@@ -25,4 +25,5 @@ DATA QUALITY
 - Ambiguous duplicate valuation dates excluded: 2026-09-18
 - Recorded equity/close prices are not independently verified marks; fees, dividends and external cash flows are not recorded
 - Stock valuations include weekend dates; legacy session labels need review
+- Latest valuation is more than 3 calendar days old (calendar check, not an exchange-session check)
 Early simulated evidence is not proof of strategy profitability.

@@ -1,16 +1,16 @@
 PARALLEL SHADOW STRATEGY RESEARCH LAB
 Simulation/research only — no brokerage orders are sent.
 
-Latest completed market session: 2026-10-22
+Latest completed market session: 2026-10-23
 Historical backtests are snapshots, not independent forward-test samples.
 History stores at most one snapshot per market session/universe/variant.
 
 market_session      universe                 variant  ending_value  return_pct  cagr_pct  max_drawdown_pct  sharpe  completed_trades  win_rate_pct  profit_factor  avg_hold_days  benchmark_return_pct  excess_vs_benchmark_pct
-    2026-10-22         core4           current_20_50      29216.82    192.1682   12.3907           23.0200  0.8164               161       35.4037         2.1398          33.02             1725.5976               -1533.4294
-    2026-10-22         core4            faster_10_30      22282.56    122.8256    8.9202           19.6851  0.8151               264       29.9242         1.7010          20.04             1910.4533               -1787.6277
-    2026-10-22         core4      conservative_30_75      28146.04    181.4604   11.9344           24.5220  0.8718               132       36.3636         2.7059          42.88             1725.5976               -1544.1372
-    2026-10-22         core4 low_concentration_20_50      17739.28     77.3928    6.4441           13.0894  0.7853               161       35.4037         2.2751          33.02             1725.5976               -1648.2048
-    2026-10-22 diversified16           current_20_50      34370.19    243.7019   14.3975           26.7468  0.8122               284       36.2676         1.7195          37.10              605.3176                -361.6157
-    2026-10-22 diversified16            faster_10_30      35834.78    258.3478   14.5812           19.5774  0.9583               555       36.2162         1.6688          22.38              660.6088                -402.2610
-    2026-10-22 diversified16      conservative_30_75      36176.69    261.7669   15.0378           31.2791  0.8531               238       32.3529         2.0882          52.61              605.3176                -343.5507
-    2026-10-22 diversified16 low_concentration_20_50      27743.24    177.4324   11.7588           20.7518  0.8721               555       32.2523         1.7864          32.21              605.3176                -427.8852
+    2026-10-23         core4           current_20_50      28557.05    185.5705   12.1225           23.0200  0.8021               162       35.1852         2.1166          32.74             1683.8292               -1498.2587
+    2026-10-23         core4            faster_10_30      22012.44    120.1244    8.7864           19.6851  0.8040               265       29.4340         1.6876          19.92             1855.2362               -1735.1118
+    2026-10-23         core4      conservative_30_75      27618.79    176.1879   11.7148           24.5220  0.8595               132       35.6061         2.6818          42.79             1683.8292               -1507.6413
+    2026-10-23         core4 low_concentration_20_50      17534.81     75.3481    6.3153           13.0894  0.7718               162       35.1852         2.2420          32.74             1683.8292               -1608.4811
+    2026-10-23 diversified16           current_20_50      33552.65    235.5265   14.1109           26.7468  0.7991               284       35.5634         1.7049          37.05              590.7388                -355.2123
+    2026-10-23 diversified16            faster_10_30      35304.94    253.0494   14.4124           19.5774  0.9492               558       36.2007         1.6609          22.23              641.1656                -388.1162
+    2026-10-23 diversified16      conservative_30_75      36575.00    265.7500   15.1892           31.2791  0.8616               235       33.1915         2.1013          53.21              590.7388                -324.9888
+    2026-10-23 diversified16 low_concentration_20_50      27358.71    173.5871   11.5996           20.7518  0.8620               556       32.0144         1.7775          32.10              590.7388                -417.1517

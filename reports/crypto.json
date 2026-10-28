@@ -2,12 +2,13 @@
   "schema_version": 1,
   "account": "crypto",
   "classification": "simulated forward paper records",
-  "generated_at_utc": "2026-10-27T02:27:27.485549+00:00",
+  "generated_at_utc": "2026-10-28T02:36:44.504973+00:00",
   "starting_capital": 5000.0,
   "warnings": [
     "Unavailable crypto_history.csv: FileNotFoundError",
     "Recorded equity/close prices are not independently verified marks; fees, dividends and external cash flows are not recorded",
     "Gaps between recorded valuations; monthly changes cover observations, not verified complete sessions",
+    "Latest valuation is more than 3 calendar days old (calendar check, not an exchange-session check)",
     "Buy-and-hold unavailable: missing, invalid, or duplicate exact-date benchmark prices"
   ],
   "metrics": {

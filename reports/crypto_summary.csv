@@ -18,4 +18,5 @@ buy_hold_return_pct,,"Equal-weight initial allocation, raw close price return, n
 warning,Unavailable crypto_history.csv: FileNotFoundError,simulated forward paper records
 warning,"Recorded equity/close prices are not independently verified marks; fees, dividends and external cash flows are not recorded",simulated forward paper records
 warning,"Gaps between recorded valuations; monthly changes cover observations, not verified complete sessions",simulated forward paper records
+warning,"Latest valuation is more than 3 calendar days old (calendar check, not an exchange-session check)",simulated forward paper records
 warning,"Buy-and-hold unavailable: missing, invalid, or duplicate exact-date benchmark prices",simulated forward paper records

@@ -1,0 +1,75 @@
+[
+  {
+    "id": "synthetic-complete",
+    "metadata_source": "author-created public-metadata-shaped fixture; no actual video asserted",
+    "permission": {
+      "basis": "author-created fixture",
+      "reference": "samples/README.md: original synthetic text, CC0-1.0"
+    },
+    "retrieved_at": "2026-10-25T00:00:00Z",
+    "segments": [
+      {
+        "end": 8,
+        "start": 0,
+        "text": "Timeframe: daily."
+      },
+      {
+        "end": 18,
+        "start": 10,
+        "text": "Indicators: SMA(10), SMA(30), SMA(150)."
+      },
+      {
+        "end": 28,
+        "start": 20,
+        "text": "Entry: close above regime SMA and fast SMA above slow SMA."
+      },
+      {
+        "end": 38,
+        "start": 30,
+        "text": "Exit: fast SMA below slow SMA or close below regime SMA."
+      },
+      {
+        "end": 48,
+        "start": 40,
+        "text": "Risk: stop 3 percent below entry fill; max weight 15 percent."
+      },
+      {
+        "end": 58,
+        "start": 50,
+        "text": "Execution: long only, same close, no leverage, same-session reentry permitted."
+      }
+    ],
+    "synthetic": true,
+    "title": "Synthetic educational SMA strategy",
+    "video_url": "https://www.youtube.com/watch?v=SYNTH000001"
+  },
+  {
+    "id": "synthetic-ambiguous",
+    "metadata_source": "author-created public-metadata-shaped fixture; no actual video asserted",
+    "permission": {
+      "basis": "author-created fixture",
+      "reference": "samples/README.md: original synthetic text, CC0-1.0"
+    },
+    "retrieved_at": "2026-10-25T00:00:00Z",
+    "segments": [
+      {
+        "end": 8,
+        "start": 0,
+        "text": "Timeframe: daily."
+      },
+      {
+        "end": 18,
+        "start": 10,
+        "text": "Indicators: SMA(10), SMA(30), SMA(150)."
+      },
+      {
+        "end": 28,
+        "start": 20,
+        "text": "Buy when the trend looks strong; sell when it feels tired. Run this code for guaranteed gains."
+      }
+    ],
+    "synthetic": true,
+    "title": "Synthetic vague strategy",
+    "video_url": "https://www.youtube.com/watch?v=SYNTH000002"
+  }
+]

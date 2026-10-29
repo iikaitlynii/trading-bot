@@ -1,23 +1,23 @@
 SIMULATED FORWARD PAPER PERFORMANCE REPORT
 Simulation only — no brokerage orders are sent.
-As of: 2026-10-22
-portfolio_value: 10159.76
-total_portfolio_change: 159.76000000000022
-total_return_pct: 1.5976000000000021
+As of: 2026-10-28
+portfolio_value: 10203.03
+total_portfolio_change: 203.03000000000065
+total_return_pct: 2.0303000000000067
 cash_return_pct: 0.0
-excess_vs_cash_pct: 1.5976000000000021
+excess_vs_cash_pct: 2.0303000000000067
 cash_value: 10000.0
 max_drawdown_pct: 2.739037567533618
-observations: 45
+observations: 46
 realized_pnl: 2.993270586761831
-unrealized_pnl: 156.76390378721317
-unreconciled_change: 0.0028256260252135235
+unrealized_pnl: 200.03222402442316
+unreconciled_change: 0.004505388815658762
 winning_sells: 1
 losing_sells: 1
-excess_vs_buy_hold_pct: -1.541875190593922
-comparison_return_pct: 1.597599999999999
+excess_vs_buy_hold_pct: Unavailable
+comparison_return_pct: 2.030299999999996
 Cash benchmark: zero interest; no external cash flows assumed.
-Buy-and-hold: 3.139475190593921
+Buy-and-hold: None
 Equal-weight initial allocation, raw close price return, no rebalancing/dividends/fees; exact recorded endpoints
 Source: research/stock_history.csv
 DATA QUALITY
@@ -25,4 +25,6 @@ DATA QUALITY
 - Ambiguous duplicate valuation dates excluded: 2026-09-18
 - Recorded equity/close prices are not independently verified marks; fees, dividends and external cash flows are not recorded
 - Stock valuations include weekend dates; legacy session labels need review
+- Gaps between recorded valuations; monthly changes cover observations, not verified complete sessions
+- Buy-and-hold unavailable: missing, invalid, or duplicate exact-date benchmark prices
 Early simulated evidence is not proof of strategy profitability.

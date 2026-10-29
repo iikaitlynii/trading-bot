@@ -4,7 +4,8 @@ Related phase issue #6, exact checklist item **“Paper-only strategy experiment
 This additive prototype does not mark that item complete. Evidence is **illustrative
 synthetic simulation**, not historical market research, live-paper records or
 profitability evidence. No orders, credentials, paid APIs or network access are
-needed. No existing engine, dashboard, CI or saved account file is changed.
+needed. No existing engine or saved account file is changed. The PR continuation integrates
+the public dashboard, weekly archive and frontend CI checks; see [weekly reports](WEEKLY_REPORTS.md).
 
 ## Run offline
 
@@ -120,9 +121,12 @@ and withdrawal/deletion status. Keep unavailable or revoked sources blocked and
 invalidate affected approvals. Authenticated authorization/retention enforcement,
 real API clients and natural-language extraction are future work, not test claims.
 
-## Coordination with open work
+## Coordination with merged work (updated October 29, 2026)
 
-Inspected October 24, 2026 (America/Chicago):
+PRs #13–#16 are now merged in the integration base. The initial boundaries below
+remain preserved; historical evaluation in #13 still fails closed, and #15 does
+not authenticate provider evidence. Weekly integration is described in
+[WEEKLY_REPORTS.md](WEEKLY_REPORTS.md).
 
 | PR | Ownership preserved | Integration gate |
 | --- | --- | --- |
@@ -130,15 +134,19 @@ Inspected October 24, 2026 (America/Chicago):
 | [#14](https://github.com/iikaitlynii/trading-bot/pull/14) | monitoring modules, workflow and tests | Later report missing discovery evidence as unavailable, not healthy; no new schedule or external health integration here. |
 | [#15](https://github.com/iikaitlynii/trading-bot/pull/15) | `data_contracts/**`, `research/datasets/**`, tests | Require accepted immutable snapshot hash, session/calendar coverage, adjustment basis and benchmark window agreement before enabling historical evaluation. |
 
-New ownership here: `strategy_discovery/**` and
-`tests/test_strategy_discovery.py`. Shared dashboard/report/roadmap/CI files remain
-reserved to their existing owners. Branch is `agent/strategy-discovery-lab`;
+The continuation additionally edits dashboard navigation/markup/CSS, adds isolated
+discovery JavaScript and archive data, adds weekly/frontend tests, and extends CI
+checks under the user’s explicit dashboard-integration scope. Performance report
+logic, monitoring, data contracts, validation, PR #16 research and roadmap evidence
+remain unchanged. Branch is `agent/strategy-discovery-lab`;
 integration remains sequential and human reviewed. No merges, issue closure or
 checklist changes are requested.
 
 ## Dashboard design
 
-The standalone HTML preview avoids competing with `docs/index.html` ownership.
+The original standalone HTML preview remains a synthetic developer artifact.
+The public `docs/index.html` dashboard now includes the lab and weekly archive;
+see [WEEKLY_REPORTS.md](WEEKLY_REPORTS.md).
 Its sections cover research queue, source/permission/timestamp evidence,
 uncertainty, review gate, held-out comparisons, blocked submission dependencies
 and reproducibility. Semantic headings, keyboard-operable details, table captions,
@@ -153,5 +161,6 @@ reviewer resolutions, revision history and hash-bound approval. Separate
 Surface sample size, exposure/timing differences, fee assumptions, leakage checks,
 parameter sensitivity, regime/asset coverage and uncertainty before ranking.
 No “profitable” badge or one-click deployment. Historical comparisons stay disabled
-until PR #13/#15 integration is accepted. Browser acceptance of the integrated
-product is future work; this is a static dashboard design/prototype.
+until PR #13/#15 integration is accepted. The continuation runs integrated browser regression checks for saved/empty/missing
+archives, source text safety, mobile layout and existing dashboard functionality.
+Human acceptance and real evidence integration remain future work.

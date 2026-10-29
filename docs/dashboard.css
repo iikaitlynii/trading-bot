@@ -38,3 +38,10 @@ header{flex-wrap:wrap}
  .chart{height:auto;min-height:160px}
 }
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* Saved discovery evidence stays within the dashboard at mobile widths. */
+#strategy-discovery p,#strategy-discovery li,#strategy-discovery summary{overflow-wrap:anywhere}
+#strategy-discovery details{margin:12px 0;padding:12px;border:1px solid #503544;border-radius:10px}
+#strategy-discovery summary{cursor:pointer;min-height:44px}
+#strategy-discovery pre{white-space:pre-wrap;overflow-wrap:anywhere}
+#strategy-discovery select{display:block;margin:8px 0 14px;width:min(100%,420px)}

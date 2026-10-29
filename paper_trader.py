@@ -24,7 +24,8 @@ MAX_PRICE_AGE_DAYS = 4  # Allows weekends and a holiday; not an exchange calenda
 
 # Safety: simulation only. No brokerage connection or order submission exists.
 # Legacy CSVs keep the column name "date_utc", but new rows store the actual
-# latest market-session date returned by the price data.
+# latest market-session date returned by the price data. New signal snapshots
+# also name this source date explicitly as price_session for monitoring.
 
 
 def load_state():
@@ -147,7 +148,8 @@ def main():
         market[ticker] = price
         bullish = price > regime and fast > slow
         signals.append({
-            "date_utc": trading_date, "ticker": ticker, "close": round(price, 4),
+            "date_utc": trading_date, "price_session": dates[ticker],
+            "ticker": ticker, "close": round(price, 4),
             "ma20": round(fast, 4), "ma50": round(slow, 4), "ma200": round(regime, 4),
             "signal": "BULLISH" if bullish else "DEFENSIVE",
         })

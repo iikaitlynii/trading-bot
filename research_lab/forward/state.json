@@ -1,7 +1,7 @@
 {
   "conservative_30_75": {
     "cash": 5442.603203060528,
-    "last_session": "2026-10-28",
+    "last_session": "2026-10-29",
     "positions": {
       "AAPL": {
         "entry_price": 336.1300048828125,
@@ -21,8 +21,8 @@
     }
   },
   "current_20_50": {
-    "cash": 1869.8336374072974,
-    "last_session": "2026-10-28",
+    "cash": 1798.8403904373515,
+    "last_session": "2026-10-29",
     "positions": {
       "AAPL": {
         "entry_price": 336.1300048828125,
@@ -30,9 +30,9 @@
         "shares": 5.950078752110437
       },
       "AMZN": {
-        "entry_price": 254.60000610351562,
-        "entry_session": "2026-10-28",
-        "shares": 7.970371423021132
+        "entry_price": 243.7899932861328,
+        "entry_session": "2026-10-29",
+        "shares": 8.261577989841216
       },
       "MSFT": {
         "entry_price": 493.7799987792969,
@@ -47,18 +47,13 @@
     }
   },
   "faster_10_30": {
-    "cash": 5362.258321417993,
-    "last_session": "2026-10-28",
+    "cash": 6800.212050776933,
+    "last_session": "2026-10-29",
     "positions": {
       "AAPL": {
         "entry_price": 336.1300048828125,
         "entry_session": "2026-09-18",
         "shares": 4.462559064082828
-      },
-      "AMZN": {
-        "entry_price": 254.60000610351562,
-        "entry_session": "2026-10-28",
-        "shares": 5.898329582671733
       },
       "MSFT": {
         "entry_price": 493.7799987792969,
@@ -68,8 +63,8 @@
     }
   },
   "low_concentration_20_50": {
-    "cash": 5947.33873524183,
-    "last_session": "2026-10-28",
+    "cash": 5908.3261217631,
+    "last_session": "2026-10-29",
     "positions": {
       "AAPL": {
         "entry_price": 336.1300048828125,
@@ -77,9 +72,9 @@
         "shares": 2.9750393760552183
       },
       "AMZN": {
-        "entry_price": 254.60000610351562,
-        "entry_session": "2026-10-28",
-        "shares": 3.95642777093726
+        "entry_price": 243.7899932861328,
+        "entry_session": "2026-10-29",
+        "shares": 4.1164532623565995
       },
       "MSFT": {
         "entry_price": 493.7799987792969,

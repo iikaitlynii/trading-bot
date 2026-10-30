@@ -1,20 +1,20 @@
 metric,value,classification
-portfolio_value,10203.03,simulated forward paper records
-total_portfolio_change,203.03000000000065,simulated forward paper records
-total_return_pct,2.0303000000000067,simulated forward paper records
+portfolio_value,10130.4,simulated forward paper records
+total_portfolio_change,130.39999999999964,simulated forward paper records
+total_return_pct,1.3039999999999963,simulated forward paper records
 cash_return_pct,0.0,simulated forward paper records
-excess_vs_cash_pct,2.0303000000000067,simulated forward paper records
+excess_vs_cash_pct,1.3039999999999963,simulated forward paper records
 cash_value,10000.0,simulated forward paper records
 max_drawdown_pct,2.739037567533618,simulated forward paper records
-observations,46,simulated forward paper records
+observations,47,simulated forward paper records
 realized_pnl,2.993270586761831,simulated forward paper records
-unrealized_pnl,200.03222402442316,simulated forward paper records
+unrealized_pnl,127.40222402442214,simulated forward paper records
 unreconciled_change,0.004505388815658762,simulated forward paper records
 winning_sells,1,simulated forward paper records
 losing_sells,1,simulated forward paper records
-excess_vs_buy_hold_pct,-2.022784624295509,simulated forward paper records
-comparison_return_pct,2.030299999999996,simulated forward paper records
-buy_hold_return_pct,4.053084624295505,"Equal-weight initial allocation, raw close price return, no rebalancing/dividends/fees; exact recorded endpoints"
+excess_vs_buy_hold_pct,-1.894078697053414,simulated forward paper records
+comparison_return_pct,1.303999999999994,simulated forward paper records
+buy_hold_return_pct,3.198078697053408,"Equal-weight initial allocation, raw close price return, no rebalancing/dividends/fees; exact recorded endpoints"
 warning,Valuations were out of chronological order; sorted for reporting,simulated forward paper records
 warning,Ambiguous duplicate valuation dates excluded: 2026-09-18,simulated forward paper records
 warning,"Recorded equity/close prices are not independently verified marks; fees, dividends and external cash flows are not recorded",simulated forward paper records

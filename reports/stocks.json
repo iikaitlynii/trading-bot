@@ -2,7 +2,7 @@
   "schema_version": 1,
   "account": "stocks",
   "classification": "simulated forward paper records",
-  "generated_at_utc": "2026-10-30T03:00:36.499207+00:00",
+  "generated_at_utc": "2026-10-31T02:46:30.150282+00:00",
   "starting_capital": 10000.0,
   "warnings": [
     "Valuations were out of chronological order; sorted for reporting",
@@ -12,21 +12,21 @@
     "Gaps between recorded valuations; monthly changes cover observations, not verified complete sessions"
   ],
   "metrics": {
-    "portfolio_value": 10130.4,
-    "total_portfolio_change": 130.39999999999964,
-    "total_return_pct": 1.3039999999999963,
+    "portfolio_value": 9963.6,
+    "total_portfolio_change": -36.399999999999636,
+    "total_return_pct": -0.3639999999999964,
     "cash_return_pct": 0.0,
-    "excess_vs_cash_pct": 1.3039999999999963,
+    "excess_vs_cash_pct": -0.3639999999999964,
     "cash_value": 10000.0,
-    "max_drawdown_pct": 2.739037567533618,
-    "observations": 47,
-    "realized_pnl": 2.993270586761831,
-    "unrealized_pnl": 127.40222402442214,
-    "unreconciled_change": 0.004505388815658762,
+    "max_drawdown_pct": 3.7919876867339735,
+    "observations": 48,
+    "realized_pnl": -288.9249607395644,
+    "unrealized_pnl": 252.52390378721384,
+    "unreconciled_change": 0.0010569523509502687,
     "winning_sells": 1,
-    "losing_sells": 1,
-    "excess_vs_buy_hold_pct": -1.894078697053414,
-    "comparison_return_pct": 1.303999999999994
+    "losing_sells": 3,
+    "excess_vs_buy_hold_pct": -1.4523139400869634,
+    "comparison_return_pct": -0.36399999999999766
   },
   "monthly": [
     {
@@ -54,12 +54,12 @@
     {
       "month": "2026-10",
       "opening_date": "2026-09-29",
-      "as_of": "2026-10-29",
+      "as_of": "2026-10-30",
       "opening_value": 10130.07,
-      "closing_value": 10130.4,
-      "portfolio_change": 0.32999999999992724,
-      "return_pct": 0.003257628032193871,
-      "observations": 17,
+      "closing_value": 9963.6,
+      "portfolio_change": -166.46999999999935,
+      "return_pct": -1.643325268236051,
+      "observations": 18,
       "coverage": "month to date"
     }
   ],
@@ -298,6 +298,11 @@
       "date_utc": "2026-10-29",
       "paper_value": 10130.4,
       "cash": 2040.61
+    },
+    {
+      "date_utc": "2026-10-30",
+      "paper_value": 9963.6,
+      "cash": 5729.38
     }
   ],
   "benchmark": {
@@ -310,9 +315,9 @@
     "source": "research/stock_history.csv",
     "provenance": "Yahoo public daily chart endpoint via saved repository collector",
     "basis": "Equal-weight initial allocation, raw close price return, no rebalancing/dividends/fees; exact recorded endpoints",
-    "return_pct": 3.198078697053408,
-    "ending_value": 10319.807869705339
+    "return_pct": 1.0883139400869657,
+    "ending_value": 10108.831394008697
   },
   "start_date": "2026-08-17",
-  "as_of": "2026-10-29"
+  "as_of": "2026-10-30"
 }

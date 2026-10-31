@@ -1,7 +1,7 @@
 {
   "conservative_30_75": {
     "cash": 5442.603203060528,
-    "last_session": "2026-10-29",
+    "last_session": "2026-10-30",
     "positions": {
       "AAPL": {
         "entry_price": 336.1300048828125,
@@ -21,34 +21,24 @@
     }
   },
   "current_20_50": {
-    "cash": 1798.8403904373515,
-    "last_session": "2026-10-29",
+    "cash": 5732.839065301564,
+    "last_session": "2026-10-30",
     "positions": {
       "AAPL": {
         "entry_price": 336.1300048828125,
         "entry_session": "2026-09-18",
         "shares": 5.950078752110437
       },
-      "AMZN": {
-        "entry_price": 243.7899932861328,
-        "entry_session": "2026-10-29",
-        "shares": 8.261577989841216
-      },
       "MSFT": {
         "entry_price": 493.7799987792969,
         "entry_session": "2026-09-18",
         "shares": 4.050386821953745
-      },
-      "NVDA": {
-        "entry_price": 212.2100067138672,
-        "entry_session": "2026-10-22",
-        "shares": 9.520760166107392
       }
     }
   },
   "faster_10_30": {
     "cash": 6800.212050776933,
-    "last_session": "2026-10-29",
+    "last_session": "2026-10-30",
     "positions": {
       "AAPL": {
         "entry_price": 336.1300048828125,
@@ -63,28 +53,18 @@
     }
   },
   "low_concentration_20_50": {
-    "cash": 5908.3261217631,
-    "last_session": "2026-10-29",
+    "cash": 7866.961654703628,
+    "last_session": "2026-10-30",
     "positions": {
       "AAPL": {
         "entry_price": 336.1300048828125,
         "entry_session": "2026-09-18",
         "shares": 2.9750393760552183
       },
-      "AMZN": {
-        "entry_price": 243.7899932861328,
-        "entry_session": "2026-10-29",
-        "shares": 4.1164532623565995
-      },
       "MSFT": {
         "entry_price": 493.7799987792969,
         "entry_session": "2026-09-18",
         "shares": 2.0251934109768723
-      },
-      "NVDA": {
-        "entry_price": 212.2100067138672,
-        "entry_session": "2026-10-22",
-        "shares": 4.736346604276378
       }
     }
   }

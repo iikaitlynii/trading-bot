@@ -1,6 +1,6 @@
 horizon_sessions,score_band,observations,starting_sessions,mean_return_pct,median_return_pct,positive_pct
 1,low,2,2,0.7683,0.7683,100.0
-1,medium,21,10,0.017,0.088,52.38
+1,medium,25,11,-0.3222,-0.1638,44.0
 1,high,17,9,-0.265,0.0869,52.94
 5,low,2,2,2.2407,2.2407,100.0
 5,medium,17,9,0.3695,0.8935,70.59

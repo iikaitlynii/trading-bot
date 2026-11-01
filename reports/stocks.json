@@ -2,7 +2,7 @@
   "schema_version": 1,
   "account": "stocks",
   "classification": "simulated forward paper records",
-  "generated_at_utc": "2026-10-31T02:46:30.150282+00:00",
+  "generated_at_utc": "2026-11-01T02:39:12.519227+00:00",
   "starting_capital": 10000.0,
   "warnings": [
     "Valuations were out of chronological order; sorted for reporting",
@@ -60,7 +60,7 @@
       "portfolio_change": -166.46999999999935,
       "return_pct": -1.643325268236051,
       "observations": 18,
-      "coverage": "month to date"
+      "coverage": "recorded observations only; calendar completeness unverified"
     }
   ],
   "daily": [

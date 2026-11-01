@@ -2,7 +2,7 @@
   "schema_version": 1,
   "account": "crypto",
   "classification": "simulated forward paper records",
-  "generated_at_utc": "2026-10-31T02:46:30.152984+00:00",
+  "generated_at_utc": "2026-11-01T02:39:12.522055+00:00",
   "starting_capital": 5000.0,
   "warnings": [
     "Unavailable crypto_history.csv: FileNotFoundError",
@@ -60,7 +60,7 @@
       "portfolio_change": -258.1100000000006,
       "return_pct": -5.05345965514069,
       "observations": 24,
-      "coverage": "month to date"
+      "coverage": "recorded observations only; calendar completeness unverified"
     }
   ],
   "daily": [

@@ -1,21 +1,21 @@
 SIMULATED FORWARD PAPER PERFORMANCE REPORT
 Simulation only — no brokerage orders are sent.
-As of: 2026-10-30
-portfolio_value: 9963.6
-total_portfolio_change: -36.399999999999636
-total_return_pct: -0.3639999999999964
+As of: 2026-11-02
+portfolio_value: 9864.28
+total_portfolio_change: -135.71999999999935
+total_return_pct: -1.3571999999999935
 cash_return_pct: 0.0
-excess_vs_cash_pct: -0.3639999999999964
+excess_vs_cash_pct: -1.3571999999999935
 cash_value: 10000.0
-max_drawdown_pct: 3.7919876867339735
-observations: 48
+max_drawdown_pct: 4.751016530018886
+observations: 49
 realized_pnl: -288.9249607395644
-unrealized_pnl: 252.52390378721384
-unreconciled_change: 0.0010569523509502687
+unrealized_pnl: 153.20754065065285
+unreconciled_change: -0.0025799110877642306
 winning_sells: 1
 losing_sells: 3
 excess_vs_buy_hold_pct: Unavailable
-comparison_return_pct: -0.36399999999999766
+comparison_return_pct: -1.3571999999999917
 Cash benchmark: zero interest; no external cash flows assumed.
 Buy-and-hold: None
 Equal-weight initial allocation, raw close price return, no rebalancing/dividends/fees; exact recorded endpoints

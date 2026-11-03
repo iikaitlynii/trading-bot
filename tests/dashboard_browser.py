@@ -29,7 +29,10 @@ with sync_playwright() as p:
     page.route('https://s.tradingview.com/**', lambda route: route.fulfill(body='<p>External chart omitted in offline verification.</p>', content_type='text/html'))
     page.goto(url)
     expect(page.locator('#status')).to_have_text('Loaded')
-    assert page.locator('main h2').count() == 20
+    expect(page.locator('#discovery-status')).to_contain_text('NOT RUN')
+    expect(page.locator('#discovery-status')).to_contain_text('Archive: EMPTY')
+    expect(page.locator('#discovery-archive')).to_be_disabled()
+    assert page.locator('main h2').count() == 21
     for kind, folder in [('crypto','crypto_paper'),('stocks','paper')]:
         page.locator('#'+kind).click()
         expect(page.locator('#status')).to_have_text('Loaded')
@@ -48,7 +51,7 @@ with sync_playwright() as p:
         expect(page.locator(target)).to_be_focused()
         expect(link).to_have_attribute('aria-current','location')
     page.go_back()
-    expect(page.locator('.sidebar a[href="#weekly-report"]')).to_have_attribute('aria-current','location')
+    expect(page.locator('.sidebar a[href="#strategy-discovery"]')).to_have_attribute('aria-current','location')
     for width in [320,375,480,640,768,1024,1440]:
         page.set_viewport_size({'width':width,'height':900})
         assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), f'Page overflow at {width}'

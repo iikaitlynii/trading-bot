@@ -32,6 +32,19 @@ def discover(metadata, query):
 
 
 def extract(source):
+    # Every reparse/approval revalidates the attached export and rights, not just rules.
+    if source.get('permission', {}).get('status', 'active') != 'active':
+        raise ValueError('transcript permission inactive or withdrawn')
+    if 'discovery_metadata' in source:
+        from .metadata import validate_record, instant
+        metadata = source['discovery_metadata']
+        validate_record(metadata['record'], metadata['envelope'])
+        if (source.get('video_url') != metadata['record']['video_url'] or
+                source.get('synthetic') is not False or
+                source.get('permission', {}).get('basis') not in {'creator permission', 'owned captions'} or
+                source.get('permission', {}).get('status') != 'active' or
+                instant(source['retrieved_at']) < instant(metadata['record']['retrieved_at'])):
+            raise ValueError('metadata/transcript identity, acquisition or permission mismatch')
     if source.get('permission', {}).get('basis') not in {'author-created fixture', 'creator permission', 'owned captions'}:
         raise ValueError('documented transcript permission required')
     if not source['permission'].get('reference'):
@@ -98,6 +111,12 @@ def approve(candidate, review):
     if not all(isinstance(review.get(k), str) and review[k].strip() for k in ('reviewer', 'reviewed_at', 'rationale')):
         raise ValueError('review identity, timestamp and rationale required')
     datetime.fromisoformat(review['reviewed_at'].replace('Z', '+00:00'))
+    if 'discovery_metadata' in fresh['source']:
+        from .metadata import instant
+        from datetime import timezone
+        reviewed = instant(review['reviewed_at'])
+        if reviewed < instant(fresh['source']['retrieved_at']) or reviewed > datetime.now(timezone.utc):
+            raise ValueError('review must follow acquisition and cannot be in the future')
     return dict(schema=1, simulation_only=True, template='sma_regime_v1',
                 candidate=deepcopy(candidate), review=deepcopy(review))
 

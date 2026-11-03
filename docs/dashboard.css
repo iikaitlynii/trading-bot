@@ -45,3 +45,10 @@ header{flex-wrap:wrap}
 #strategy-discovery summary{cursor:pointer;min-height:44px}
 #strategy-discovery pre{white-space:pre-wrap;overflow-wrap:anywhere}
 #strategy-discovery select{display:block;margin:8px 0 14px;width:min(100%,420px)}
+
+/* Independent educational chart and local evidence inputs. */
+#chart-intelligence li,#chart-intelligence summary{overflow-wrap:anywhere}
+#chart-intelligence details{margin-top:12px}
+#chart-intelligence summary{cursor:pointer;min-height:44px}
+#ci-demo{background:#ad6888;color:#180d14;border:1px solid #dca0ba;border-radius:8px;padding:8px 14px}
+#ci-file,#vd-file{display:block;width:100%;margin:8px 0 14px}

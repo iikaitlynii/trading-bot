@@ -29,6 +29,8 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Capture account records before simulation
+        run: python -m monitoring.account_health --capture crypto
       - name: Validate and archive complete crypto inputs
         run: python -m data_contracts.ingestion crypto
       - name: Run simulation-only memecoin paper trader
@@ -38,6 +40,7 @@ jobs:
         run: python crypto_paper_trader.py
 
       - name: Save crypto paper state
+        id: account_publication
         if: always()
         env:
           SIMULATION_OUTCOME: ${{ steps.paper_simulation.outcome }}
@@ -52,6 +55,22 @@ jobs:
             echo "No crypto paper-trading state changes to save."
           else
             git commit -m "Update memecoin paper-trading state [skip ci]"
+            git pull --rebase origin main
+            git push
+          fi
+
+      - name: Record account publication evidence
+        if: always()
+        env:
+          SIMULATION_OUTCOME: ${{ steps.paper_simulation.outcome }}
+          ACCOUNT_PUBLICATION_OUTCOME: ${{ steps.account_publication.outcome }}
+        run: |
+          python -m monitoring.account_health --record crypto --simulation "$SIMULATION_OUTCOME" --publication "$ACCOUNT_PUBLICATION_OUTCOME"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A monitoring/account_receipts/ monitoring/ingestion/
+          if ! git diff --cached --quiet; then
+            git commit -m "Record crypto account publication evidence [skip ci]"
             git pull --rebase origin main
             git push
           fi

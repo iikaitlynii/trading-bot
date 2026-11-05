@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "simulation_only": true,
+  "checked_at": "2026-11-05T03:20:29.542415+00:00",
+  "calendar_version": "xnys-2024-2027-v1",
+  "accounts": [
+    {
+      "id": "stock",
+      "label": "STOCK",
+      "status": "BLOCKED",
+      "reason_codes": [
+        "DATA_MISSING_INVALID_OR_STALE",
+        "ACCOUNT_INVALID_OR_STALE",
+        "HISTORICAL_RECONCILIATION_REQUIRED",
+        "PUBLICATION_UNCONFIRMED",
+        "INGESTION_UNKNOWN_OR_BLOCKED"
+      ],
+      "explanations": [
+        "[Errno 2] No such file or directory: 'research/datasets/ingested/stock-latest.json'",
+        "duplicate performance sessions; historical reconciliation required",
+        "Original timestamped provider responses absent; arithmetic consistency does not authenticate market sessions.",
+        "[Errno 2] No such file or directory: 'monitoring/account_receipts/stock.json'",
+        "[Errno 2] No such file or directory: 'monitoring/ingestion/stock.json'"
+      ],
+      "expected_session": "2026-11-04",
+      "last_verified_data_session": null,
+      "last_successful_account_advancement": null,
+      "last_recorded_valuation": "2026-11-02",
+      "checked_at": "2026-11-05T03:20:29.542415+00:00",
+      "expires_at": "2026-11-05T21:00:00+00:00",
+      "data_fresh": false,
+      "workflow": {
+        "workflow_id": 335407512,
+        "path": ".github/workflows/paper-trading.yml",
+        "status": "FAILURE",
+        "run_id": 41954673207,
+        "run_attempt": 1,
+        "url": "https://github.com/iikaitlynii/trading-bot/actions/runs/41954673207",
+        "updated_at": "2026-11-05T02:21:59Z",
+        "last_successful_run_at": "2026-11-04T02:17:28Z",
+        "last_successful_run_id": 41759638239
+      },
+      "evidence": [
+        "https://github.com/iikaitlynii/trading-bot/blob/main/research/reliability/README.md",
+        "https://github.com/iikaitlynii/trading-bot/blob/main/paper/performance.csv",
+        "https://github.com/iikaitlynii/trading-bot/blob/main/research/reliability/recovery-v1/README.md"
+      ]
+    },
+    {
+      "id": "crypto",
+      "label": "CRYPTO",
+      "status": "BLOCKED",
+      "reason_codes": [
+        "DATA_MISSING_INVALID_OR_STALE",
+        "ACCOUNT_INVALID_OR_STALE",
+        "PUBLICATION_UNCONFIRMED",
+        "INGESTION_UNKNOWN_OR_BLOCKED"
+      ],
+      "explanations": [
+        "[Errno 2] No such file or directory: 'research/datasets/ingested/crypto-latest.json'",
+        "noncanonical account session",
+        "[Errno 2] No such file or directory: 'monitoring/account_receipts/crypto.json'",
+        "[Errno 2] No such file or directory: 'monitoring/ingestion/crypto.json'"
+      ],
+      "expected_session": "2026-11-04",
+      "last_verified_data_session": null,
+      "last_successful_account_advancement": null,
+      "last_recorded_valuation": "2026-10-24",
+      "checked_at": "2026-11-05T03:20:29.542415+00:00",
+      "expires_at": "2026-11-06T00:00:00+00:00",
+      "data_fresh": false,
+      "workflow": {
+        "workflow_id": 339790130,
+        "path": ".github/workflows/crypto-paper-trading.yml",
+        "status": "SUCCESS",
+        "run_id": 41764758528,
+        "run_attempt": 1,
+        "url": "https://github.com/iikaitlynii/trading-bot/actions/runs/41764758528",
+        "updated_at": "2026-11-04T03:04:42Z",
+        "last_successful_run_at": "2026-11-04T03:04:42Z",
+        "last_successful_run_id": 41764758528
+      },
+      "evidence": [
+        "https://github.com/iikaitlynii/trading-bot/blob/main/research/reliability/README.md",
+        "https://github.com/iikaitlynii/trading-bot/blob/main/crypto_paper/performance.csv"
+      ]
+    },
+    {
+      "id": "forward",
+      "label": "FORWARD RESEARCH",
+      "status": "BLOCKED",
+      "reason_codes": [
+        "FORWARD_INPUTS_UNVERIFIED",
+        "PUBLICATION_UNCONFIRMED"
+      ],
+      "explanations": [
+        "All four forward accounts use separate downloads without accepted input or publication receipts. Saved valuations remain historical and unverified."
+      ],
+      "checked_at": "2026-11-05T03:20:29.542415+00:00",
+      "expires_at": "2026-11-05T21:00:00+00:00",
+      "expected_session": "2026-11-04",
+      "last_verified_data_session": null,
+      "last_successful_account_advancement": null,
+      "last_recorded_valuation": null,
+      "data_fresh": false,
+      "accounts": [
+        {
+          "id": "current_20_50",
+          "last_recorded_valuation": "2026-11-02",
+          "status": "BLOCKED",
+          "reason_codes": [
+            "FORWARD_INPUTS_UNVERIFIED",
+            "PUBLICATION_UNCONFIRMED"
+          ]
+        },
+        {
+          "id": "faster_10_30",
+          "last_recorded_valuation": "2026-11-02",
+          "status": "BLOCKED",
+          "reason_codes": [
+            "FORWARD_INPUTS_UNVERIFIED",
+            "PUBLICATION_UNCONFIRMED"
+          ]
+        },
+        {
+          "id": "conservative_30_75",
+          "last_recorded_valuation": "2026-11-02",
+          "status": "BLOCKED",
+          "reason_codes": [
+            "FORWARD_INPUTS_UNVERIFIED",
+            "PUBLICATION_UNCONFIRMED"
+          ]
+        },
+        {
+          "id": "low_concentration_20_50",
+          "last_recorded_valuation": "2026-11-02",
+          "status": "BLOCKED",
+          "reason_codes": [
+            "FORWARD_INPUTS_UNVERIFIED",
+            "PUBLICATION_UNCONFIRMED"
+          ]
+        }
+      ],
+      "workflow": {
+        "workflow_id": 335407512,
+        "path": ".github/workflows/paper-trading.yml",
+        "status": "FAILURE",
+        "run_id": 41954673207,
+        "run_attempt": 1,
+        "url": "https://github.com/iikaitlynii/trading-bot/actions/runs/41954673207",
+        "updated_at": "2026-11-05T02:21:59Z",
+        "last_successful_run_at": "2026-11-04T02:17:28Z",
+        "last_successful_run_id": 41759638239
+      },
+      "evidence": [
+        "https://github.com/iikaitlynii/trading-bot/blob/main/research_lab/forward/performance.csv",
+        "https://github.com/iikaitlynii/trading-bot/blob/main/research/reliability/recovery-v1/README.md"
+      ]
+    }
+  ]
+}

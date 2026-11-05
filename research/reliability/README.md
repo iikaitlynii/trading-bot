@@ -167,3 +167,7 @@ crypto null-bar failures. Zero corrections or symbol mappings are accepted; both
 accounts remain blocked. Originals and health warnings are preserved. Run the
 read-only evidence verifier with `python -m research.reliability.recovery` (exit 2
 means the evidence is verified but reconciliation remains blocked).
+
+## Account health dashboard
+
+[Evidence contract, publication flow, tests and remaining blockers](account-health.md) describes the fail-closed Pages panel. Existing recovery findings and warnings remain in force.

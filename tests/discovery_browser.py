@@ -1,7 +1,6 @@
 """Offline populated archive browser regression. Generate discovery_fixtures.py first."""
 import hashlib
 import json
-import shutil
 from pathlib import Path
 from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright, expect
@@ -16,7 +15,7 @@ raws={r['week_start']+'.json':json.dumps(r).encode() for r in fixtures.values()}
 entries=[dict(week_start=key[:-5],path=key,sha256=hashlib.sha256(raw).hexdigest()) for key,raw in raws.items()]
 index=dict(schema_version=1,reports=sorted(entries,key=lambda e:e['week_start'],reverse=True))
 with sync_playwright() as p:
-    browser=p.chromium.launch(executable_path=shutil.which('chromium'),args=['--no-sandbox'])
+    browser=launch_chromium(p)
     page=browser.new_page(viewport={'width':1280,'height':900})
     errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
     broken=False

@@ -93,22 +93,6 @@ jobs:
           path: work/copilot-browser/
           retention-days: 7
           if-no-files-found: error
-      - name: Export synthetic baseline candidates for connector review (temporary)
-        if: ${{ always() && steps.chromium.outcome != 'skipped' }}
-        run: |
-          python - <<'PY_BASELINES'
-          import base64, hashlib
-          from pathlib import Path
-          for state in ('buy', 'sell', 'wait'):
-              for width in (375, 1280):
-                  path = Path('work/copilot-browser') / f'{state}-{width}.png'
-                  payload = path.read_bytes()
-                  print('BASELINE_BEGIN', path.name, hashlib.sha256(payload).hexdigest())
-                  encoded = base64.b64encode(payload).decode()
-                  for offset in range(0, len(encoded), 8000):
-                      print('BASELINE_DATA', encoded[offset:offset+8000])
-                  print('BASELINE_END', path.name)
-          PY_BASELINES
       - name: Run offline paper-trading regression tests
         if: ${{ !cancelled() && steps.research-deps.outcome == 'success' }}
         run: python -m unittest discover -s tests -v

@@ -1,0 +1,285 @@
+{
+  "source_run": "https://github.com/iikaitlynii/trading-bot/actions/runs/41954855015",
+  "source_commit": "381cc3a1c5996670e63bad0a99be805b899cb501",
+  "image": "mcr.microsoft.com/playwright/python:v1.62.0-noble@sha256:aa81288e738725378becba5b3e06cb0f3a7f012a610e87e8d767a090ea3f740d",
+  "browser": "151.0.7922.34",
+  "playwright": "1.62.0",
+  "locale": "en-US",
+  "timezone": "UTC",
+  "device_scale_factor": 1,
+  "review": "All six full-panel synthetic images visually inspected before replacing baselines. No production CSS changed.",
+  "files": [
+    {
+      "name": "buy-375.png",
+      "sha": "af1666e25e07d1bcd3a7359c31d83db26e7c2d5d2330d4a75ef75ed1d7a35278"
+    },
+    {
+      "name": "buy-1280.png",
+      "sha": "4e2b89501196f60c1f9032985477ef688cbd0c1b00e9b6f398b7da3e4aa22438"
+    },
+    {
+      "name": "sell-375.png",
+      "sha": "8167a06f480c9b82f95aa1296a1e6cf7f23c40e673dbcad65acd6428a6ebf290"
+    },
+    {
+      "name": "sell-1280.png",
+      "sha": "eaf5c5d6836aa6aadc9267b9720b80598306c9df90639f548af58fb5d8726f8c"
+    },
+    {
+      "name": "wait-375.png",
+      "sha": "a74783ee530dbae9a4d52368169c79c013f57e5f7bc35463bff1b72ee61b4389"
+    },
+    {
+      "name": "wait-1280.png",
+      "sha": "087aec6a33d16876c7c6200ba5f558f5f316dc9547affef82a628b276a9f7517"
+    }
+  ],
+  "measurements": [
+    {
+      "case": "buy-375.png",
+      "viewport": {
+        "width": 375,
+        "height": 900
+      },
+      "device_scale_factor": 1,
+      "scroll_width": 375,
+      "fonts": {
+        "#cp-explanation": [
+          {
+            "familyName": "WenQuanYi Zen Hei",
+            "postScriptName": "WenQuanYiZenHei",
+            "isCustomFont": false,
+            "glyphCount": 113
+          }
+        ],
+        "#cp-heading": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Bold",
+            "isCustomFont": false,
+            "glyphCount": 36
+          }
+        ],
+        "#cp-signal": [
+          {
+            "familyName": "WenQuanYi Zen Hei",
+            "postScriptName": "WenQuanYiZenHei",
+            "isCustomFont": false,
+            "glyphCount": 11
+          }
+        ]
+      },
+      "actual_size": [
+        335,
+        2611
+      ]
+    },
+    {
+      "case": "sell-375.png",
+      "viewport": {
+        "width": 375,
+        "height": 900
+      },
+      "device_scale_factor": 1,
+      "scroll_width": 375,
+      "fonts": {
+        "#cp-explanation": [
+          {
+            "familyName": "WenQuanYi Zen Hei",
+            "postScriptName": "WenQuanYiZenHei",
+            "isCustomFont": false,
+            "glyphCount": 149
+          }
+        ],
+        "#cp-heading": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Bold",
+            "isCustomFont": false,
+            "glyphCount": 36
+          }
+        ],
+        "#cp-signal": [
+          {
+            "familyName": "WenQuanYi Zen Hei",
+            "postScriptName": "WenQuanYiZenHei",
+            "isCustomFont": false,
+            "glyphCount": 12
+          }
+        ]
+      },
+      "actual_size": [
+        335,
+        2636
+      ]
+    },
+    {
+      "case": "wait-375.png",
+      "viewport": {
+        "width": 375,
+        "height": 900
+      },
+      "device_scale_factor": 1,
+      "scroll_width": 375,
+      "fonts": {
+        "#cp-explanation": [
+          {
+            "familyName": "WenQuanYi Zen Hei",
+            "postScriptName": "WenQuanYiZenHei",
+            "isCustomFont": false,
+            "glyphCount": 39
+          }
+        ],
+        "#cp-heading": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Bold",
+            "isCustomFont": false,
+            "glyphCount": 36
+          }
+        ],
+        "#cp-signal": [
+          {
+            "familyName": "FreeSans",
+            "postScriptName": "FreeSans",
+            "isCustomFont": false,
+            "glyphCount": 1
+          },
+          {
+            "familyName": "WenQuanYi Zen Hei",
+            "postScriptName": "WenQuanYiZenHei",
+            "isCustomFont": false,
+            "glyphCount": 5
+          }
+        ]
+      },
+      "actual_size": [
+        335,
+        2194
+      ]
+    },
+    {
+      "case": "buy-1280.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "device_scale_factor": 1,
+      "scroll_width": 1280,
+      "fonts": {
+        "#cp-explanation": [
+          {
+            "familyName": "WenQuanYi Zen Hei",
+            "postScriptName": "WenQuanYiZenHei",
+            "isCustomFont": false,
+            "glyphCount": 115
+          }
+        ],
+        "#cp-heading": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Bold",
+            "isCustomFont": false,
+            "glyphCount": 37
+          }
+        ],
+        "#cp-signal": [
+          {
+            "familyName": "WenQuanYi Zen Hei",
+            "postScriptName": "WenQuanYiZenHei",
+            "isCustomFont": false,
+            "glyphCount": 11
+          }
+        ]
+      },
+      "actual_size": [
+        1040,
+        1548
+      ]
+    },
+    {
+      "case": "sell-1280.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "device_scale_factor": 1,
+      "scroll_width": 1280,
+      "fonts": {
+        "#cp-explanation": [
+          {
+            "familyName": "WenQuanYi Zen Hei",
+            "postScriptName": "WenQuanYiZenHei",
+            "isCustomFont": false,
+            "glyphCount": 151
+          }
+        ],
+        "#cp-heading": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Bold",
+            "isCustomFont": false,
+            "glyphCount": 37
+          }
+        ],
+        "#cp-signal": [
+          {
+            "familyName": "WenQuanYi Zen Hei",
+            "postScriptName": "WenQuanYiZenHei",
+            "isCustomFont": false,
+            "glyphCount": 12
+          }
+        ]
+      },
+      "actual_size": [
+        1040,
+        1548
+      ]
+    },
+    {
+      "case": "wait-1280.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "device_scale_factor": 1,
+      "scroll_width": 1280,
+      "fonts": {
+        "#cp-explanation": [
+          {
+            "familyName": "WenQuanYi Zen Hei",
+            "postScriptName": "WenQuanYiZenHei",
+            "isCustomFont": false,
+            "glyphCount": 39
+          }
+        ],
+        "#cp-heading": [
+          {
+            "familyName": "Liberation Serif",
+            "postScriptName": "LiberationSerif-Bold",
+            "isCustomFont": false,
+            "glyphCount": 37
+          }
+        ],
+        "#cp-signal": [
+          {
+            "familyName": "FreeSans",
+            "postScriptName": "FreeSans",
+            "isCustomFont": false,
+            "glyphCount": 1
+          },
+          {
+            "familyName": "WenQuanYi Zen Hei",
+            "postScriptName": "WenQuanYiZenHei",
+            "isCustomFont": false,
+            "glyphCount": 5
+          }
+        ]
+      },
+      "actual_size": [
+        1040,
+        1399
+      ]
+    }
+  ]
+}

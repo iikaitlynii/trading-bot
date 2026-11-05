@@ -191,7 +191,8 @@ not implemented; the checked-in initial observations correctly remain WAIT.
 
 The original golden images were made with a Debian system Chromium and its local
 font fallbacks, while Actions ran Ubuntu's system Chromium. Installing Playwright
-in CI did not select its browser: all four scripts hard-coded `/usr/bin/chromium`.
+in CI did not select its browser: the scripts selected host Chromium when present (two hard-coded
+`/usr/bin/chromium`, two used `shutil.which`).
 System fonts and that executable were uncontrolled rendering inputs. Waiting for
 `document.fonts.ready` does not make installed font families identical.
 
@@ -230,3 +231,29 @@ must not replace canonical baselines. This managed environment's network policy
 blocks the image-layer and Playwright-browser download hosts, so canonical image
 output is collected and verified in hosted Actions; ordinary local Python,
 JavaScript and host-Chromium regressions are also run.
+
+Canonical source run [41954855015](https://github.com/iikaitlynii/trading-bot/actions/runs/41954855015)
+provided all six images for explicit visual review. Its browser is Chromium
+151.0.7922.34; measured body font is WenQuanYi Zen Hei, heading font Liberation
+Serif, with FreeSans supplying the WAIT icon. All cases retain viewport widths
+375/1280, scale factor 1, matching document widths and no overflow. Reviewed
+canonical heights, compared with the original environment, are:
+
+| Case | Old image | Canonical image |
+| --- | --- | --- |
+| BUY mobile | 335×2739 | 335×2611 |
+| SELL mobile | 335×2739 | 335×2636 |
+| WAIT mobile | 335×2240 | 335×2194 |
+| BUY desktop | 1040×1669 | 1040×1548 |
+| SELL desktop | 1040×1693 | 1040×1548 |
+| WAIT desktop | 1040×1514 | 1040×1399 |
+
+All six were inspected for readable labels/icons, full text, privacy disclosures,
+controls and reflow. `tests/copilot_visual/environment.json` records the source,
+immutable image, browser, actual fonts, geometry and PNG hashes. The temporary
+log export used to retrieve these synthetic candidates through the GitHub
+connector is removed. Normal CI only compares committed baselines and uploads
+diagnostic artifacts; it does not regenerate or accept screenshots automatically.
+The candidate run deliberately remained red against the old baselines while
+its Python/JavaScript and other Chromium checks passed. A subsequent ordinary
+comparison run must pass before this fix is considered ready.

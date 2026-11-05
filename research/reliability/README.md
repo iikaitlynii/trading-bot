@@ -46,8 +46,19 @@ These moving responses differ from the frozen stock failure. AAPL recovery prove
 availability can change, not that every stock or crypto asset has recovered.
 Probe bytes stayed in ignored-by-staging scratch space, outside accepted bundles.
 PEPE remains required; no alias, replacement provider or asset removal occurred.
-Next provider investigation needs an independently authenticated instrument mapping
-and retained source evidence; a ticker substitution alone is not sufficient.
+Yahoo's search endpoint
+`https://query1.finance.yahoo.com/v1/finance/search?q=PEPE&quotesCount=10&newsCount=0`
+returned HTTP 200 and lists `PEPE24478-USD` as “Pepe USD”, alongside distinct
+`PEPECOIN-USD`, `PEP-USD` and other similarly named instruments. Search-response
+SHA-256 is `eff96efe3c4381bce5f6ea59728a095db85b51b82471d043de37cf5288435272`;
+the search and PEPE-USD rejection bytes are retained under `evidence/` with
+content-addressed filenames. This is evidence of a plausible provider-symbol
+mapping problem, not proof that the candidate is the intended instrument or that
+its history is usable. Next investigation must authenticate identity (including
+chain/contract identity where applicable), adjustment and coverage, then propose
+an explicit reviewed provider mapping while retaining the logical asset name and
+mapping provenance. No candidate history was used or accepted. A name match or
+ticker substitution alone is not sufficient.
 
 ## Implemented safeguards
 

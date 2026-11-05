@@ -167,3 +167,47 @@ rights, partial/empty exports, malformed API responses, human-review/hash bindin
 incomplete rules and rejection of real-source evaluations. Browser checks cover
 candles/volume/ranges, failed-upload signal clearing, synthetic reset, inert source
 titles, canonical links and all existing account/navigation/mobile checks.
+
+## Integration after merged PR #21
+
+PR #18 was updated from main `d6ee522` (including merged PR #21) by a normal merge;
+there were no main-branch conflicts. PR #21 ingestion, immutable response/export
+hash checks, unique atomic staging files, scheduled ingestion/publication workflows,
+saved portfolios, reports and monitoring files remain byte-identical to that main.
+No provider requests, backfills, portfolio advancement or alert overrides were run.
+The imported OHLCV viewer remains separate from the close/HLCV ingestion boundary;
+PR #21 does not supply opens, validate local chart uploads or enable historical
+candidate evaluations. Metadata permission and human-review gates are unchanged.
+
+Compatibility was checked against PR #19 head `93384fe` using a disposable detached
+worktree. The original shared HTML/CSS/script insertion points conflicted; PR #18's
+additive chart section, local intake block, scoped CSS and deferred script tags
+were relocated to independent anchors. The resulting three-way merge is clean,
+without importing Volume Profile into PR #18 or changing PR #19's branch. Browser
+checks now allow that optional extra panel and derive Back-navigation expectations
+from actual navigation order, while still requiring every baseline panel.
+
+Validation on the updated branch:
+
+- **182 Python tests passed**, including PR #21 stale/partial universe, raw/export
+  corruption, atomic writer isolation and no-download-fallback regressions.
+- All three frontend suites, all six JavaScript syntax checks, required compilation
+  and the 47-task roadmap consistency gate passed.
+- Both Chromium suites passed: saved Stocks/Crypto values; chart/volume/range and
+  invalid-upload clearing; video source safety; populated/empty/missing archives;
+  responsive/keyboard navigation; unavailable portfolio data; no-JavaScript links.
+- New browser assertions preserve saved missing-price flags and findings across
+  chart/video interactions, including the warning against treating missing data
+  as a sell signal. Monitoring regression tests continue to reject stale/missing
+  evidence rather than declaring it healthy.
+
+The disposable PR #18 + #19 integration passed **187 Python tests**, all three
+frontend suites, the integrated dashboard browser suite and PR #19's browser suite
+(all 36 profiles, responsive layout and failed-report clearing). Regenerating the
+36 profiles against main's stock CSV succeeded twice with identical output bytes.
+These are software/compatibility checks, not historical strategy validation.
+PR #19's checked-in snapshot is not silently refreshed; its legacy provenance,
+volume approximation and regeneration limitations still apply. Its old statement
+that the collector substitutes missing volume describes the pre-#21 collector;
+PR #21 now rejects missing volume. No report, account, health evidence, issue or
+roadmap checkbox was changed by this integration work.

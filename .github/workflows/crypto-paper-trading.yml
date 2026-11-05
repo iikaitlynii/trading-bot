@@ -32,17 +32,22 @@ jobs:
       - name: Validate and archive complete crypto inputs
         run: python -m data_contracts.ingestion crypto
       - name: Run simulation-only memecoin paper trader
+        id: paper_simulation
         env:
           MARKET_DATA_MANIFEST: research/datasets/ingested/crypto-latest.json
         run: python crypto_paper_trader.py
 
       - name: Save crypto paper state
         if: always()
+        env:
+          SIMULATION_OUTCOME: ${{ steps.paper_simulation.outcome }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add research/datasets/ingested/
-          git add crypto_paper/state.json crypto_paper/journal.csv crypto_paper/latest_signals.csv crypto_paper/performance.csv
+          if [ "$SIMULATION_OUTCOME" = "success" ]; then
+            git add crypto_paper/state.json crypto_paper/journal.csv crypto_paper/latest_signals.csv crypto_paper/performance.csv
+          fi
           if git diff --cached --quiet; then
             echo "No crypto paper-trading state changes to save."
           else

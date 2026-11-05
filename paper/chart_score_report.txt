@@ -2,8 +2,8 @@ CHART SCORE EVALUATION — SIMULATED RESEARCH ONLY
 Observations may overlap and are not independent. These are descriptive results, not predictions.
 
 1-session outcomes:
-  low: 2 observations, 2 starting sessions; mean 0.7683%; early data
-  medium: 25 observations, 11 starting sessions; mean -0.3222%; early data
+  low: 4 observations, 3 starting sessions; mean 0.6182%; early data
+  medium: 27 observations, 12 starting sessions; mean -0.4711%; early data
   high: 17 observations, 9 starting sessions; mean -0.265%; early data
 
 5-session outcomes:
@@ -13,7 +13,7 @@ Observations may overlap and are not independent. These are descriptive results,
 
 20-session outcomes:
   low: 2 observations, 2 starting sessions; mean -0.2972%; early data
-  medium: 2 observations, 2 starting sessions; mean 5.1096%; early data
-  high: 4 observations, 2 starting sessions; mean -2.015%; early data
+  medium: 4 observations, 3 starting sessions; mean 2.3888%; early data
+  high: 6 observations, 3 starting sessions; mean -4.4866%; early data
 
 Do not change trading rules based on these preliminary results.

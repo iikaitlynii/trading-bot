@@ -3,6 +3,10 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '40 23 * * 1-5'
+concurrency:
+  group: validated-market-data-publication
+  cancel-in-progress: false
+
 permissions:
   contents: write
 jobs:
@@ -19,9 +23,29 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research/datasets/ingested/
           git add research/stock_history.csv
           if ! git diff --cached --quiet; then
             git commit -m "Update historical stock research"
             git pull --rebase
             git push
           fi
+
+      - name: Record ingestion and publication outcome
+        if: always()
+        env:
+          PUBLICATION_OUTCOME: ${{ job.status }}
+        run: |
+          mkdir -p work/ingestion
+          echo "Repository publication/job outcome: $PUBLICATION_OUTCOME" | tee work/ingestion/publication.txt >> "$GITHUB_STEP_SUMMARY"
+          if [ -f work/ingestion/stock.json ]; then
+            cat work/ingestion/stock.json >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ingestion-stock-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            work/ingestion/
+            research/datasets/ingested/
+          if-no-files-found: error

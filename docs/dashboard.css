@@ -52,3 +52,5 @@ header{flex-wrap:wrap}
 #strategy-discovery summary{cursor:pointer;min-height:44px}
 #strategy-discovery pre{white-space:pre-wrap;overflow-wrap:anywhere}
 #strategy-discovery select{display:block;margin:8px 0 14px;width:min(100%,420px)}
+
+.vp-row{display:grid;grid-template-columns:110px minmax(20px,1fr) 170px;gap:8px;align-items:center;font-size:12px;margin:4px 0}.vp-track{height:18px;background:#271e2b}.vp-bar{height:100%}@media(max-width:500px){.vp-row{grid-template-columns:90px minmax(20px,1fr) 100px;font-size:10px;gap:4px}}

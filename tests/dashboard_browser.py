@@ -34,7 +34,7 @@ with sync_playwright() as p:
     expect(page.locator('#discovery-status')).to_contain_text('NOT RUN')
     expect(page.locator('#discovery-status')).to_contain_text('Archive: EMPTY')
     expect(page.locator('#discovery-archive')).to_be_disabled()
-    assert page.locator('main h2').count() == 22
+    assert page.locator('main h2').count() == 22 + page.locator('#volume-profile').count()
     for kind, folder in [('crypto','crypto_paper'),('stocks','paper')]:
         page.locator('#'+kind).click()
         expect(page.locator('#status')).to_have_text('Loaded')
@@ -42,6 +42,16 @@ with sync_playwright() as p:
         expect(page.locator('#portfolio-context')).to_have_text(kind.title()+' · simulated portfolio')
         with (ROOT/folder/'performance.csv').open() as f: last=list(csv.DictReader(f))[-1]
         expect(page.locator('#value')).to_have_text('${:,.2f}'.format(float(last['paper_value'])))
+    # Chart/metadata interactions must not hide saved missing-data diagnostics.
+    with (ROOT/'crypto_paper/latest_signals.csv').open() as f:
+        signals = list(csv.DictReader(f))
+    flagged = [r for r in signals if r['signal']=='NO_DATA' or not r['close'] or float(r['close'])<=0]
+    expect(page.locator('#crypto-health-flags')).to_have_text(str(len(flagged)))
+    for row in flagged:
+        expect(page.locator('#crypto-health-findings')).to_contain_text(row['ticker'])
+    if flagged:
+        expect(page.locator('#crypto-health-findings')).to_contain_text('do not treat missing data as a sell signal')
+    health_before = page.locator('#crypto-health-findings').inner_text()
     expect(page.locator('#ci-status')).to_contain_text('SYNTHETIC')
     assert page.locator('#ci-chart rect').count() == 180
     page.locator('#ci-window').select_option('30')
@@ -68,6 +78,8 @@ with sync_playwright() as p:
     expect(page.locator('#vd-records summary')).to_contain_text('<img')
     assert page.locator('#vd-records img').count()==0
     expect(page.locator('#vd-records a')).to_have_attribute('href','https://www.youtube.com/watch?v=DemoSMA0001')
+    assert page.locator('#crypto-health-findings').inner_text() == health_before
+    print('PASS: saved missing-data alerts unchanged by chart/video intake')
     print('PASS: candlesticks/volume/window, failed upload clears signals, synthetic reset, permission queue, safe source links and text')
     page.goto(url)
     page.keyboard.press('Tab')
@@ -79,8 +91,9 @@ with sync_playwright() as p:
         target = link.get_attribute('href')
         expect(page.locator(target)).to_be_focused()
         expect(link).to_have_attribute('aria-current','location')
+    previous_link = page.locator('.sidebar a').all()[-2]
     page.go_back()
-    expect(page.locator('.sidebar a[href="#strategy-discovery"]')).to_have_attribute('aria-current','location')
+    expect(previous_link).to_have_attribute('aria-current','location')
     for width in [320,375,480,640,768,1024,1440]:
         page.set_viewport_size({'width':width,'height':900})
         assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), f'Page overflow at {width}'

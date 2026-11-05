@@ -65,7 +65,9 @@ jobs:
           python -m pip install playwright
           python -m playwright install --with-deps chromium
       - name: Check integrated dashboard in Chromium
-        run: python tests/dashboard_browser.py
+        run: |
+          python tests/dashboard_browser.py
+          python tests/discovery_browser.py
       - name: Run offline paper-trading regression tests
         run: python -m unittest discover -s tests -v
       - name: Verify no live trading integrations were introduced

@@ -5,6 +5,10 @@ on:
     - cron: '15 22 * * 1-5'
   workflow_dispatch:
 
+concurrency:
+  group: validated-market-data-publication
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
@@ -21,7 +25,11 @@ jobs:
           cache: 'pip'
       - name: Install dependencies
         run: pip install -r requirements.txt
+      - name: Validate and archive complete stock inputs
+        run: python -m data_contracts.ingestion stock
       - name: Run simulation-only paper trader
+        env:
+          MARKET_DATA_MANIFEST: research/datasets/ingested/stock-latest.json
         run: python paper_trader.py
       - name: Analyze stock charts (research only)
         run: python chart_analysis.py
@@ -44,10 +52,31 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research/datasets/ingested/
           git add -A paper/ research_lab/ crypto_paper/forward_signals.csv strategy_comparison_results.csv strategy_comparison_missing.csv
           if git diff --cached --quiet; then
             echo "No paper-trading or research-lab changes to save."
           else
             git commit -m "Update paper trading and forward research [skip ci]"
+            git pull --rebase origin main
             git push
           fi
+
+      - name: Record ingestion and publication outcome
+        if: always()
+        env:
+          PUBLICATION_OUTCOME: ${{ job.status }}
+        run: |
+          mkdir -p work/ingestion
+          echo "Repository publication/job outcome: $PUBLICATION_OUTCOME" | tee work/ingestion/publication.txt >> "$GITHUB_STEP_SUMMARY"
+          if [ -f work/ingestion/stock.json ]; then
+            cat work/ingestion/stock.json >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ingestion-stock-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            work/ingestion/
+            research/datasets/ingested/
+          if-no-files-found: error

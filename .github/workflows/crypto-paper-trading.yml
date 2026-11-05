@@ -6,6 +6,10 @@ on:
     - cron: '30 23 * * *'
   workflow_dispatch:
 
+concurrency:
+  group: validated-market-data-publication
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
@@ -25,17 +29,42 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Validate and archive complete crypto inputs
+        run: python -m data_contracts.ingestion crypto
       - name: Run simulation-only memecoin paper trader
+        env:
+          MARKET_DATA_MANIFEST: research/datasets/ingested/crypto-latest.json
         run: python crypto_paper_trader.py
 
       - name: Save crypto paper state
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research/datasets/ingested/
           git add crypto_paper/state.json crypto_paper/journal.csv crypto_paper/latest_signals.csv crypto_paper/performance.csv
           if git diff --cached --quiet; then
             echo "No crypto paper-trading state changes to save."
           else
             git commit -m "Update memecoin paper-trading state [skip ci]"
+            git pull --rebase origin main
             git push
           fi
+
+      - name: Record ingestion and publication outcome
+        if: always()
+        env:
+          PUBLICATION_OUTCOME: ${{ job.status }}
+        run: |
+          mkdir -p work/ingestion
+          echo "Repository publication/job outcome: $PUBLICATION_OUTCOME" | tee work/ingestion/publication.txt >> "$GITHUB_STEP_SUMMARY"
+          if [ -f work/ingestion/crypto.json ]; then
+            cat work/ingestion/crypto.json >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ingestion-crypto-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            work/ingestion/
+            research/datasets/ingested/
+          if-no-files-found: error

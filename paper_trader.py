@@ -1,6 +1,6 @@
 import json
 import os
-from datetime import datetime, time, timedelta
+from datetime import datetime
 from zoneinfo import ZoneInfo
 
 import pandas as pd
@@ -20,7 +20,7 @@ JOURNAL_FILE = "paper/journal.csv"
 SIGNALS_FILE = "paper/latest_signals.csv"
 PERFORMANCE_FILE = "paper/performance.csv"
 MARKET_TIMEZONE = ZoneInfo("America/New_York")
-MAX_PRICE_AGE_DAYS = 4  # Allows weekends and a holiday; not an exchange calendar.
+MAX_PRICE_AGE_DAYS = 4  # Legacy additional bound; scheduled inputs also use the session contract.
 
 # Safety: simulation only. No brokerage connection or order submission exists.
 # Legacy CSVs keep the column name "date_utc", but new rows store the actual
@@ -49,6 +49,9 @@ def append_csv(path, rows):
 
 
 def get_data(ticker):
+    if os.environ.get("MARKET_DATA_MANIFEST"):
+        from data_contracts.ingestion import accepted_close
+        return accepted_close(ticker, os.environ["MARKET_DATA_MANIFEST"])
     data = yf.download(ticker, period="2y", interval="1d", auto_adjust=False, progress=False)
     return extract_close(data, ticker)
 
@@ -85,7 +88,8 @@ def main():
     dates = {}
     now = datetime.now(MARKET_TIMEZONE)
     today = now.date()
-    completed_through = today if now.time() >= time(16) else today - timedelta(days=1)
+    from data_contracts.sessions import latest_completed
+    completed_through = latest_completed(now, "stock")
 
     for ticker in TICKERS:
         try:

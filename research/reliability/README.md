@@ -67,7 +67,9 @@ and retained source evidence; a ticker substitution alone is not sufficient.
    preserving the existing detailed status artifact. It still checks full coverage.
 4. Crypto output publication runs even after a failed validation, preserving raw
    provider evidence like the stock workflow. Existing ingestion outcome/artifact
-   steps still run and the job remains failed. No failed input is accepted.
+   steps still run and the job remains failed. Account outputs are staged only if
+   the simulation step succeeds; failed/skipped simulations publish evidence only.
+   No failed input is accepted.
 
 The stock ledger contains two September 18 rows and September 19 → September 18
 out-of-order dates. The new guard therefore also blocks stocks after provider
@@ -141,4 +143,7 @@ preservation and visible diagnostics; crypto replay across Chicago midnight and
 new UTC sessions on the same Chicago date; ledger duplicates, order, canonical
 labels, read errors, backward sessions and unchanged stock state/journals.
 Run the full Python suite, required compileall, roadmap gate and hosted PR checks.
+Local validation: all 195 Python tests passed, including execution of the workflow
+publication script with success/failure/skipped outcomes and a recording Git stub.
+Required compilation, roadmap consistency and whitespace checks passed.
 Hosted CI proves software behavior, not recovered provider coverage or profitability.

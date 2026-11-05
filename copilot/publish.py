@@ -94,7 +94,7 @@ def publish(root=Path('.'), now=None):
     try:
         digest, rows = verified(root, now)
         quality, reason = 'VERIFIED', 'Complete accepted universe; raw responses, snapshots and export agree. Provider identity is trusted through the configured collector, not independently attested.'
-    except (ValueError, KeyError, TypeError, OSError) as error:
+    except (ValueError, KeyError, TypeError, OSError, IndexError, AttributeError, OverflowError) as error:
         digest, rows, quality = None, {}, 'BLOCKED'
         reason = 'Accepted evidence unavailable or invalid (' + type(error).__name__ + '). See ingestion diagnostics; legacy chart CSVs cannot establish verification.'
     try:
@@ -114,6 +114,7 @@ def publish(root=Path('.'), now=None):
                            bundle_sha256=digest, bars=bars,
                            volume_profile='Historical candle approximation only; unvalidated saved profiles are excluded from signal votes.',
                            evaluation='PENDING — no future outcomes evaluated',
+                           code_version=subprocess.check_output(['git','rev-parse','HEAD'], cwd=Path(__file__).resolve().parents[1], text=True).strip(),
                            implementation_sha256=hashlib.sha256(b''.join((Path(__file__).resolve().parents[1]/p).read_bytes() for p in ('copilot/publish.py','docs/chart_intelligence.js','docs/copilot_engine.js'))).hexdigest())
         # Reuse the exact frontend indicator implementation and signal rules.
         script = "const fs=require('fs'), e=require('./docs/copilot_engine.js'); const x=JSON.parse(fs.readFileSync(0,'utf8'));process.stdout.write(JSON.stringify(e.assess(x,Date.parse(x.observed_at))));"

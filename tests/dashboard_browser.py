@@ -10,6 +10,7 @@ import csv
 import json
 import shutil
 from playwright.sync_api import sync_playwright, expect
+from browser_runtime import launch_chromium
 
 ROOT = Path(__file__).resolve().parents[1]
 (ROOT / 'work').mkdir(exist_ok=True)

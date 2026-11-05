@@ -5,11 +5,14 @@ Synthetic fixtures exercise UI states, never claim verified historical outcomes.
 from datetime import datetime, timezone
 import hashlib
 import json
+import platform
+from importlib.metadata import version
 from pathlib import Path
 import subprocess
 import sys
 from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright, expect
+from browser_runtime import launch_chromium
 from PIL import Image, ImageChops
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -33,8 +36,10 @@ def record():
 
 
 with sync_playwright() as p:
-    browser=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox'])
-    page=browser.new_page(viewport={'width':1280,'height':900},device_scale_factor=1)
+    browser=launch_chromium(p)
+    page=browser.new_page(viewport={'width':1280,'height':900},device_scale_factor=1,
+                          locale='en-US',timezone_id='UTC',color_scheme='dark',reduced_motion='reduce')
+    measurements=[];visual_failures=[]
     page.clock.install(time=datetime(2026,11,4,23,tzinfo=timezone.utc))
     errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
     def route(r):
@@ -62,6 +67,8 @@ with sync_playwright() as p:
             expect(page.locator('#cp-signal')).to_have_attribute('data-state',state)
             expect(page.locator('#cp-profile')).to_contain_text('APPROXIMATE')
             page.locator('#ai-copilot').scroll_into_view_if_needed()
+            assert page.evaluate('innerWidth')==width
+            assert page.evaluate('devicePixelRatio')==1
             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
             for control in page.locator('#ai-copilot select,#ai-copilot input,#ai-copilot textarea,#ai-copilot button').all():
                 assert control.bounding_box()['height']>=44
@@ -72,13 +79,36 @@ with sync_playwright() as p:
             page.locator('#ai-copilot').screenshot(path=str(target),animations='disabled')
             baseline=BASE/target.name
             if '--update' in sys.argv:baseline.write_bytes(target.read_bytes())
-            assert baseline.exists(),f'Missing baseline: {baseline}; review and use --update'
-            a,b=Image.open(target).convert('RGB'),Image.open(baseline).convert('RGB')
-            assert a.size==b.size,f'Visual dimensions changed: {target.name}'
-            diff=ImageChops.difference(a,b)
-            # Small renderer anti-alias variation allowed; layout/color changes fail.
-            changed=sum(max(pixel)>25 for pixel in diff.getdata())
-            assert changed/(a.width*a.height)<0.001,f'Visual regression {target.name}: {changed} pixels'
+            # Capture actual fonts, not just CSS fallback lists, for actionable CI failures.
+            cdp=page.context.new_cdp_session(page)
+            cdp.send('DOM.enable');cdp.send('CSS.enable')
+            doc=cdp.send('DOM.getDocument');fonts={}
+            for selector in ['#cp-explanation','#cp-heading','#cp-signal']:
+                node=cdp.send('DOM.querySelector',{'nodeId':doc['root']['nodeId'],'selector':selector})
+                fonts[selector]=cdp.send('CSS.getPlatformFontsForNode',{'nodeId':node['nodeId']})['fonts']
+            cdp.detach()
+            measurement={'case':target.name,'browser':browser.version,'playwright':version('playwright'),
+                         'platform':platform.platform(),'viewport':page.viewport_size,
+                         'device_scale_factor':page.evaluate('devicePixelRatio'),
+                         'scroll_width':page.evaluate('document.documentElement.scrollWidth'),
+                         'panel':page.locator('#ai-copilot').bounding_box(),'fonts':fonts}
+            try:
+                assert baseline.exists(),f'Missing baseline: {baseline}; review and use --update'
+                a,b=Image.open(target).convert('RGB'),Image.open(baseline).convert('RGB')
+                measurement.update(actual_size=a.size,expected_size=b.size)
+                assert a.size==b.size,f'Visual dimensions changed: {target.name}: actual {a.size}, expected {b.size}'
+                diff=ImageChops.difference(a,b)
+                diff.save(OUT/f'{target.stem}-diff.png')
+                # Preserve the existing exact-size check and 0.1% pixel threshold.
+                changed=sum(max(pixel)>25 for pixel in diff.getdata())
+                measurement['changed_pixels']=changed
+                assert changed/(a.width*a.height)<0.001,f'Visual regression {target.name}: {changed} pixels'
+            except AssertionError as error:
+                visual_failures.append(str(error))
+                measurement['failure']=str(error)
+            measurements.append(measurement)
+            (OUT/'measurements.json').write_text(json.dumps(measurements,indent=2)+'\n')
+            print(json.dumps(measurement),flush=True)
     for state in ['STALE','MISSING','TAMPER']:
         mode=state;page.reload();expect(page.locator('#cp-signal')).to_have_attribute('data-state','WAIT')
     mode='BUY';page.reload();expect(page.locator('#cp-signal')).to_have_attribute('data-state','BUY')
@@ -107,4 +137,6 @@ with sync_playwright() as p:
     page.locator('#cp-image').set_input_files(str(tiny));expect(page.locator('#cp-image-status')).to_contain_text('REJECTED')
     assert not errors,errors
     browser.close()
+    assert len(measurements)==6, 'All six visual cases must run'
+    assert not visual_failures, '\n'.join(visual_failures)
 print('PASS: six screenshot baselines; mobile reflow/touch/keyboard; BUY/SELL/WAIT; expiry/missing/tamper; local-only uploads, invalid formats, clearing and injection safety')

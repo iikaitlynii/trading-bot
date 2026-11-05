@@ -5,6 +5,7 @@ import shutil
 from pathlib import Path
 from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright, expect
+from browser_runtime import launch_chromium
 
 ROOT=Path(__file__).resolve().parents[1]
 fixtures=json.loads((ROOT/'work/discovery-fixtures.json').read_text())

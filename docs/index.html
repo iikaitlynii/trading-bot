@@ -15,6 +15,7 @@ header .brand{font-family:Georgia,'Times New Roman',serif;font-size:19px;letter-
 <a href="#weekly-report">Reports</a>
 <a href="#chart-intelligence">Chart intelligence</a>
 <a href="#strategy-discovery">Strategy Discovery Lab</a>
+<a href="#ai-copilot">AI Copilot</a>
 <a href="#volume-profile">Volume Profile</a>
 <a href="#trade-history">Trade history</a>
 <p class="small muted">Saved simulations and historical research. No live orders.</p>
@@ -78,9 +79,31 @@ header .brand{font-family:Georgia,'Times New Roman',serif;font-size:19px;letter-
 <p>SMA: arithmetic mean of closes (20/50 bars). RSI14: 100 − 100/(1 + mean gains/mean losses) over 14 changes; flat=50, no losses=100. This is simple-window RSI, not Wilder smoothing. ATR14: mean of max(high−low, |high−previous close|, |low−previous close|) over 14 bars. Bands: SMA20 ± 2 population standard deviations. Warmups remain missing.</p></details>
 </section>
 <footer>Research and education only. No brokerage connection, trade execution, or guaranteed returns. This page displays saved GitHub data and may lag market prices. <a href="https://github.com/iikaitlynii/trading-bot" rel="noopener noreferrer">View source repository</a>.</footer>
+<section class="card copilot" id="ai-copilot" tabindex="-1" aria-labelledby="cp-heading" style="margin-top:14px">
+<h2 id="cp-heading" class="section-title">AI Trading Copilot · paper simulation</h2>
+<p>Educational rule-based explanations. No model service is connected. No guaranteed outcome, real-money instruction or order execution.</p>
+<label for="cp-symbol">Chart symbol</label>
+<select id="cp-symbol"><option>AAPL</option><option>MSFT</option><option>NVDA</option><option>AMZN</option></select>
+<div aria-live="polite" role="status"><div id="cp-signal" data-state="WAIT">⏸ WAIT</div><p id="cp-explanation">Waiting for verified evidence.</p><p id="cp-metadata">Timeframe: 1d · Observation unavailable</p><p id="cp-quality">MISSING — WAIT</p></div>
+<h3>Why this state?</h3><ul id="cp-conditions"></ul><p id="cp-indicators"></p>
+<h3>Uncertainty</h3><p id="cp-uncertainty">No accuracy or profitability established.</p>
+<h3>Invalidation conditions</h3><p id="cp-invalidation">Missing or unverified inputs invalidate directional setups.</p>
+<h3>Hypothetical scenarios</h3><p id="cp-scenarios"></p>
+<h3>Volume Profile context</h3><p id="cp-profile">Unavailable; never an exact transaction-level measurement.</p><p><a href="#chart-intelligence">Market Intelligence formulas and charts</a> · <a href="#volume-profile">Volume Profile methodology</a></p>
+<h3>Private screenshot context</h3>
+<p id="cp-upload-help">Images stay in browser memory and are never sent or saved by this feature. PNG/JPEG/WebP, up to 5 MiB and 16 megapixels. Automatic chart recognition is not configured. Screenshot evidence always means WAIT. Clear removes this feature's preview and notes.</p>
+<label for="cp-image">Choose a private chart screenshot</label><input id="cp-image" type="file" accept="image/png,image/jpeg,image/webp" aria-describedby="cp-upload-help">
+<p id="cp-image-status" role="status">No screenshot selected.</p><img id="cp-preview" alt="Private chart screenshot preview; unverified evidence" hidden>
+<label for="cp-labels">Visible symbol, timeframe and indicator labels (your unverified notes)</label><textarea id="cp-labels" maxlength="500" rows="3" placeholder="Only labels you can read; leave unclear information unknown."></textarea>
+<button id="cp-return" type="button">Clear screenshot / return to verified data</button>
+<h3>Observation archive</h3><p id="cp-record">No observation loaded.</p>
+<p>Original observations are frozen before later evaluation. Outcome evaluation, accuracy, drawdowns and modeled transaction costs are pending. No historical success is implied.</p>
+<details><summary>Optional TradingView alerts · NOT CONFIGURED</summary><p>GitHub Pages cannot receive authenticated private webhooks. A separately approved HTTPS backend must validate authentication, freshness, schema, symbols/timeframes, replay and rate limits, then independently verify market data. No alert endpoint or secret is configured; alert input cannot create a directional state.</p></details>
+</section>
+
 </main>
 </div>
-<script src="chart_intelligence.js" defer></script><script src="video_discovery.js" defer></script>
+<script src="chart_intelligence.js" defer></script><script src="copilot_engine.js" defer></script><script src="copilot.js" defer></script><script src="video_discovery.js" defer></script>
 <script>
 "use strict";
 const REPO="https://raw.githubusercontent.com/iikaitlynii/trading-bot/main/";

@@ -133,3 +133,109 @@ class IngestionTests(unittest.TestCase):
         snapshot, _ = parse(json.dumps(data).encode(), 'AAPL', 'stock', as_of, as_of, 'test')
         self.assertEqual(snapshot.provenance.end, '2026-11-27')
         self.assertNotIn('2026-11-26', [b.session for b in snapshot.bars])
+
+    def test_consumer_rejects_corrupt_linked_export(self):
+        import os
+        from data_contracts.ingestion import accepted_close
+        class Clock(datetime):
+            @classmethod
+            def now(cls, tz=None): return NOW
+        with tempfile.TemporaryDirectory() as directory:
+            previous = os.getcwd()
+            os.chdir(directory)
+            try:
+                manifest = collect('crypto', clock=lambda: NOW,
+                                   fetch=lambda s: (200, response(s)), code_version='test')
+                Path(manifest['export']).write_bytes(b'corrupt export')
+                with patch('data_contracts.ingestion.datetime', Clock):
+                    with self.assertRaisesRegex(ValueError, 'EXPORT_HASH_MISMATCH'):
+                        accepted_close('PEPE-USD', 'research/datasets/ingested/crypto-latest.json')
+            finally:
+                os.chdir(previous)
+
+    def test_atomic_writers_use_independent_staging_files(self):
+        from data_contracts.ingestion import atomic
+        import os
+        from concurrent.futures import ThreadPoolExecutor
+        from threading import Event
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory)/'accepted.json'
+            path.write_bytes(b'previous')
+            first_ready, second_done = Event(), Event()
+            replace = os.replace
+            def interleave(source, target):
+                if Path(source).read_bytes() == b'first':
+                    first_ready.set()
+                    if not second_done.wait(5):
+                        raise RuntimeError('second writer did not finish')
+                replace(source, target)
+            with patch('data_contracts.ingestion.os.replace', side_effect=interleave):
+                with ThreadPoolExecutor(max_workers=2) as pool:
+                    first = pool.submit(atomic, path, b'first')
+                    self.assertTrue(first_ready.wait(5))
+                    try:
+                        atomic(path, b'second')
+                    finally:
+                        second_done.set()
+                    first.result(timeout=5)
+            self.assertEqual(path.read_bytes(), b'first')
+            self.assertEqual(list(Path(directory).iterdir()), [path])
+
+    def test_actual_replace_failure_keeps_previous_pointer_and_cleans_staging(self):
+        from data_contracts.ingestion import atomic
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory)/'accepted.json'
+            path.write_bytes(b'previous')
+            with patch('data_contracts.ingestion.os.replace', side_effect=OSError('replace failed')):
+                with self.assertRaisesRegex(OSError, 'replace failed'):
+                    atomic(path, b'new')
+            self.assertEqual(path.read_bytes(), b'previous')
+            self.assertEqual(list(Path(directory).iterdir()), [path])
+
+    def test_stock_publication_rejects_corrupt_export(self):
+        import stock_history_research as collector
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            output = root/'stock_history.csv'
+            output.write_bytes(b'previous accepted history')
+            export = root/('0'*64 + '.csv')
+            export.write_bytes(b'corrupt export')
+            with patch.object(collector, 'ROOT', root), patch.object(collector, 'OUT', output), patch.object(
+                    collector, 'collect', return_value={'export': export.name}):
+                with self.assertRaisesRegex(ValueError, 'EXPORT_HASH_MISMATCH'):
+                    collector.main()
+            self.assertEqual(output.read_bytes(), b'previous accepted history')
+
+    def test_consumer_rejects_stale_bundle_and_corrupt_raw_response(self):
+        import os
+        from data_contracts.ingestion import accepted_close
+        class Tomorrow(datetime):
+            @classmethod
+            def now(cls, tz=None): return NOW + timedelta(days=1)
+        class Today(datetime):
+            @classmethod
+            def now(cls, tz=None): return NOW
+        with tempfile.TemporaryDirectory() as directory:
+            previous = os.getcwd()
+            os.chdir(directory)
+            try:
+                manifest = collect('crypto', clock=lambda: NOW,
+                                   fetch=lambda s: (200, response(s)), code_version='test')
+                pointer = 'research/datasets/ingested/crypto-latest.json'
+                with patch('data_contracts.ingestion.datetime', Tomorrow):
+                    with self.assertRaisesRegex(ValueError, 'STALE_OR_MISMATCHED_BUNDLE'):
+                        accepted_close('PEPE-USD', pointer)
+                raw = Path(manifest['symbols']['PEPE-USD']['raw_path'])
+                raw.write_bytes(b'corrupt response')
+                with patch('data_contracts.ingestion.datetime', Today):
+                    with self.assertRaisesRegex(ValueError, 'RAW_HASH_MISMATCH'):
+                        accepted_close('PEPE-USD', pointer)
+                import crypto_paper_trader as crypto
+                import paper_trader as stock
+                with patch.dict(os.environ, {'MARKET_DATA_MANIFEST': pointer}), patch.object(
+                        crypto.yf, 'download', side_effect=AssertionError('download fallback')):
+                    for getter in (crypto.get_close, stock.get_data):
+                        with self.assertRaisesRegex(ValueError, 'RAW_HASH_MISMATCH'):
+                            getter('PEPE-USD')
+            finally:
+                os.chdir(previous)

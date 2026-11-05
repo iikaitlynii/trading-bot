@@ -10,6 +10,7 @@ import os
 from pathlib import Path
 import platform
 import subprocess
+import tempfile
 import urllib.error
 import urllib.request
 from zoneinfo import ZoneInfo
@@ -24,12 +25,18 @@ UNIVERSES = {'stock': ('AAPL', 'MSFT', 'NVDA', 'AMZN'),
 def atomic(path, payload):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_suffix(path.suffix + '.tmp')
+    # Each writer owns its staging file; concurrent writers must not overwrite
+    # or unlink one another's payload before the atomic replacement.
+    temporary = None
     try:
-        temporary.write_bytes(payload)
+        with tempfile.NamedTemporaryFile(dir=path.parent, prefix=path.name + '.',
+                                         suffix='.tmp', delete=False) as stream:
+            temporary = Path(stream.name)
+            stream.write(payload)
         os.replace(temporary, path)
     finally:
-        temporary.unlink(missing_ok=True)
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
 
 
 def archive_bytes(payload, directory, suffix):
@@ -42,6 +49,15 @@ def archive_bytes(payload, directory, suffix):
         if path.read_bytes() != payload:
             raise ContractError(('HASH_MISMATCH',))
     return path
+
+
+def verified_export(path):
+    """Reject modified HLCV bytes before consumption or legacy publication."""
+    path = Path(path)
+    payload = path.read_bytes()
+    if path.name != hashlib.sha256(payload).hexdigest() + '.csv':
+        raise ValueError('EXPORT_HASH_MISMATCH')
+    return payload
 
 
 def download(symbol):
@@ -170,6 +186,7 @@ def accepted_close(ticker, manifest_path):
     market = manifest['market']
     if set(manifest['snapshots']) != set(UNIVERSES[market]):
         raise ValueError('MISSING_SYMBOLS')
+    verified_export(manifest['export'])
     for evidence in manifest['symbols'].values():
         raw = Path(evidence['raw_path'])
         if raw.name != hashlib.sha256(raw.read_bytes()).hexdigest() + '.response':

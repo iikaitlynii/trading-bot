@@ -158,3 +158,12 @@ Local validation: all 195 Python tests passed, including execution of the workfl
 publication script with success/failure/skipped outcomes and a recording Git stub.
 Required compilation, roadmap consistency and whitespace checks passed.
 Hosted CI proves software behavior, not recovered provider coverage or profitability.
+
+## Historical recovery follow-up
+
+[Recovery v1 evidence and decision](recovery-v1/README.md) traces the three disputed
+stock rows, corroborating later provider dates, original workflow logs and fresh
+crypto null-bar failures. Zero corrections or symbol mappings are accepted; both
+accounts remain blocked. Originals and health warnings are preserved. Run the
+read-only evidence verifier with `python -m research.reliability.recovery` (exit 2
+means the evidence is verified but reconciliation remains blocked).

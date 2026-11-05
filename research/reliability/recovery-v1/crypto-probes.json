@@ -1,0 +1,430 @@
+{
+  "probes": [
+    {
+      "contract_error": "PROVIDER_REJECTED: {\"code\": \"Not Found\", \"description\": \"No data found, symbol may be delisted\"}",
+      "endpoint": "https://query1.finance.yahoo.com/v8/finance/chart/PEPE-USD?range=2y&interval=1d",
+      "http_status": 404,
+      "raw_path": "research/reliability/recovery-v1/evidence/f0b5f9feeac9f1fc93c31b1edc03fbc1fda4acb3ec5e233ebb39d6f8b66e1769.response",
+      "request_started_at": "2026-11-05T02:57:30.557558+00:00",
+      "retrieved_at": "2026-11-05T02:57:30.738296+00:00",
+      "sha256": "f0b5f9feeac9f1fc93c31b1edc03fbc1fda4acb3ec5e233ebb39d6f8b66e1769",
+      "status": "BLOCKED",
+      "symbol": "PEPE-USD"
+    },
+    {
+      "contract_error": "INVALID_OHLCV: null or nonfinite value",
+      "coverage_audit": {
+        "basis": "provider raw OHLCV only; not accepted data",
+        "first_completed_date": "2024-11-05",
+        "independent_price_consistency": "UNVERIFIED: no synchronized independent source or authenticated legacy PEPE responses",
+        "invalid_ohlcv_dates": [
+          "2026-11-04"
+        ],
+        "last_completed_date": "2026-11-04",
+        "last_valid_date": "2026-11-03",
+        "max_valid_close": 2.5999999706982635e-05,
+        "min_valid_close": 1.9999999949504854e-06,
+        "missing_calendar_dates": [],
+        "valid_observations": 729
+      },
+      "duplicate_timestamps": [],
+      "endpoint": "https://query1.finance.yahoo.com/v8/finance/chart/PEPE24478-USD?range=2y&interval=1d",
+      "http_status": 200,
+      "invalid_completed_observations": [
+        {
+          "non_midnight": false,
+          "null_fields": [
+            "high",
+            "low",
+            "close",
+            "open",
+            "volume"
+          ],
+          "timestamp": 1793750400,
+          "utc": "2026-11-04T00:00:00+00:00"
+        }
+      ],
+      "metadata": {
+        "chartPreviousClose": 9e-06,
+        "currency": "USD",
+        "currentTradingPeriod": {
+          "post": {
+            "end": 1793923140,
+            "gmtoffset": 0,
+            "start": 1793923140,
+            "timezone": "UTC"
+          },
+          "pre": {
+            "end": 1793836800,
+            "gmtoffset": 0,
+            "start": 1793836800,
+            "timezone": "UTC"
+          },
+          "regular": {
+            "end": 1793923140,
+            "gmtoffset": 0,
+            "start": 1793836800,
+            "timezone": "UTC"
+          }
+        },
+        "dataGranularity": "1d",
+        "exchangeName": "CCC",
+        "exchangeTimezoneName": "UTC",
+        "fiftyTwoWeekHigh": 7e-06,
+        "fiftyTwoWeekLow": 2e-06,
+        "firstTradeDate": 1681689600,
+        "fullExchangeName": "CCC",
+        "fulldayChange": 2.8e-07,
+        "fulldayChangePercent": 5.857745,
+        "fulldayPrice": 5.06e-06,
+        "gmtoffset": 0,
+        "hasPrePostMarketData": false,
+        "instrumentType": "CRYPTOCURRENCY",
+        "longName": "Pepe USD",
+        "priceHint": 5,
+        "range": "2y",
+        "regularMarketChangePercent": 5.857745,
+        "regularMarketDayHigh": 5.0526e-06,
+        "regularMarketDayLow": 4.9589e-06,
+        "regularMarketPrice": 5.06e-06,
+        "regularMarketTime": 1793847435,
+        "regularMarketVolume": 619302592,
+        "shortName": "Pepe USD",
+        "symbol": "PEPE24478-USD",
+        "timezone": "UTC",
+        "validRanges": [
+          "1d",
+          "5d",
+          "1mo",
+          "3mo",
+          "6mo",
+          "1y",
+          "2y",
+          "5y",
+          "ytd",
+          "max"
+        ]
+      },
+      "raw_path": "research/reliability/recovery-v1/evidence/ac607b467bed515354cb713b30f7185d60002aeb1961be48c2f7780b52fc049c.response",
+      "request_started_at": "2026-11-05T02:57:30.738611+00:00",
+      "retrieved_at": "2026-11-05T02:57:30.934899+00:00",
+      "sha256": "ac607b467bed515354cb713b30f7185d60002aeb1961be48c2f7780b52fc049c",
+      "status": "BLOCKED",
+      "symbol": "PEPE24478-USD",
+      "timestamp_count": 731,
+      "timestamps_ordered": true
+    },
+    {
+      "contract_error": "INVALID_OHLCV: null or nonfinite value",
+      "coverage_audit": {
+        "basis": "provider raw OHLCV only; not accepted data",
+        "first_completed_date": "2024-11-05",
+        "independent_price_consistency": "UNVERIFIED: no synchronized independent source or authenticated legacy PEPE responses",
+        "invalid_ohlcv_dates": [
+          "2026-11-04"
+        ],
+        "last_completed_date": "2026-11-04",
+        "last_valid_date": "2026-11-03",
+        "max_valid_close": 0.4672969877719879,
+        "min_valid_close": 0.06898800283670425,
+        "missing_calendar_dates": [],
+        "valid_observations": 729
+      },
+      "duplicate_timestamps": [],
+      "endpoint": "https://query1.finance.yahoo.com/v8/finance/chart/DOGE-USD?range=2y&interval=1d",
+      "http_status": 200,
+      "invalid_completed_observations": [
+        {
+          "non_midnight": false,
+          "null_fields": [
+            "volume",
+            "open",
+            "high",
+            "close",
+            "low"
+          ],
+          "timestamp": 1793750400,
+          "utc": "2026-11-04T00:00:00+00:00"
+        }
+      ],
+      "metadata": {
+        "chartPreviousClose": 0.17018,
+        "currency": "USD",
+        "currentTradingPeriod": {
+          "post": {
+            "end": 1793923140,
+            "gmtoffset": 0,
+            "start": 1793923140,
+            "timezone": "UTC"
+          },
+          "pre": {
+            "end": 1793836800,
+            "gmtoffset": 0,
+            "start": 1793836800,
+            "timezone": "UTC"
+          },
+          "regular": {
+            "end": 1793923140,
+            "gmtoffset": 0,
+            "start": 1793836800,
+            "timezone": "UTC"
+          }
+        },
+        "dataGranularity": "1d",
+        "exchangeName": "CCC",
+        "exchangeTimezoneName": "UTC",
+        "fiftyTwoWeekHigh": 0.185346,
+        "fiftyTwoWeekLow": 0.067973,
+        "firstTradeDate": 1510185600,
+        "fullExchangeName": "CCC",
+        "fulldayChange": 0.00404,
+        "fulldayChangePercent": 5.532735,
+        "fulldayPrice": 0.07706,
+        "gmtoffset": 0,
+        "hasPrePostMarketData": false,
+        "instrumentType": "CRYPTOCURRENCY",
+        "longName": "Dogecoin USD",
+        "priceHint": 5,
+        "range": "2y",
+        "regularMarketChangePercent": 5.532735,
+        "regularMarketDayHigh": 0.07719502,
+        "regularMarketDayLow": 0.07663501,
+        "regularMarketPrice": 0.07706,
+        "regularMarketTime": 1793847444,
+        "regularMarketVolume": 752000064,
+        "shortName": "Dogecoin USD",
+        "symbol": "DOGE-USD",
+        "timezone": "UTC",
+        "validRanges": [
+          "1d",
+          "5d",
+          "1mo",
+          "3mo",
+          "6mo",
+          "1y",
+          "2y",
+          "5y",
+          "10y",
+          "ytd",
+          "max"
+        ]
+      },
+      "raw_path": "research/reliability/recovery-v1/evidence/ec2a5498224867d7ebdf7ceaf7e19e3914a8178c73cb195892815cb13c104117.response",
+      "request_started_at": "2026-11-05T02:57:30.940733+00:00",
+      "retrieved_at": "2026-11-05T02:57:31.115962+00:00",
+      "sha256": "ec2a5498224867d7ebdf7ceaf7e19e3914a8178c73cb195892815cb13c104117",
+      "status": "BLOCKED",
+      "symbol": "DOGE-USD",
+      "timestamp_count": 731,
+      "timestamps_ordered": true
+    },
+    {
+      "contract_error": "INVALID_OHLCV: null or nonfinite value",
+      "coverage_audit": {
+        "basis": "provider raw OHLCV only; not accepted data",
+        "first_completed_date": "2024-11-05",
+        "independent_price_consistency": "UNVERIFIED: no synchronized independent source or authenticated legacy PEPE responses",
+        "invalid_ohlcv_dates": [
+          "2026-11-04"
+        ],
+        "last_completed_date": "2026-11-04",
+        "last_valid_date": "2026-11-03",
+        "max_valid_close": 3.300000025774352e-05,
+        "min_valid_close": 3.999999989900971e-06,
+        "missing_calendar_dates": [],
+        "valid_observations": 729
+      },
+      "duplicate_timestamps": [],
+      "endpoint": "https://query1.finance.yahoo.com/v8/finance/chart/SHIB-USD?range=2y&interval=1d",
+      "http_status": 200,
+      "invalid_completed_observations": [
+        {
+          "non_midnight": false,
+          "null_fields": [
+            "open",
+            "low",
+            "high",
+            "close",
+            "volume"
+          ],
+          "timestamp": 1793750400,
+          "utc": "2026-11-04T00:00:00+00:00"
+        }
+      ],
+      "metadata": {
+        "chartPreviousClose": 1.8e-05,
+        "currency": "USD",
+        "currentTradingPeriod": {
+          "post": {
+            "end": 1793923140,
+            "gmtoffset": 0,
+            "start": 1793923140,
+            "timezone": "UTC"
+          },
+          "pre": {
+            "end": 1793836800,
+            "gmtoffset": 0,
+            "start": 1793836800,
+            "timezone": "UTC"
+          },
+          "regular": {
+            "end": 1793923140,
+            "gmtoffset": 0,
+            "start": 1793836800,
+            "timezone": "UTC"
+          }
+        },
+        "dataGranularity": "1d",
+        "exchangeName": "CCC",
+        "exchangeTimezoneName": "UTC",
+        "fiftyTwoWeekHigh": 1e-05,
+        "fiftyTwoWeekLow": 4e-06,
+        "firstTradeDate": 1596240000,
+        "fullExchangeName": "CCC",
+        "fulldayChange": 2.4e-07,
+        "fulldayChangePercent": 5.3215017,
+        "fulldayPrice": 4.75e-06,
+        "gmtoffset": 0,
+        "hasPrePostMarketData": false,
+        "instrumentType": "CRYPTOCURRENCY",
+        "longName": "Shiba Inu USD",
+        "priceHint": 5,
+        "range": "2y",
+        "regularMarketChangePercent": 5.3215017,
+        "regularMarketDayHigh": 4.7543e-06,
+        "regularMarketDayLow": 4.7098e-06,
+        "regularMarketPrice": 4.75e-06,
+        "regularMarketTime": 1793847440,
+        "regularMarketVolume": 53609940,
+        "shortName": "Shiba Inu USD",
+        "symbol": "SHIB-USD",
+        "timezone": "UTC",
+        "validRanges": [
+          "1d",
+          "5d",
+          "1mo",
+          "3mo",
+          "6mo",
+          "1y",
+          "2y",
+          "5y",
+          "10y",
+          "ytd",
+          "max"
+        ]
+      },
+      "raw_path": "research/reliability/recovery-v1/evidence/b282891fe4f74df2975a6771ef2524d8a484086834d62581d11afb5c130d2eee.response",
+      "request_started_at": "2026-11-05T02:57:31.122355+00:00",
+      "retrieved_at": "2026-11-05T02:57:31.272336+00:00",
+      "sha256": "b282891fe4f74df2975a6771ef2524d8a484086834d62581d11afb5c130d2eee",
+      "status": "BLOCKED",
+      "symbol": "SHIB-USD",
+      "timestamp_count": 731,
+      "timestamps_ordered": true
+    },
+    {
+      "contract_error": "INVALID_OHLCV: null or nonfinite value",
+      "coverage_audit": {
+        "basis": "provider raw OHLCV only; not accepted data",
+        "first_completed_date": "2024-11-05",
+        "independent_price_consistency": "UNVERIFIED: no synchronized independent source or authenticated legacy PEPE responses",
+        "invalid_ohlcv_dates": [
+          "2026-11-04"
+        ],
+        "last_completed_date": "2026-11-04",
+        "last_valid_date": "2026-11-03",
+        "max_valid_close": 5.400000009103678e-05,
+        "min_valid_close": 1.9999999949504854e-06,
+        "missing_calendar_dates": [],
+        "valid_observations": 729
+      },
+      "duplicate_timestamps": [],
+      "endpoint": "https://query1.finance.yahoo.com/v8/finance/chart/BONK-USD?range=2y&interval=1d",
+      "http_status": 200,
+      "invalid_completed_observations": [
+        {
+          "non_midnight": false,
+          "null_fields": [
+            "low",
+            "open",
+            "high",
+            "volume",
+            "close"
+          ],
+          "timestamp": 1793750400,
+          "utc": "2026-11-04T00:00:00+00:00"
+        }
+      ],
+      "metadata": {
+        "chartPreviousClose": 1.9e-05,
+        "currency": "USD",
+        "currentTradingPeriod": {
+          "post": {
+            "end": 1793923140,
+            "gmtoffset": 0,
+            "start": 1793923140,
+            "timezone": "UTC"
+          },
+          "pre": {
+            "end": 1793836800,
+            "gmtoffset": 0,
+            "start": 1793836800,
+            "timezone": "UTC"
+          },
+          "regular": {
+            "end": 1793923140,
+            "gmtoffset": 0,
+            "start": 1793836800,
+            "timezone": "UTC"
+          }
+        },
+        "dataGranularity": "1d",
+        "exchangeName": "CCC",
+        "exchangeTimezoneName": "UTC",
+        "fiftyTwoWeekHigh": 1.4e-05,
+        "fiftyTwoWeekLow": 2e-06,
+        "firstTradeDate": 1672358400,
+        "fullExchangeName": "CCC",
+        "fulldayChange": 2.5e-07,
+        "fulldayChangePercent": 8.928575,
+        "fulldayPrice": 3.05e-06,
+        "gmtoffset": 0,
+        "hasPrePostMarketData": false,
+        "instrumentType": "CRYPTOCURRENCY",
+        "longName": "Bonk USD",
+        "priceHint": 5,
+        "range": "2y",
+        "regularMarketChangePercent": 8.928575,
+        "regularMarketDayHigh": 3.0513e-06,
+        "regularMarketDayLow": 3.0253e-06,
+        "regularMarketPrice": 3.05e-06,
+        "regularMarketTime": 1793847450,
+        "regularMarketVolume": 47302560,
+        "shortName": "Bonk USD",
+        "symbol": "BONK-USD",
+        "timezone": "UTC",
+        "validRanges": [
+          "1d",
+          "5d",
+          "1mo",
+          "3mo",
+          "6mo",
+          "1y",
+          "2y",
+          "5y",
+          "ytd",
+          "max"
+        ]
+      },
+      "raw_path": "research/reliability/recovery-v1/evidence/82627cd21e93d59b8583b8b4af08614ea022388d3f64a6c42660089e113dd65e.response",
+      "request_started_at": "2026-11-05T02:57:31.280264+00:00",
+      "retrieved_at": "2026-11-05T02:57:31.476647+00:00",
+      "sha256": "82627cd21e93d59b8583b8b4af08614ea022388d3f64a6c42660089e113dd65e",
+      "status": "BLOCKED",
+      "symbol": "BONK-USD",
+      "timestamp_count": 731,
+      "timestamps_ordered": true
+    }
+  ],
+  "purpose": "investigation only; not accepted ingestion"
+}

@@ -1,0 +1,35 @@
+{
+  "cash": 3756.5225799110885,
+  "last_run_date": "2026-11-02",
+  "peak_equity": 10203.027473055918,
+  "positions": {
+    "AAPL": {
+      "entry_date": "2026-09-17",
+      "entry_price": 331.34,
+      "shares": 5.980853794328443
+    },
+    "AMZN": {
+      "entry_date": "2026-11-02",
+      "entry_price": 245.6300048828125,
+      "shares": 8.031821536126214
+    },
+    "MSFT": {
+      "entry_date": "2026-08-17",
+      "entry_price": 480.35,
+      "shares": 4.1636306859581556
+    }
+  },
+  "risk": {
+    "drawdown": 0.03320050428832748,
+    "drawdown_warning": false,
+    "equity": 9864.281815682802,
+    "exposure": 0.6191793127869935,
+    "invested": 6107.759235771713,
+    "limit_breach": true,
+    "weights": {
+      "AAPL": 0.20512821280970453,
+      "AMZN": 0.20000000000000004,
+      "MSFT": 0.21405109997728888
+    }
+  }
+}

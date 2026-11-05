@@ -1,0 +1,39 @@
+{
+  "accepted_corrections": [],
+  "candidate_sessions": [
+    "2026-09-16",
+    "2026-09-17",
+    "2026-09-18"
+  ],
+  "sources": [
+    {
+      "limitation": "Later Yahoo response, not a contemporaneous session capture; November 4 close is null so the complete response is not accepted ingestion.",
+      "path": "research/datasets/ingested/raw/0d52b79661c94b39d18eedc6a825828da66484d2f535d2ab5e710852b620ecff.response",
+      "provenance_run": "https://github.com/iikaitlynii/trading-bot/actions/runs/41954673207",
+      "sha256": "0d52b79661c94b39d18eedc6a825828da66484d2f535d2ab5e710852b620ecff",
+      "symbol": "MSFT"
+    },
+    {
+      "limitation": "Later Yahoo response, not a contemporaneous session capture; November 4 close is null so the complete response is not accepted ingestion.",
+      "path": "research/datasets/ingested/raw/742c73ccbfeb9505b68d21a6bc7e82c0f39946bad65e432a787ff54bdca4348e.response",
+      "provenance_run": "https://github.com/iikaitlynii/trading-bot/actions/runs/41954673207",
+      "sha256": "742c73ccbfeb9505b68d21a6bc7e82c0f39946bad65e432a787ff54bdca4348e",
+      "symbol": "AAPL"
+    },
+    {
+      "limitation": "Later Yahoo response, not a contemporaneous session capture; November 4 close is null so the complete response is not accepted ingestion.",
+      "path": "research/datasets/ingested/raw/834caeb790215a2ae52d36be649181bff2111ded76aa222b453a64ac6cb333fc.response",
+      "provenance_run": "https://github.com/iikaitlynii/trading-bot/actions/runs/41954673207",
+      "sha256": "834caeb790215a2ae52d36be649181bff2111ded76aa222b453a64ac6cb333fc",
+      "symbol": "AMZN"
+    },
+    {
+      "limitation": "Later Yahoo response, not a contemporaneous session capture; November 4 close is null so the complete response is not accepted ingestion.",
+      "path": "research/datasets/ingested/raw/9ab7102af6517aeb96a943941fdd376670dfbc8d407c3c936cbacd7bf767b9c5.response",
+      "provenance_run": "https://github.com/iikaitlynii/trading-bot/actions/runs/41954673207",
+      "sha256": "9ab7102af6517aeb96a943941fdd376670dfbc8d407c3c936cbacd7bf767b9c5",
+      "symbol": "NVDA"
+    }
+  ],
+  "status": "CORROBORATION_ONLY"
+}

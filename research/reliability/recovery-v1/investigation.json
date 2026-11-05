@@ -1,0 +1,284 @@
+{
+  "accepted_corrections": [],
+  "baseline_main": "c08ac45f8e9698889f15c022162633be0fab2f27",
+  "derived_reconciled_view": null,
+  "originals": {
+    "crypto_paper/journal.csv": {
+      "git_blob": "c35abbf52803c2bfd0954ddd9a7ec4c762199709",
+      "path": "research/reliability/recovery-v1/evidence/63dadcfbe9c290322c9989b30d1a7ba55fb1d373b0629533be2614d0a520c66a.source",
+      "sha256": "63dadcfbe9c290322c9989b30d1a7ba55fb1d373b0629533be2614d0a520c66a",
+      "source_commit": "f2dced5",
+      "source_path": "crypto_paper/journal.csv"
+    },
+    "crypto_paper/latest_signals.csv": {
+      "git_blob": "1b1635fca12e7707e4c946d11296d90ab171aee8",
+      "path": "research/reliability/recovery-v1/evidence/c97492b19442a3f10bb9da1c4ec12fb9aade237ca972b4e41333aafe76c477dd.source",
+      "sha256": "c97492b19442a3f10bb9da1c4ec12fb9aade237ca972b4e41333aafe76c477dd",
+      "source_commit": "f2dced5",
+      "source_path": "crypto_paper/latest_signals.csv"
+    },
+    "crypto_paper/performance.csv": {
+      "git_blob": "895f6a95c5ba818f5c74d6f6c2df6e0fb04861ea",
+      "path": "research/reliability/recovery-v1/evidence/639c0709adb95457a9b5925ab123939780751875509d2350dc1d084a272d29d8.source",
+      "sha256": "639c0709adb95457a9b5925ab123939780751875509d2350dc1d084a272d29d8",
+      "source_commit": "f2dced5",
+      "source_path": "crypto_paper/performance.csv"
+    },
+    "crypto_paper/state.json": {
+      "git_blob": "caead19a49000cd4266cfb1abbddc1d8e1749f29",
+      "path": "research/reliability/recovery-v1/evidence/9215780f022d44ef6dccee74c063c0cdc1c3878def2108b1f2823457c2950786.source",
+      "sha256": "9215780f022d44ef6dccee74c063c0cdc1c3878def2108b1f2823457c2950786",
+      "source_commit": "f2dced5",
+      "source_path": "crypto_paper/state.json"
+    },
+    "paper/journal.csv": {
+      "git_blob": "d059da3f3356fff91c1a8e2e8eb6de9c91245bbd",
+      "path": "research/reliability/recovery-v1/evidence/67a2f3c84eeb2e9fc61af14672869cdedaddbbd3e95329119441ec917a696856.source",
+      "sha256": "67a2f3c84eeb2e9fc61af14672869cdedaddbbd3e95329119441ec917a696856",
+      "source_commit": "f2dced5",
+      "source_path": "paper/journal.csv"
+    },
+    "paper/performance.csv": {
+      "git_blob": "a93d2c40cf4b9a8306a29354f500a84fd6092557",
+      "path": "research/reliability/recovery-v1/evidence/e792fe918f51687d636a35bf52c7520b3589b2448cc5c92591cc33825143bb4e.source",
+      "sha256": "e792fe918f51687d636a35bf52c7520b3589b2448cc5c92591cc33825143bb4e",
+      "source_commit": "f2dced5",
+      "source_path": "paper/performance.csv"
+    },
+    "paper/state.json": {
+      "git_blob": "b90b6fb2750a4dc247fcf95d70d00fad592c1e16",
+      "path": "research/reliability/recovery-v1/evidence/146cfc9f726b858464bb03cbf1eac557d27967b275452a44f70b112838725684.source",
+      "sha256": "146cfc9f726b858464bb03cbf1eac557d27967b275452a44f70b112838725684",
+      "source_commit": "f2dced5",
+      "source_path": "paper/state.json"
+    },
+    "strategy_comparison_missing.csv": {
+      "git_blob": "82188183674c2382fd6596d17469e3270ed82809",
+      "path": "research/reliability/recovery-v1/evidence/e3afb14555d9b7954f631f5018e7d09d03c2596d3845664a3a94e219c6f8dba1.source",
+      "sha256": "e3afb14555d9b7954f631f5018e7d09d03c2596d3845664a3a94e219c6f8dba1",
+      "source_commit": "f2dced5",
+      "source_path": "strategy_comparison_missing.csv"
+    }
+  },
+  "reason": "Original timestamped provider responses absent; arithmetic consistency does not authenticate market sessions.",
+  "schema_version": 1,
+  "status": "BLOCKED",
+  "stock_rows": [
+    {
+      "commit": "b163470d704e81e467c31a16cda4b696d9712948",
+      "committed_at": "2026-09-18T00:13:58Z",
+      "journal_changed": false,
+      "label_basis": "UTC_run_date",
+      "line_number": 25,
+      "parent": "553654c9aa188d7d675437c3ed59db19ff0469c3",
+      "parent_sources": {
+        "paper/journal.csv": {
+          "git_blob": "901323e12ee08df6c82c936fc851c385e9fcc069",
+          "path": "research/reliability/recovery-v1/evidence/41c7eeaaf0841c9c9fe8950a422b088710746a3ee77606199d3b0aab8bb43a24.source",
+          "sha256": "41c7eeaaf0841c9c9fe8950a422b088710746a3ee77606199d3b0aab8bb43a24",
+          "source_commit": "553654c9aa188d7d675437c3ed59db19ff0469c3",
+          "source_path": "paper/journal.csv"
+        },
+        "paper/performance.csv": {
+          "git_blob": "4b1f1e93ac8022bbe4b6f78ef22d7072ae212bc6",
+          "path": "research/reliability/recovery-v1/evidence/a8e6e0f96161a013bd5cfc8dfd0f42b5cd5f2e2e6f6a0198a4d7dfc825d4f68f.source",
+          "sha256": "a8e6e0f96161a013bd5cfc8dfd0f42b5cd5f2e2e6f6a0198a4d7dfc825d4f68f",
+          "source_commit": "553654c9aa188d7d675437c3ed59db19ff0469c3",
+          "source_path": "paper/performance.csv"
+        },
+        "paper/state.json": {
+          "git_blob": "019cd2cb6c515aea6db5a1a0a176386a67d0a779",
+          "path": "research/reliability/recovery-v1/evidence/dae8b26f4e4beb2579cf002f2b75585e9be711010c20ff0e4aae206a00e56cbf.source",
+          "sha256": "dae8b26f4e4beb2579cf002f2b75585e9be711010c20ff0e4aae206a00e56cbf",
+          "source_commit": "553654c9aa188d7d675437c3ed59db19ff0469c3",
+          "source_path": "paper/state.json"
+        }
+      },
+      "row_sha256": "671d8a2c60d9ec90beb26f0fe88154720f0f19851185ce7614c8e88dd39f3b2f",
+      "row_text": "2026-09-18,9883.03,2069.75,4,-25.45,-0.2568,-1.1697\n",
+      "sources": {
+        "paper/journal.csv": {
+          "git_blob": "901323e12ee08df6c82c936fc851c385e9fcc069",
+          "path": "research/reliability/recovery-v1/evidence/41c7eeaaf0841c9c9fe8950a422b088710746a3ee77606199d3b0aab8bb43a24.source",
+          "sha256": "41c7eeaaf0841c9c9fe8950a422b088710746a3ee77606199d3b0aab8bb43a24",
+          "source_commit": "b163470d704e81e467c31a16cda4b696d9712948",
+          "source_path": "paper/journal.csv"
+        },
+        "paper/latest_signals.csv": {
+          "git_blob": "e2aaaef75dc06894ce264b06483acf4b90e7fa1a",
+          "path": "research/reliability/recovery-v1/evidence/896252af2b9c69dff21283d894dd0078634faec3795e5f81db6264661a02b5df.source",
+          "sha256": "896252af2b9c69dff21283d894dd0078634faec3795e5f81db6264661a02b5df",
+          "source_commit": "b163470d704e81e467c31a16cda4b696d9712948",
+          "source_path": "paper/latest_signals.csv"
+        },
+        "paper/performance.csv": {
+          "git_blob": "0ee54aba0c1e447bc3744b239fdb46271680a453",
+          "path": "research/reliability/recovery-v1/evidence/497f7bca8ecd6798f7b17b44dc66fc3e9f4e3a206fc7fa9bad797c00b2e99527.source",
+          "sha256": "497f7bca8ecd6798f7b17b44dc66fc3e9f4e3a206fc7fa9bad797c00b2e99527",
+          "source_commit": "b163470d704e81e467c31a16cda4b696d9712948",
+          "source_path": "paper/performance.csv"
+        },
+        "paper/state.json": {
+          "git_blob": "4278b99c3cce5e128237ac439d50816632e531c1",
+          "path": "research/reliability/recovery-v1/evidence/0056e992275883aa8853c22b6f9c6cfbfb4a18751bea81c4cc09c27b4364c6b4.source",
+          "sha256": "0056e992275883aa8853c22b6f9c6cfbfb4a18751bea81c4cc09c27b4364c6b4",
+          "source_commit": "b163470d704e81e467c31a16cda4b696d9712948",
+          "source_path": "paper/state.json"
+        },
+        "paper_trader.py": {
+          "git_blob": "b9b575cb8d7bbf1a0705a023d753a9ce8ce35ef8",
+          "path": "research/reliability/recovery-v1/evidence/a5bce49cfa988124897ebdde2b9819d3ef1393a572c90897061b4abbcabbc23e.source",
+          "sha256": "a5bce49cfa988124897ebdde2b9819d3ef1393a572c90897061b4abbcabbc23e",
+          "source_commit": "b163470d704e81e467c31a16cda4b696d9712948",
+          "source_path": "paper_trader.py"
+        }
+      },
+      "status": "UNRESOLVED",
+      "verified_market_session": null
+    },
+    {
+      "commit": "1fd8d61514f3846166afc25f83756bc02853546e",
+      "committed_at": "2026-09-19T00:17:18Z",
+      "journal_changed": false,
+      "label_basis": "UTC_run_date",
+      "line_number": 26,
+      "parent": "872d7028abff0042ec67b8a194e56b16674bcb23",
+      "parent_sources": {
+        "paper/journal.csv": {
+          "git_blob": "901323e12ee08df6c82c936fc851c385e9fcc069",
+          "path": "research/reliability/recovery-v1/evidence/41c7eeaaf0841c9c9fe8950a422b088710746a3ee77606199d3b0aab8bb43a24.source",
+          "sha256": "41c7eeaaf0841c9c9fe8950a422b088710746a3ee77606199d3b0aab8bb43a24",
+          "source_commit": "872d7028abff0042ec67b8a194e56b16674bcb23",
+          "source_path": "paper/journal.csv"
+        },
+        "paper/performance.csv": {
+          "git_blob": "0ee54aba0c1e447bc3744b239fdb46271680a453",
+          "path": "research/reliability/recovery-v1/evidence/497f7bca8ecd6798f7b17b44dc66fc3e9f4e3a206fc7fa9bad797c00b2e99527.source",
+          "sha256": "497f7bca8ecd6798f7b17b44dc66fc3e9f4e3a206fc7fa9bad797c00b2e99527",
+          "source_commit": "872d7028abff0042ec67b8a194e56b16674bcb23",
+          "source_path": "paper/performance.csv"
+        },
+        "paper/state.json": {
+          "git_blob": "4278b99c3cce5e128237ac439d50816632e531c1",
+          "path": "research/reliability/recovery-v1/evidence/0056e992275883aa8853c22b6f9c6cfbfb4a18751bea81c4cc09c27b4364c6b4.source",
+          "sha256": "0056e992275883aa8853c22b6f9c6cfbfb4a18751bea81c4cc09c27b4364c6b4",
+          "source_commit": "872d7028abff0042ec67b8a194e56b16674bcb23",
+          "source_path": "paper/state.json"
+        }
+      },
+      "row_sha256": "d2553a20dff09886691c9c093957e3788cea49bf5a503fe981642883d32e149e",
+      "row_text": "2026-09-19,10029.89,2069.75,4,146.86,1.4859,0.2989\n",
+      "sources": {
+        "paper/journal.csv": {
+          "git_blob": "901323e12ee08df6c82c936fc851c385e9fcc069",
+          "path": "research/reliability/recovery-v1/evidence/41c7eeaaf0841c9c9fe8950a422b088710746a3ee77606199d3b0aab8bb43a24.source",
+          "sha256": "41c7eeaaf0841c9c9fe8950a422b088710746a3ee77606199d3b0aab8bb43a24",
+          "source_commit": "1fd8d61514f3846166afc25f83756bc02853546e",
+          "source_path": "paper/journal.csv"
+        },
+        "paper/latest_signals.csv": {
+          "git_blob": "cbd50d6ae0f7fc0188d5a2a4b397354bd4d9ed7c",
+          "path": "research/reliability/recovery-v1/evidence/4646ce1009a4383a46894dd088dffbfb9201dfd623795502d895921a1885c9bd.source",
+          "sha256": "4646ce1009a4383a46894dd088dffbfb9201dfd623795502d895921a1885c9bd",
+          "source_commit": "1fd8d61514f3846166afc25f83756bc02853546e",
+          "source_path": "paper/latest_signals.csv"
+        },
+        "paper/performance.csv": {
+          "git_blob": "c9b46eed14a570ef5abf62b9195c8177c8f29cc0",
+          "path": "research/reliability/recovery-v1/evidence/065ce87b444155dd5257f45e21c19fb3c900a656e18dc1e22c6c6789b9756ec1.source",
+          "sha256": "065ce87b444155dd5257f45e21c19fb3c900a656e18dc1e22c6c6789b9756ec1",
+          "source_commit": "1fd8d61514f3846166afc25f83756bc02853546e",
+          "source_path": "paper/performance.csv"
+        },
+        "paper/state.json": {
+          "git_blob": "519e8aa17677f6e0e567880304705ee751b2f798",
+          "path": "research/reliability/recovery-v1/evidence/cb5bbd8757d345ebff3ddb3d5b6d39abef7ffaab41c73f5fee4216aada29742d.source",
+          "sha256": "cb5bbd8757d345ebff3ddb3d5b6d39abef7ffaab41c73f5fee4216aada29742d",
+          "source_commit": "1fd8d61514f3846166afc25f83756bc02853546e",
+          "source_path": "paper/state.json"
+        },
+        "paper_trader.py": {
+          "git_blob": "b9b575cb8d7bbf1a0705a023d753a9ce8ce35ef8",
+          "path": "research/reliability/recovery-v1/evidence/a5bce49cfa988124897ebdde2b9819d3ef1393a572c90897061b4abbcabbc23e.source",
+          "sha256": "a5bce49cfa988124897ebdde2b9819d3ef1393a572c90897061b4abbcabbc23e",
+          "source_commit": "1fd8d61514f3846166afc25f83756bc02853546e",
+          "source_path": "paper_trader.py"
+        }
+      },
+      "status": "UNRESOLVED",
+      "verified_market_session": null
+    },
+    {
+      "commit": "30bc3a88ef4290f583e16ef7f3a298a51ee28708",
+      "committed_at": "2026-09-22T00:48:49Z",
+      "journal_changed": false,
+      "label_basis": "provider_index",
+      "line_number": 27,
+      "parent": "29998d6c8632de53b10865b4c1771ab0fd79b3f7",
+      "parent_sources": {
+        "paper/journal.csv": {
+          "git_blob": "901323e12ee08df6c82c936fc851c385e9fcc069",
+          "path": "research/reliability/recovery-v1/evidence/41c7eeaaf0841c9c9fe8950a422b088710746a3ee77606199d3b0aab8bb43a24.source",
+          "sha256": "41c7eeaaf0841c9c9fe8950a422b088710746a3ee77606199d3b0aab8bb43a24",
+          "source_commit": "29998d6c8632de53b10865b4c1771ab0fd79b3f7",
+          "source_path": "paper/journal.csv"
+        },
+        "paper/performance.csv": {
+          "git_blob": "c9b46eed14a570ef5abf62b9195c8177c8f29cc0",
+          "path": "research/reliability/recovery-v1/evidence/065ce87b444155dd5257f45e21c19fb3c900a656e18dc1e22c6c6789b9756ec1.source",
+          "sha256": "065ce87b444155dd5257f45e21c19fb3c900a656e18dc1e22c6c6789b9756ec1",
+          "source_commit": "29998d6c8632de53b10865b4c1771ab0fd79b3f7",
+          "source_path": "paper/performance.csv"
+        },
+        "paper/state.json": {
+          "git_blob": "519e8aa17677f6e0e567880304705ee751b2f798",
+          "path": "research/reliability/recovery-v1/evidence/cb5bbd8757d345ebff3ddb3d5b6d39abef7ffaab41c73f5fee4216aada29742d.source",
+          "sha256": "cb5bbd8757d345ebff3ddb3d5b6d39abef7ffaab41c73f5fee4216aada29742d",
+          "source_commit": "29998d6c8632de53b10865b4c1771ab0fd79b3f7",
+          "source_path": "paper/state.json"
+        }
+      },
+      "row_sha256": "5a43c8fdce1c9f83587654fb1e4ee44988d8fc235f96598bfa78275f2db3f0e1",
+      "row_text": "2026-09-18,10053.48,2069.75,4,23.59,0.2352,0.5348\n",
+      "sources": {
+        "paper/journal.csv": {
+          "git_blob": "901323e12ee08df6c82c936fc851c385e9fcc069",
+          "path": "research/reliability/recovery-v1/evidence/41c7eeaaf0841c9c9fe8950a422b088710746a3ee77606199d3b0aab8bb43a24.source",
+          "sha256": "41c7eeaaf0841c9c9fe8950a422b088710746a3ee77606199d3b0aab8bb43a24",
+          "source_commit": "30bc3a88ef4290f583e16ef7f3a298a51ee28708",
+          "source_path": "paper/journal.csv"
+        },
+        "paper/latest_signals.csv": {
+          "git_blob": "4aa5a21a5b9b32b6f8baef95ca39bd00fe5c95ce",
+          "path": "research/reliability/recovery-v1/evidence/5f9984546194393e2b3b3620011be0d4f6f8503532599a1aa2085703669e7627.source",
+          "sha256": "5f9984546194393e2b3b3620011be0d4f6f8503532599a1aa2085703669e7627",
+          "source_commit": "30bc3a88ef4290f583e16ef7f3a298a51ee28708",
+          "source_path": "paper/latest_signals.csv"
+        },
+        "paper/performance.csv": {
+          "git_blob": "074328c312684b97249184f1937405e3775e6f49",
+          "path": "research/reliability/recovery-v1/evidence/7ba02b84f1981f64f8572ebbbd09c4f7f461136a7267fcfa94831613f0b371d3.source",
+          "sha256": "7ba02b84f1981f64f8572ebbbd09c4f7f461136a7267fcfa94831613f0b371d3",
+          "source_commit": "30bc3a88ef4290f583e16ef7f3a298a51ee28708",
+          "source_path": "paper/performance.csv"
+        },
+        "paper/state.json": {
+          "git_blob": "4278b99c3cce5e128237ac439d50816632e531c1",
+          "path": "research/reliability/recovery-v1/evidence/0056e992275883aa8853c22b6f9c6cfbfb4a18751bea81c4cc09c27b4364c6b4.source",
+          "sha256": "0056e992275883aa8853c22b6f9c6cfbfb4a18751bea81c4cc09c27b4364c6b4",
+          "source_commit": "30bc3a88ef4290f583e16ef7f3a298a51ee28708",
+          "source_path": "paper/state.json"
+        },
+        "paper_trader.py": {
+          "git_blob": "8fbae33fe2755f329256cedb0b3e2e7fb60ee753",
+          "path": "research/reliability/recovery-v1/evidence/bfcf25eeda3874e4756eb5280ea974f745d10c45db8213ff38d8d8d0c18d0993.source",
+          "sha256": "bfcf25eeda3874e4756eb5280ea974f745d10c45db8213ff38d8d8d0c18d0993",
+          "source_commit": "30bc3a88ef4290f583e16ef7f3a298a51ee28708",
+          "source_path": "paper_trader.py"
+        }
+      },
+      "status": "UNRESOLVED",
+      "verified_market_session": null
+    }
+  ]
+}

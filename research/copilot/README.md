@@ -161,3 +161,28 @@ require review, never automatic baseline replacement in CI. Tests also exercise
 expiry/missing/tampered artifacts, malformed images, local-only privacy behavior,
 clearing, keyboard controls and touch targets. No browser test makes market or
 performance assertions from synthetic inputs.
+
+## Validation evidence for this change
+
+- 192 Python regression tests passed, including five new Copilot tests with
+  multiple malformed/tampered/full-universe subcases. Required compilation and
+  47-task roadmap consistency passed; no task completion was changed.
+- Existing performance, Discovery and chart-indicator Node suites plus new
+  Copilot state/security suite passed.
+- Existing dashboard, Discovery and Volume Profile Chromium suites passed,
+  including all 144 Volume Profile selection/viewport combinations. Saved stock
+  and crypto portfolios, navigation and genuine missing-data alerts are preserved.
+- Copilot Chromium passed all six desktop/mobile baseline comparisons, with
+  reviewed mobile BUY and desktop SELL images; input privacy, invalid-image,
+  missing/tampered-record, expiration and clearing checks passed. Tests use
+  synthetic fixtures, not evaluated market performance. Initial harness MIME,
+  route and same-document navigation issues were corrected before passing reruns.
+- Dependencies were installed in isolated `work/dependencies`. Shell networking
+  initially failed inside the sandbox and succeeded through authorized execution;
+  main was then fetched and merge ancestry verified directly. A test run that
+  overlapped the local rebase encountered a transient missing source file; the
+  final complete suite was rerun after the rebase and passed.
+
+Hosted PR CI and independent human acceptance are separate from these local
+results. Automatic OCR, configured private webhooks and outcome evaluation are
+not implemented; the checked-in initial observations correctly remain WAIT.

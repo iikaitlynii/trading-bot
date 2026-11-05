@@ -2,7 +2,7 @@
   "schema_version": 1,
   "account": "stocks",
   "classification": "simulated forward paper records",
-  "generated_at_utc": "2026-11-04T03:20:56.596097+00:00",
+  "generated_at_utc": "2026-11-05T03:46:37.278211+00:00",
   "starting_capital": 10000.0,
   "warnings": [
     "Valuations were out of chronological order; sorted for reporting",
@@ -25,7 +25,7 @@
     "unreconciled_change": -0.0025799110877642306,
     "winning_sells": 1,
     "losing_sells": 3,
-    "excess_vs_buy_hold_pct": -1.3780428239703406,
+    "excess_vs_buy_hold_pct": -1.3780428625023544,
     "comparison_return_pct": -1.3571999999999917
   },
   "monthly": [
@@ -331,8 +331,8 @@
     "source": "research/stock_history.csv",
     "provenance": "Yahoo public daily chart endpoint via saved repository collector",
     "basis": "Equal-weight initial allocation, raw close price return, no rebalancing/dividends/fees; exact recorded endpoints",
-    "return_pct": 0.020842823970348978,
-    "ending_value": 10002.084282397034
+    "return_pct": 0.02084286250236267,
+    "ending_value": 10002.084286250238
   },
   "start_date": "2026-08-17",
   "as_of": "2026-11-02"

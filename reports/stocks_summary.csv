@@ -12,9 +12,9 @@ unrealized_pnl,153.20754065065285,simulated forward paper records
 unreconciled_change,-0.0025799110877642306,simulated forward paper records
 winning_sells,1,simulated forward paper records
 losing_sells,3,simulated forward paper records
-excess_vs_buy_hold_pct,-1.3780428239703406,simulated forward paper records
+excess_vs_buy_hold_pct,-1.3780428625023544,simulated forward paper records
 comparison_return_pct,-1.3571999999999917,simulated forward paper records
-buy_hold_return_pct,0.020842823970348978,"Equal-weight initial allocation, raw close price return, no rebalancing/dividends/fees; exact recorded endpoints"
+buy_hold_return_pct,0.02084286250236267,"Equal-weight initial allocation, raw close price return, no rebalancing/dividends/fees; exact recorded endpoints"
 warning,Valuations were out of chronological order; sorted for reporting,simulated forward paper records
 warning,Ambiguous duplicate valuation dates excluded: 2026-09-18,simulated forward paper records
 warning,"Recorded equity/close prices are not independently verified marks; fees, dividends and external cash flows are not recorded",simulated forward paper records

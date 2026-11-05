@@ -102,5 +102,5 @@
     render();
   }
   const api={validate,indicators,confluence,fixture,mount};
-  if(typeof module!=='undefined'&&module.exports)module.exports=api;else mount(root.document);
+  if(typeof module!=='undefined'&&module.exports)module.exports=api;else { root.ChartIntelligence=api; mount(root.document); }
 })(typeof globalThis!=='undefined'?globalThis:this);

@@ -1,0 +1,40 @@
+name: Record simulation-only Copilot observations
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: validated-market-data-publication
+  cancel-in-progress: false
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Freeze current observation (missing evidence records WAIT)
+        run: python -m copilot.publish
+      - name: Publish only public market-derived records
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/copilot/
+          if ! git diff --cached --quiet; then
+            git commit -m "Record simulation-only Copilot observation"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: copilot-observations-${{ github.run_id }}
+          path: docs/copilot/
+          if-no-files-found: error

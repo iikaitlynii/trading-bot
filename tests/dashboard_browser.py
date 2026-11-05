@@ -8,8 +8,8 @@ from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 import csv
 import json
-import shutil
 from playwright.sync_api import sync_playwright, expect
+from browser_runtime import launch_chromium
 
 ROOT = Path(__file__).resolve().parents[1]
 (ROOT / 'work').mkdir(exist_ok=True)
@@ -19,7 +19,7 @@ server = ThreadingHTTPServer(('127.0.0.1', 0), partial(QuietHandler, directory=s
 Thread(target=server.serve_forever, daemon=True).start()
 url = f'http://127.0.0.1:{server.server_port}/'
 with sync_playwright() as p:
-    browser = p.chromium.launch(executable_path=shutil.which('chromium'), args=['--no-sandbox'])
+    browser = launch_chromium(p)
     page = browser.new_page(viewport={'width':1440,'height':1000})
     errors=[]
     page.on('pageerror', lambda e: errors.append(str(e)))
@@ -34,7 +34,7 @@ with sync_playwright() as p:
     expect(page.locator('#discovery-status')).to_contain_text('NOT RUN')
     expect(page.locator('#discovery-status')).to_contain_text('Archive: EMPTY')
     expect(page.locator('#discovery-archive')).to_be_disabled()
-    assert page.locator('main h2').count() == 22 + page.locator('#volume-profile').count()
+    assert page.locator('main h2').count() == 22 + page.locator('#volume-profile').count() + page.locator('#ai-copilot').count()
     for kind, folder in [('crypto','crypto_paper'),('stocks','paper')]:
         page.locator('#'+kind).click()
         expect(page.locator('#status')).to_have_text('Loaded')

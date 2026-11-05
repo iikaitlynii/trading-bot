@@ -3,12 +3,13 @@ import json
 from pathlib import Path
 from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright, expect
+from browser_runtime import launch_chromium
 
 ROOT=Path(__file__).resolve().parents[1]
 (ROOT/'work').mkdir(exist_ok=True)
 saved=json.loads((ROOT/'docs/volume-profile/report.json').read_text())
 with sync_playwright() as p:
-    browser=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox'])
+    browser=launch_chromium(p)
     page=browser.new_page(viewport={'width':1280,'height':1000})
     mode='valid'
     def route(request):

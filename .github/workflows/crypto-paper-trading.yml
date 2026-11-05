@@ -37,6 +37,7 @@ jobs:
         run: python crypto_paper_trader.py
 
       - name: Save crypto paper state
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

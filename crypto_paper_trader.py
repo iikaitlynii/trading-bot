@@ -27,8 +27,8 @@ RUN_TIMEZONE = ZoneInfo("America/Chicago")
 # and never places real orders.
 #
 # Existing CSV files use the legacy column name "date_utc". For compatibility,
-# that column now stores the bot's Central Time trading date so a late-evening
-# manual run cannot appear as "tomorrow" to the user.
+# new rows store the completed UTC source-session date. Historical labels
+# remain unchanged and require independent reconciliation.
 
 
 def load_state():
@@ -85,10 +85,6 @@ def main():
     today = datetime.now(RUN_TIMEZONE).date().isoformat()
     price_today = datetime.now(timezone.utc).date()
 
-    if state.get("last_run_date") == today:
-        print("Crypto paper trader already processed", today)
-        return
-
     prices = {}
     signals = []
     missing = []
@@ -140,6 +136,13 @@ def main():
     if state.get("positions") and any(ticker not in prices for ticker in state["positions"]):
         print("Skipping entire session: cannot safely value every open simulated position.")
         return
+    # Identity follows the completed UTC price session, never the run date.
+    trading_date = next(iter(sessions.values()))
+    from paper_sessions import already_processed
+    if already_processed(state, trading_date, PERFORMANCE_FILE, crypto=True):
+        print("Crypto paper trader already recorded market session", trading_date)
+        return
+    today = trading_date  # Keep the legacy CSV schema; new labels are source sessions.
     snapshot(state, prices, "units")
     journal = []
 
@@ -176,6 +179,7 @@ def main():
     total_return = (ending / STARTING_CASH - 1) * 100
 
     record_risk(state, prices, "units", limits, STARTING_CASH)
+    state["last_price_session"] = trading_date
     state["last_run_date"] = today
     save_state(state)
     append_csv(JOURNAL_FILE, journal)
@@ -190,7 +194,7 @@ def main():
     }])
 
     print("MEMECOIN PAPER TRADER — SIMULATION ONLY")
-    print("Central trading date:", today)
+    print("Completed UTC price session:", trading_date)
     print("Ending paper value: $", round(ending, 2))
     print("Cash: $", round(float(state["cash"]), 2))
     print("Open simulated positions:", list(state["positions"].keys()))

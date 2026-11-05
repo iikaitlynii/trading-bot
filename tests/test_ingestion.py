@@ -45,6 +45,32 @@ class IngestionTests(unittest.TestCase):
             with self.subTest(kind=kind), self.assertRaises((ValueError, ContractError)):
                 self.parse(json.dumps(data).encode())
 
+    def test_archived_stock_failure_never_substitutes_previous_close(self):
+        # Actual immutable responses from Actions run 41954673207. Only the
+        # November 4 close is null; an older valid close must not replace it.
+        root = Path(__file__).resolve().parents[1]
+        hashes = (
+            '834caeb790215a2ae52d36be649181bff2111ded76aa222b453a64ac6cb333fc',
+            '742c73ccbfeb9505b68d21a6bc7e82c0f39946bad65e432a787ff54bdca4348e',
+            '0d52b79661c94b39d18eedc6a825828da66484d2f535d2ab5e710852b620ecff',
+            '9ab7102af6517aeb96a943941fdd376670dfbc8d407c3c936cbacd7bf767b9c5',
+        )
+        paths = [root/'research/datasets/ingested/raw'/f'{digest}.response'
+                 for digest in hashes]
+        symbols = set()
+        clock = datetime(2026, 11, 5, 2, 21, 53, tzinfo=timezone.utc)
+        for path in paths:
+            payload = path.read_bytes()
+            data = json.loads(payload)
+            result = data['chart']['result'][0]
+            symbol = result['meta']['symbol']
+            if symbol not in UNIVERSES['stock']:
+                continue
+            symbols.add(symbol)
+            with self.subTest(symbol=symbol), self.assertRaisesRegex(ValueError, 'INVALID_OHLCV'):
+                parse(payload, symbol, 'stock', clock, clock, 'regression')
+        self.assertEqual(symbols, set(UNIVERSES['stock']))
+
     def test_unfinished_bar_excluded_from_snapshot(self):
         data = json.loads(response('PEPE-USD'))
         result = data['chart']['result'][0]
@@ -63,8 +89,12 @@ class IngestionTests(unittest.TestCase):
             before = pointer.read_bytes()
             def missing(symbol):
                 return (404, b'unsupported?') if symbol == 'PEPE-USD' else feed(symbol)
-            with self.assertRaisesRegex(ValueError, 'MISSING_SYMBOLS'):
+            import io
+            from contextlib import redirect_stdout
+            diagnostic = io.StringIO()
+            with redirect_stdout(diagnostic), self.assertRaisesRegex(ValueError, 'MISSING_SYMBOLS'):
                 collect('crypto', root, clock=lambda: NOW, fetch=missing, code_version='test')
+            self.assertIn('crypto PEPE-USD: BLOCKED: PROVIDER_HTTP_404', diagnostic.getvalue())
             self.assertEqual(pointer.read_bytes(), before)
             status = json.loads((root/'work/ingestion/crypto.json').read_text())
             self.assertIn('PROVIDER_HTTP_404', status['symbols']['PEPE-USD']['reason'])

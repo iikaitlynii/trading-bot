@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "simulation_only": true,
-  "checked_at": "2026-11-05T03:36:09.555943+00:00",
+  "checked_at": "2026-11-05T12:12:11.919831+00:00",
   "calendar_version": "xnys-2024-2027-v1",
   "accounts": [
     {
@@ -16,7 +16,7 @@
         "INGESTION_UNKNOWN_OR_BLOCKED"
       ],
       "explanations": [
-        "[Errno 2] No such file or directory: 'research/datasets/ingested/stock-latest.json'",
+        "raw bytes do not reproduce accepted snapshot",
         "duplicate performance sessions; historical reconciliation required",
         "Original timestamped provider responses absent; arithmetic consistency does not authenticate market sessions.",
         "[Errno 2] No such file or directory: 'monitoring/account_receipts/stock.json'",
@@ -26,7 +26,7 @@
       "last_verified_data_session": null,
       "last_successful_account_advancement": null,
       "last_recorded_valuation": "2026-11-02",
-      "checked_at": "2026-11-05T03:36:09.555943+00:00",
+      "checked_at": "2026-11-05T12:12:11.919831+00:00",
       "expires_at": "2026-11-05T21:00:00+00:00",
       "data_fresh": false,
       "workflow": {
@@ -66,7 +66,7 @@
       "last_verified_data_session": null,
       "last_successful_account_advancement": null,
       "last_recorded_valuation": "2026-10-24",
-      "checked_at": "2026-11-05T03:36:09.555943+00:00",
+      "checked_at": "2026-11-05T12:12:11.919831+00:00",
       "expires_at": "2026-11-06T00:00:00+00:00",
       "data_fresh": false,
       "workflow": {
@@ -96,7 +96,7 @@
       "explanations": [
         "All four forward accounts use separate downloads without accepted input or publication receipts. Saved valuations remain historical and unverified."
       ],
-      "checked_at": "2026-11-05T03:36:09.555943+00:00",
+      "checked_at": "2026-11-05T12:12:11.919831+00:00",
       "expires_at": "2026-11-05T21:00:00+00:00",
       "expected_session": "2026-11-04",
       "last_verified_data_session": null,

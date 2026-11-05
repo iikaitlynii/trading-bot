@@ -164,3 +164,10 @@ No “profitable” badge or one-click deployment. Historical comparisons stay d
 until PR #13/#15 integration is accepted. The continuation runs integrated browser regression checks for saved/empty/missing
 archives, source text safety, mobile layout and existing dashboard functionality.
 Human acceptance and real evidence integration remain future work.
+
+## Educational chart and video metadata extensions
+
+See [chart intelligence and permission-aware discovery](CHART_INTELLIGENCE.md) for
+the additive OHLCV viewer, independent calculations, authorized metadata-export
+import, existing parser/review integration, exact contracts and limitations. Live
+YouTube retrieval and real-source historical evaluation remain blocked.

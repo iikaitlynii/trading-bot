@@ -54,6 +54,9 @@ def append_csv(path, rows):
 
 
 def get_close(ticker):
+    if os.environ.get("MARKET_DATA_MANIFEST"):
+        from data_contracts.ingestion import accepted_close
+        return accepted_close(ticker, os.environ["MARKET_DATA_MANIFEST"])
     data = yf.download(ticker, period="1y", interval="1d", auto_adjust=False, progress=False)
     return extract_close(data, ticker)
 

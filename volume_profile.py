@@ -14,7 +14,7 @@ LIMITATIONS = [
     'APPROXIMATE candle volume-at-price, never exact trade-level volume.',
     'Daily volume is spread uniformly across each low–high range; intraday distribution is unknown.',
     'Legacy Yahoo quote snapshot: retrieval time, raw-response archive and corporate-action audit unavailable.',
-    'Collector substitutes zero for missing volume; zero-volume rows are rejected here.',
+    'Legacy snapshot may contain substituted missing volume; zero-volume rows are rejected here. Current ingestion rejects missing volume.',
     'Historical window only; no claim of current freshness, predictive power or validated strategy.',
     'Bin count and window change all levels; HVN/LVN are descriptive heuristics, not trade signals.'
 ]

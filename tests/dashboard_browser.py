@@ -34,7 +34,7 @@ with sync_playwright() as p:
     expect(page.locator('#discovery-status')).to_contain_text('NOT RUN')
     expect(page.locator('#discovery-status')).to_contain_text('Archive: EMPTY')
     expect(page.locator('#discovery-archive')).to_be_disabled()
-    assert page.locator('main h2').count() == 22 + page.locator('#volume-profile').count() + page.locator('#ai-copilot').count()
+    assert page.locator('main h2').count() == 23 + page.locator('#volume-profile').count() + page.locator('#ai-copilot').count()
     for kind, folder in [('crypto','crypto_paper'),('stocks','paper')]:
         page.locator('#'+kind).click()
         expect(page.locator('#status')).to_have_text('Loaded')

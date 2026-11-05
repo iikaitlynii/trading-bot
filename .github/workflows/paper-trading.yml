@@ -25,9 +25,12 @@ jobs:
           cache: 'pip'
       - name: Install dependencies
         run: pip install -r requirements.txt
+      - name: Capture account records before simulation
+        run: python -m monitoring.account_health --capture stock
       - name: Validate and archive complete stock inputs
         run: python -m data_contracts.ingestion stock
       - name: Run simulation-only paper trader
+        id: paper_simulation
         env:
           MARKET_DATA_MANIFEST: research/datasets/ingested/stock-latest.json
         run: python paper_trader.py
@@ -48,6 +51,7 @@ jobs:
       - name: Advance true forward shadow accounts
         run: python forward_shadow.py
       - name: Save paper and research outputs even if a research step fails
+        id: account_publication
         if: always()
         run: |
           git config user.name "github-actions[bot]"
@@ -58,6 +62,22 @@ jobs:
             echo "No paper-trading or research-lab changes to save."
           else
             git commit -m "Update paper trading and forward research [skip ci]"
+            git pull --rebase origin main
+            git push
+          fi
+
+      - name: Record account publication evidence
+        if: always()
+        env:
+          SIMULATION_OUTCOME: ${{ steps.paper_simulation.outcome }}
+          ACCOUNT_PUBLICATION_OUTCOME: ${{ steps.account_publication.outcome }}
+        run: |
+          python -m monitoring.account_health --record stock --simulation "$SIMULATION_OUTCOME" --publication "$ACCOUNT_PUBLICATION_OUTCOME"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A monitoring/account_receipts/ monitoring/ingestion/
+          if ! git diff --cached --quiet; then
+            git commit -m "Record stock account publication evidence [skip ci]"
             git pull --rebase origin main
             git push
           fi

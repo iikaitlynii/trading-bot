@@ -15,6 +15,7 @@ header .brand{font-family:Georgia,'Times New Roman',serif;font-size:19px;letter-
 <a href="#weekly-report">Reports</a>
 <a href="#chart-intelligence">Chart intelligence</a>
 <a href="#strategy-discovery">Strategy Discovery Lab</a>
+<a href="#account-health">Account health</a>
 <a href="#ai-copilot">AI Copilot</a>
 <a href="#volume-profile">Volume Profile</a>
 <a href="#trade-history">Trade history</a>
@@ -78,6 +79,13 @@ header .brand{font-family:Georgia,'Times New Roman',serif;font-size:19px;letter-
 <details><summary>Latest 10 displayed bars and calculation definitions</summary><div class="table-wrap" tabindex="0"><table><caption>Supplied OHLCV evidence</caption><thead><tr><th scope="col">Session</th><th scope="col">Open</th><th scope="col">High</th><th scope="col">Low</th><th scope="col">Close</th><th scope="col">Volume</th></tr></thead><tbody id="ci-table"></tbody></table></div>
 <p>SMA: arithmetic mean of closes (20/50 bars). RSI14: 100 − 100/(1 + mean gains/mean losses) over 14 changes; flat=50, no losses=100. This is simple-window RSI, not Wilder smoothing. ATR14: mean of max(high−low, |high−previous close|, |low−previous close|) over 14 bars. Bands: SMA20 ± 2 population standard deviations. Warmups remain missing.</p></details>
 </section>
+<section class="card" id="account-health" tabindex="-1" aria-labelledby="account-health-heading" style="margin-top:14px">
+<h2 class="section-title" id="account-health-heading">Account health</h2>
+<p>Simulation only. Workflow success alone does not establish account health. Session dates identify market observations; checked timestamps use America/Chicago.</p>
+<div id="account-health-rows" class="health-grid" role="status" aria-live="polite"><p>STOCK: BLOCKED · CRYPTO: BLOCKED · FORWARD RESEARCH: BLOCKED — health evidence has not been verified.</p></div>
+<p class="small">Historical valuations and research warnings remain visible. ACTIVE requires complete accepted inputs, valid records and confirmed account publication. PAUSED means the expected session is already recorded without overdue data. Unknown evidence is BLOCKED.</p>
+<noscript><p>BLOCKED — JavaScript is required to verify artifact freshness.</p></noscript>
+</section>
 <footer>Research and education only. No brokerage connection, trade execution, or guaranteed returns. This page displays saved GitHub data and may lag market prices. <a href="https://github.com/iikaitlynii/trading-bot" rel="noopener noreferrer">View source repository</a>.</footer>
 <section class="card copilot" id="ai-copilot" tabindex="-1" aria-labelledby="cp-heading" style="margin-top:14px">
 <h2 id="cp-heading" class="section-title">AI Trading Copilot · paper simulation</h2>
@@ -137,4 +145,4 @@ function renderAnalysis(){const ticker=$("ticker-select").value,row=analyses.fin
 async function loadAnalysis(){try{analyses=await read("paper/chart_analysis.csv");renderAnalysis()}catch(e){set("analysis-status","Chart research unavailable: "+e.message)}}
 $("ticker-select").addEventListener("change",renderAnalysis);loadAnalysis();
 for(const kind of ["stocks","crypto"])$(kind).addEventListener("click",()=>{selection=kind;set("portfolio-context",(kind==="crypto"?"Crypto":"Stocks")+" · simulated portfolio");for(const name of ["stocks","crypto"])$(name).setAttribute("aria-pressed",String(name===kind));load()});load();
-</script><script src="research_extensions.js" defer></script><script src="dashboard.js" defer></script><script src="performance_reports.js" defer></script><script src="strategy_discovery.js" defer></script><script src="volume_profile.js" defer></script></body></html>
+</script><script src="research_extensions.js" defer></script><script src="dashboard.js" defer></script><script src="performance_reports.js" defer></script><script src="strategy_discovery.js" defer></script><script src="volume_profile.js" defer></script><script src="account_health_calendar.js" defer></script><script src="account_health.js" defer></script></body></html>

@@ -1,0 +1,45 @@
+name: Account health dashboard evidence
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '10 * * * *'
+  workflow_run:
+    workflows: ['Live Paper Trading', 'Memecoin Paper Trading']
+    types: [completed]
+    branches: [main]
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: validated-market-data-publication
+  cancel-in-progress: false
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Calculate account health from accepted evidence and Actions outcomes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python -m monitoring.account_health
+      - uses: actions/upload-artifact@v4
+        with:
+          name: account-health-${{ github.run_id }}-${{ github.run_attempt }}
+          path: docs/account-health/status.json
+          if-no-files-found: error
+      - name: Publish health artifact to existing Pages source
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/account-health/status.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Refresh simulation account health [skip ci]"
+            git pull --rebase origin main
+            git push
+          fi

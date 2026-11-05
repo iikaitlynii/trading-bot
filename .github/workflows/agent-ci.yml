@@ -88,8 +88,8 @@ jobs:
           python tests/dashboard_browser.py
           python tests/discovery_browser.py
           python tests/volume_profile_browser.py
-          python tests/copilot_browser.py
           python tests/account_health_browser.py
+          python tests/copilot_browser.py
       - name: Preserve synthetic Chromium screenshots and rendering diagnostics
         if: ${{ always() && steps.chromium.outcome != 'skipped' }}
         uses: actions/upload-artifact@v4

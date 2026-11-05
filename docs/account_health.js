@@ -23,6 +23,17 @@
         !session || session !== a.expected_session || !Array.isArray(a.reason_codes) || !a.reason_codes.length ||
         !a.reason_codes.every(x => typeof x === 'string') || !Array.isArray(a.explanations) || !a.explanations.length ||
         !a.explanations.every(x => typeof x === 'string') || !Array.isArray(a.evidence)) return {...fallback, checked_at: a.checked_at};
+    const universe = id === 'stock' ? ['AAPL','MSFT','NVDA','AMZN'] : ['DOGE-USD','SHIB-USD','PEPE-USD','BONK-USD'];
+    const folder = id === 'stock' ? 'paper' : 'crypto_paper';
+    const publication = a.publication;
+    const hash = value => typeof value === 'string' && /^[0-9a-f]{64}$/.test(value);
+    const files = ['state.json','performance.csv','journal.csv','latest_signals.csv'].map(name => folder + '/' + name);
+    if (a.status !== 'BLOCKED' && (!a.symbols || Object.keys(a.symbols).length !== universe.length ||
+        !universe.every(s => a.symbols[s] && a.symbols[s].status === 'VALIDATED' && a.symbols[s].source_session === session && a.symbols[s].http_status === 200) ||
+        !publication || publication.session !== session || !/^[0-9a-f]{40}$/.test(publication.output_commit) || !hash(publication.bundle_sha256) ||
+        !publication.files || Object.keys(publication.files).length !== 4 || !files.every(p => hash(publication.files[p])) ||
+        !a.workflow || publication.run_id !== a.workflow.run_id || publication.run_attempt !== a.workflow.run_attempt ||
+        publication.outcome !== (a.status === 'ACTIVE' ? 'ADVANCED' : 'ALREADY_PROCESSED') || a.reason_codes.length !== 1)) return fallback;
     if (a.status !== 'BLOCKED' && (id === 'forward' || a.data_fresh !== true ||
         a.last_verified_data_session !== session || a.last_recorded_valuation !== session ||
         !a.workflow || a.workflow.status !== 'SUCCESS' || !Number.isInteger(a.workflow.run_id) ||

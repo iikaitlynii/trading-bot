@@ -49,6 +49,7 @@ calendar data is generated from `data_contracts.sessions.session_close` for ever
 stock session in that supported range. Calendar extensions require regeneration
 and review. Status expires at the next completed session or 26 hours after the
 check, whichever is earlier. The browser checks expected session independently,
+requires complete per-symbol and publication/hash metadata for ACTIVE/PAUSED,
 rejects missing/invalid/future/duplicate/expired entries, and rechecks open tabs
 once per minute and on visibility changes. Static HTML and JavaScript failure
 start BLOCKED. Missing values remain unknown, never zero P/L.
@@ -77,8 +78,8 @@ single column on mobile. Existing returns and warnings remain visible.
 
 ## Verification
 
-- Full Python suite: 225 tests passed before two additional receipt tests;
-  the final count/results are recorded in the PR. New tests use temporary,
+- Full Python suite: 227 tests passed, including 20 health/receipt tests.
+  New tests use temporary,
   explicitly synthetic accounts and never modify saved production history.
 - Required compileall and 47-task roadmap consistency checks passed.
 - Five Node suites pass, including health status/expiry/calendar/unknown evidence.

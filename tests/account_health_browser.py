@@ -22,6 +22,12 @@ def fixture():
                          explanations=['Synthetic browser fixture; no investment performance claim.'],
                          workflow={'status':'SUCCESS','run_id':42,'url':BASE+'actions/runs/42'},
                          evidence=[BASE+'blob/main/monitoring/account_receipts/'+id+'.json']))
+    for r in rows:
+        symbols=['AAPL','MSFT','NVDA','AMZN'] if r['id']=='stock' else ['DOGE-USD','SHIB-USD','PEPE-USD','BONK-USD']
+        folder='paper' if r['id']=='stock' else 'crypto_paper'
+        r['symbols']={s:{'status':'VALIDATED','source_session':'2026-11-02','http_status':200} for s in symbols}
+        r['workflow']['run_attempt']=1
+        r['publication']={'session':'2026-11-02','output_commit':'a'*40,'bundle_sha256':'b'*64,'run_id':42,'run_attempt':1,'outcome':'ADVANCED' if r['status']=='ACTIVE' else 'ALREADY_PROCESSED','files':{folder+'/'+s:'c'*64 for s in ['state.json','performance.csv','journal.csv','latest_signals.csv']}}
     return dict(schema_version=1,simulation_only=True,accounts=rows)
 
 with sync_playwright() as p:

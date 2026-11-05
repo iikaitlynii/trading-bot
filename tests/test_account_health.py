@@ -29,7 +29,7 @@ def fixture(root, market='stock'):
     (p/'latest_signals.csv').write_text('ticker,price_session,close,signal\n'+''.join(s+',2026-11-02,1,HOLD\n' for s in UNIVERSES[market]))
     receipt={'schema_version':1,'session':'2026-11-02','bundle_sha256':digest(root/f'research/datasets/ingested/{market}-latest.json'),
              'files':{p:digest(root/p) for p in account_files(market)},'publication':'CONFIRMED','simulation':'success','outcome':'ADVANCED',
-             'last_advancement':'2026-11-02','run_id':42,'run_attempt':1,'checked_at':NOW.isoformat()}
+             'output_commit':'a'*40,'last_advancement':'2026-11-02','run_id':42,'run_attempt':1,'checked_at':NOW.isoformat()}
     target=root/f'monitoring/account_receipts/{market}.json';target.parent.mkdir(parents=True,exist_ok=True);target.write_text(json.dumps(receipt))
     target=root/f'monitoring/ingestion/{market}.json';target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(root/f'work/ingestion/{market}.json',target)
     workflow = 'paper-trading.yml' if market=='stock' else 'crypto-paper-trading.yml'
@@ -120,7 +120,7 @@ class AccountHealthTests(unittest.TestCase):
             @classmethod
             def now(cls,tz=None):return NOW
         def git(*args):
-            return (self.root/args[1].split('HEAD:',1)[1]).read_bytes() if args[0]=='show' else b'abc123\n'
+            return (self.root/args[1].split('HEAD:',1)[1]).read_bytes() if args[0]=='show' else b'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n'
         previous=Path.cwd()
         try:
             os.chdir(self.root)
@@ -130,5 +130,5 @@ class AccountHealthTests(unittest.TestCase):
             os.chdir(previous)
         self.assertEqual(self.health()['status'],'PAUSED')
         receipt=json.loads((self.root/'monitoring/account_receipts/stock.json').read_text())
-        self.assertEqual(receipt['output_commit'],'abc123')
+        self.assertEqual(receipt['output_commit'],'a'*40)
         self.assertEqual(receipt['files'],{p:digest(self.root/p) for p in account_files('stock')})

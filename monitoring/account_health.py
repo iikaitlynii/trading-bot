@@ -6,6 +6,7 @@ import hashlib
 import json
 import math
 import os
+import re
 from pathlib import Path
 import subprocess
 from datetime import datetime, timedelta, timezone
@@ -226,6 +227,7 @@ def row(root, market, now, actions):
         receipt = read(root / f'monitoring/account_receipts/{market}.json')
         run = result['workflow']
         if (receipt['schema_version'] != 1 or receipt['session'] != result['expected_session']
+                or not re.fullmatch(r'[0-9a-f]{40}', receipt['output_commit'])
                 or receipt['bundle_sha256'] != bundle_hash or receipt['publication'] != 'CONFIRMED'
                 or receipt['simulation'] != 'success' or receipt['outcome'] not in ('ADVANCED', 'ALREADY_PROCESSED')
                 or instant(receipt['checked_at']) > now
@@ -235,6 +237,7 @@ def row(root, market, now, actions):
                 or set(receipt['files']) != set(account_files(market))
                 or any(digest(root / p) != h for p, h in receipt['files'].items())):
             raise ValueError('publication receipt does not match current files, session and successful run')
+        result['publication'] = {key: receipt[key] for key in ('session', 'run_id', 'run_attempt', 'output_commit', 'bundle_sha256', 'outcome', 'files')}
         result['evidence'].append(BASE + f'/blob/main/monitoring/account_receipts/{market}.json')
         result['last_successful_account_advancement'] = receipt.get('last_advancement')
     except Exception as exc:

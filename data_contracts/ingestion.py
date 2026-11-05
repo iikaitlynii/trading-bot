@@ -142,6 +142,7 @@ def collect(market, root=Path('.'), *, clock=None, fetch=download, code_version=
                 all_rows.extend(rows)
             except Exception as exc:
                 evidence.update(status='BLOCKED', reason=str(exc))
+                print(f'{market} {symbol}: BLOCKED: {exc}', flush=True)
         if set(snapshots) != set(UNIVERSES[market]):
             raise ValueError('MISSING_SYMBOLS: ' + ', '.join(sorted(set(UNIVERSES[market]) - set(snapshots))))
         # Immutable bundle includes legacy HLCV export and links its exact bytes.

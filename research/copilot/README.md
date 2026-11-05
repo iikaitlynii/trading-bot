@@ -186,3 +186,47 @@ performance assertions from synthetic inputs.
 Hosted PR CI and independent human acceptance are separate from these local
 results. Automatic OCR, configured private webhooks and outcome evaluation are
 not implemented; the checked-in initial observations correctly remain WAIT.
+
+## PR #22 visual reproducibility fix
+
+The original golden images were made with a Debian system Chromium and its local
+font fallbacks, while Actions ran Ubuntu's system Chromium. Installing Playwright
+in CI did not select its browser: all four scripts hard-coded `/usr/bin/chromium`.
+System fonts and that executable were uncontrolled rendering inputs. Waiting for
+`document.fonts.ready` does not make installed font families identical.
+
+A controlled local experiment kept Chromium 154.0.8037.57, a 375×900 viewport,
+scale factor 1 and the same fixtures/CSS geometry. Substituting Liberation Sans
+for the actual Noto Sans fallback changed BUY from 335×2739 to 335×2514, with no
+horizontal overflow in either case. Other mobile and desktop heights changed as
+well. The difference is text metrics/wrapping and native font fallback, rather
+than evidence of a product breakpoint, viewport or device-scaling regression.
+Actual text fonts were measured using Chromium's CSS.getPlatformFontsForNode;
+fontconfig's generic matches alone do not prove what the browser rendered.
+
+Canonical visual comparisons now run inside the digest-pinned Playwright 1.62.0
+Ubuntu Noble image in `agent-ci.yml`. `tests/browser-requirements.txt` pins the
+matching Python driver and Pillow. All four Chromium suites use the installed
+Playwright browser through `tests/browser_runtime.py`, rather than the host's
+system executable. The Copilot context fixes locale, timezone, color scheme,
+reduced-motion preference, viewport and device scale. No production styles,
+signal logic or research-health rules are changed by this fix.
+
+The exact image-dimension assertion and original 0.1% pixel threshold are
+preserved. Comparisons collect all six results and fail the suite if **any** case
+fails; a mismatch does not hide the other five cases. Screenshots, pixel diffs
+where sizes match, actual fonts, browser/driver versions and geometry measurements
+are uploaded as short-lived synthetic CI artifacts, including on failure. The
+complete Python suite runs even when a browser step fails; the job remains failed.
+Baselines must be reviewed and committed explicitly; CI never updates them.
+
+For canonical local reproduction, use the same container image/digest as CI,
+mount the repository, install `requirements.txt` and
+`tests/browser-requirements.txt`, then run the commands above. The image already
+contains the matching browsers and font packages; do not install a different
+browser or update OS fonts. `BROWSER_EXECUTABLE` is available only as an explicit
+host-renderer diagnostic override: every assertion still runs, but host output
+must not replace canonical baselines. This managed environment's network policy
+blocks the image-layer and Playwright-browser download hosts, so canonical image
+output is collected and verified in hosted Actions; ordinary local Python,
+JavaScript and host-Chromium regressions are also run.

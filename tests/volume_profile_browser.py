@@ -30,7 +30,7 @@ with sync_playwright() as p:
                 request.fulfill(status=200 if local.is_file() else 404,body=local.read_bytes() if local.is_file() else b'Unavailable',content_type='text/javascript' if name.endswith('.js') else 'text/css' if name.endswith('.css') else 'application/json' if name.endswith('.json') else 'text/html')
         else:request.abort()
     page.route('**/*',route)
-    page.goto('https://dashboard.test/')
+    page.goto('https://dashboard.test/#volume-profile')
     expect(page.locator('#vp-status')).to_contain_text('APPROXIMATE')
     expect(page.locator('#vp-chart .vp-row')).to_have_count(24)
     expect(page.locator('#vp-metrics')).to_contain_text('LVN (approx.)')

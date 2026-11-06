@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "simulation_only": true,
-  "checked_at": "2026-11-05T20:38:20.395607+00:00",
+  "checked_at": "2026-11-06T01:29:54.006916+00:00",
   "calendar_version": "xnys-2024-2027-v1",
   "accounts": [
     {
@@ -16,18 +16,18 @@
         "INGESTION_UNKNOWN_OR_BLOCKED"
       ],
       "explanations": [
-        "raw bytes do not reproduce accepted snapshot",
+        "stale, synthetic or mismatched accepted snapshot",
         "duplicate performance sessions; historical reconciliation required",
         "Original timestamped provider responses absent; arithmetic consistency does not authenticate market sessions.",
         "[Errno 2] No such file or directory: 'monitoring/account_receipts/stock.json'",
         "[Errno 2] No such file or directory: 'monitoring/ingestion/stock.json'"
       ],
-      "expected_session": "2026-11-04",
+      "expected_session": "2026-11-05",
       "last_verified_data_session": null,
       "last_successful_account_advancement": null,
       "last_recorded_valuation": "2026-11-02",
-      "checked_at": "2026-11-05T20:38:20.395607+00:00",
-      "expires_at": "2026-11-05T21:00:00+00:00",
+      "checked_at": "2026-11-06T01:29:54.006916+00:00",
+      "expires_at": "2026-11-06T21:00:00+00:00",
       "data_fresh": false,
       "workflow": {
         "workflow_id": 335407512,
@@ -62,12 +62,12 @@
         "[Errno 2] No such file or directory: 'monitoring/account_receipts/crypto.json'",
         "MISSING_SYMBOLS: BONK-USD, DOGE-USD, PEPE-USD, SHIB-USD"
       ],
-      "expected_session": "2026-11-04",
+      "expected_session": "2026-11-05",
       "last_verified_data_session": null,
       "last_successful_account_advancement": null,
       "last_recorded_valuation": "2026-10-24",
-      "checked_at": "2026-11-05T20:38:20.395607+00:00",
-      "expires_at": "2026-11-06T00:00:00+00:00",
+      "checked_at": "2026-11-06T01:29:54.006916+00:00",
+      "expires_at": "2026-11-07T00:00:00+00:00",
       "data_fresh": false,
       "workflow": {
         "workflow_id": 339790130,
@@ -96,9 +96,9 @@
       "explanations": [
         "All four forward accounts use separate downloads without accepted input or publication receipts. Saved valuations remain historical and unverified."
       ],
-      "checked_at": "2026-11-05T20:38:20.395607+00:00",
-      "expires_at": "2026-11-05T21:00:00+00:00",
-      "expected_session": "2026-11-04",
+      "checked_at": "2026-11-06T01:29:54.006916+00:00",
+      "expires_at": "2026-11-06T21:00:00+00:00",
+      "expected_session": "2026-11-05",
       "last_verified_data_session": null,
       "last_successful_account_advancement": null,
       "last_recorded_valuation": null,

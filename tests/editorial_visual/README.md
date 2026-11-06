@@ -25,6 +25,6 @@ All existing data loading, calculations and research modules remain intact. Exis
 
 Run `python tests/editorial_browser.py` with Playwright 1.62.0 and its Chromium installed. It captures the four images and checks saved Stocks/Crypto balances, dates, six views, keyboard/deep-link/Back behavior, five widths (320–1440px), 44px controls, chart interactions, and failed-data navigation. The existing dashboard test additionally checks seven widths and the no-JavaScript fallback. CI runs both suites plus existing discovery, profile, health and Copilot checks.
 
-Local checks used Playwright 1.62.0 with the explicit `/usr/bin/chromium` override (Chromium 154). Copilot visual baselines intentionally change with this redesign; canonical CI uses the repository's pinned browser image. Review the PR's CI result separately from local results.
+Local checks used Playwright 1.62.0 with the explicit `/usr/bin/chromium` override (Chromium 154). Copilot visual baselines intentionally change with this redesign. The committed baselines come from canonical CI run `42152153215` in the repository's pinned image (Chromium 151.0.7922.34), after review of its screenshots; local Chromium 154 differs in emoji rendering and one pixel of panel height. The strict size and 0.1% pixel thresholds remain unchanged.
 
 Related phase issue: #4 — “Navigation sidebar”, “Stocks, Crypto, Research and Reports sections”, and “Mobile layout and accessibility”. Checklist completion remains pending human review and merge.

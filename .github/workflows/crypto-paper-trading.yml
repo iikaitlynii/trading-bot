@@ -67,7 +67,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/simulation-v2/
           if [ -d simulation-v2 ]; then
-            git add simulation-v2/*/current.json simulation-v2/*/generations/
+            git add -A simulation-v2/
           fi
           if ! git diff --cached --quiet; then
             git commit -m "Publish forward-only simulation accounting evidence [skip ci]"

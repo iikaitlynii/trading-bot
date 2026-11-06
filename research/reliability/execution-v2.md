@@ -98,8 +98,8 @@ Failure boundaries:
    visible. A prepared child blocks new advancement. Inspect its exact manifest and
    source evidence. For an eligible new account, run
    `python -m simulation_v2.runner stock --recover <exact-manifest-sha256>`
-   (or `crypto`). This verifies hashes, full replay, parent, immutable history and
-   the sole prepared candidate before roll-forward. Legacy activation gates still
+   (or `crypto`). This revalidates every exact archived input at its original observation clock,
+   then verifies hashes, full replay, parent, immutable history and the sole prepared candidate before roll-forward. Legacy activation gates still
    apply. Conflicting/corrupt generations require investigation; never guess, delete
    or rewrite published account evidence. Recovery may publish a now-old valuation;
    it does not make that valuation current or confer ACTIVE health.
@@ -143,7 +143,7 @@ python tests/simulation_v2_browser.py
 python tests/copilot_browser.py
 ```
 
-Local: 232 Python tests, compilation, roadmap and six Node suites pass. Dashboard,
+Local: 234 Python tests, compilation, roadmap and six Node suites pass. Dashboard,
 Discovery, all 144 Volume Profile cases, account-health and v2 Chromium tests pass.
 The v2 suite checks safe literal rendering, missing/invalid evidence and 375/1280px
 repeat screenshots. Existing Copilot canonical pixel checks differ with host

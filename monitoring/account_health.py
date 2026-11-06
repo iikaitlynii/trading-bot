@@ -131,10 +131,11 @@ def account(root, market):
     return session
 
 
-def accepted(root, market, now):
-    path = root / f'research/datasets/ingested/{market}-latest.json'
+def accepted(root, market, now, *, manifest_path=None):
+    base = root / 'research/datasets/ingested'
+    path = manifest_path or root / f'research/datasets/ingested/{market}-latest.json'
     manifest = read(path)
-    bundle = path.parent / 'bundles' / (digest(path) + '.json')
+    bundle = base / 'bundles' / (digest(path) + '.json')
     if bundle.read_bytes() != path.read_bytes() or manifest['market'] != market:
         raise ValueError('invalid accepted bundle hash/market')
     if instant(manifest['as_of']) > now:

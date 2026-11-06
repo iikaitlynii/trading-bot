@@ -89,6 +89,21 @@ def run(market, *, root=Path('.'), account_id=None, now=None, variant=None):
     return updated
 
 
+def recovery_evidence(account, root=Path('.')):
+    """Revalidate each exact archived input at its original observation clock."""
+    root=Path(root)
+    for v in account['valuations']:
+        path=root/'research/datasets/ingested/bundles'/(v['input_sha256']+'.json')
+        session, input_hash, _ = accepted(root, account['market'], stamp(v['observed_at']), manifest_path=path)
+        if session != v['session'] or input_hash != v['input_sha256']:
+            raise ValueError('recovery input identity mismatch')
+        manifest=json.loads(path.read_bytes())
+        from decimal import Decimal
+        for symbol, snapshot_path in manifest['snapshots'].items():
+            if Decimal(str(load(root/snapshot_path).bars[-1].close)) != Decimal(v['marks'][symbol]):
+                raise ValueError('recovery input mark mismatch')
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('market', choices=UNIVERSES)
@@ -98,6 +113,8 @@ def main():
         legacy_guard(Path('.'), args.market, args.market)
         store = Store(Path('simulation-v2') / args.market)
         with store.locked():
+            account, _ = store.generation(args.recover)
+            recovery_evidence(account)
             store.recover(args.recover)
     else:
         run(args.market)

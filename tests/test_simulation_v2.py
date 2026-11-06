@@ -207,3 +207,17 @@ class AcceptedAdapterTests(unittest.TestCase):
         a=step(fresh(),weight='0',max_invested='0');self.assertFalse(a['orders'])
         a=step(fresh());b=step(a,'03','0.000000123456789')
         self.assertEqual(Decimal(b['fills'][0]['market_price']),Decimal('0.000000123456789'))
+    def test_recovery_revalidates_exact_archived_inputs(self):
+        from simulation_v2.runner import recovery_evidence
+        now=datetime(2026,11,3,4,tzinfo=timezone.utc);self.inputs(now);a=run('stock',root=self.root,now=now)
+        now=datetime(2026,11,4,4,tzinfo=timezone.utc);self.inputs(now);b=run('stock',root=self.root,now=now)
+        recovery_evidence(b,self.root)
+        old_hash=a['valuations'][0]['input_sha256']
+        (self.root/'research/datasets/ingested/bundles'/(old_hash+'.json')).write_bytes(b'{}')
+        with self.assertRaises((ValueError,KeyError,FileNotFoundError)):recovery_evidence(b,self.root)
+    def test_cost_changes_cannot_reprice_existing_account(self):
+        import os
+        now=datetime(2026,11,3,4,tzinfo=timezone.utc);self.inputs(now);a=run('stock',root=self.root,now=now)
+        with patch.dict(os.environ, SIM_FEE_BPS='100'):
+            with self.assertRaisesRegex(ValueError,'configuration'):run('stock',root=self.root,now=now)
+        self.assertEqual(Store(self.root/'simulation-v2/stock').load(),a)

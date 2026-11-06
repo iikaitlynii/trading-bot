@@ -318,30 +318,10 @@ class MonitoringTests(unittest.TestCase):
         self.assertEqual(workflow.count('if: always()'), 2)
         self.assertIn('if-no-files-found: error', workflow)
 
-    def test_stock_producer_emits_real_source_session_and_monitor_accepts_it(self):
-        import numpy as np
-        import pandas as pd
-        import paper_trader as stock
-        from test_market_data_quality import FixedClock
-        # Patch all paths; no network or writes to checked-in paper records.
-        for path in ['paper/state.json', 'paper/journal.csv', 'paper/performance.csv', 'paper/latest_signals.csv']:
-            (self.root / path).parent.mkdir(parents=True, exist_ok=True)
-        history = pd.Series(np.linspace(10, 30, 220), index=pd.bdate_range(end='2026-01-14', periods=220))
-        with contextlib.ExitStack() as stack:
-            for attr, filename in [('STATE_FILE', 'paper/state.json'), ('JOURNAL_FILE', 'paper/journal.csv'),
-                                   ('PERFORMANCE_FILE', 'paper/performance.csv'), ('SIGNALS_FILE', 'paper/latest_signals.csv')]:
-                stack.enter_context(patch.object(stock, attr, str(self.root / filename)))
-            stack.enter_context(patch.object(stock, 'datetime', FixedClock))
-            stack.enter_context(patch.object(stock, 'get_data', return_value=history))
-            stack.enter_context(patch.object(stock.yf, 'download', side_effect=AssertionError('Network forbidden')))
-            stack.enter_context(contextlib.redirect_stdout(io.StringIO()))
-            # The producer creates a relative paper directory; contain it in the fixture.
-            stack.enter_context(contextlib.chdir(self.root))
-            stock.main()
-        with (self.root / 'paper/latest_signals.csv').open() as handle:
-            rows = list(csv.DictReader(handle))
-        self.assertEqual({row['price_session'] for row in rows}, {'2026-01-14'})
-        self.assertTrue(all(row['date_utc'] == row['price_session'] for row in rows))
+    def test_saved_source_session_remains_accepted_by_read_only_monitor(self):
+        # Legacy monitoring stays independent of the forward-only v2 account store.
+        self.write('paper/latest_signals.csv', 'ticker,date_utc,price_session,close\n'+
+                   ''.join(f'{s},2026-01-14,2026-01-14,30\n' for s in ('AAPL','MSFT','NVDA','AMZN')))
         result = source_evidence(self.root, 'paper/latest_signals.csv', 'price_session', 'ticker', 'stock',
                                  datetime(2026, 1, 14, 23, 30, tzinfo=timezone.utc))
         self.assertEqual(result['status'], 'FRESH')

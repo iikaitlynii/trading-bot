@@ -1,0 +1,8 @@
+# Local simulation staging/locks are never publication evidence.
+simulation-v2/**/.lock
+simulation-v2/**/.staging-*/
+simulation-v2/**/.pointer-*
+
+__pycache__/
+*.py[cod]
+/work/

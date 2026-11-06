@@ -109,6 +109,11 @@ header .brand{font-family:Georgia,'Times New Roman',serif;font-size:19px;letter-
 <div id="account-health-rows" class="health-grid" role="status" aria-live="polite"><p>STOCK: BLOCKED · CRYPTO: BLOCKED · FORWARD RESEARCH: BLOCKED — health evidence has not been verified.</p></div>
 <p class="small">Historical valuations and research warnings remain visible. ACTIVE requires complete accepted inputs, valid records and confirmed account publication. PAUSED means the expected session is already recorded without overdue data. Unknown evidence is BLOCKED.</p>
 <noscript><p>BLOCKED — JavaScript is required to verify artifact freshness.</p></noscript>
+<div id="simulation-v2" style="margin-top:18px;overflow-wrap:anywhere">
+<h3>Forward-only paper execution v2</h3>
+<p>Legacy results above retain their original execution assumptions. V2 creates pending simulated orders and fills at later validated daily closes. Fees and adverse slippage are illustrative assumptions, not verified market costs. No real trades.</p>
+<div id="simulation-v2-rows" aria-live="polite"><p>V2 accounting unavailable; existing account health remains independent.</p></div>
+</div>
 </section>
 </main>
 </div>
@@ -146,4 +151,4 @@ function renderAnalysis(){const ticker=$("ticker-select").value,row=analyses.fin
 async function loadAnalysis(){try{analyses=await read("paper/chart_analysis.csv");renderAnalysis()}catch(e){set("analysis-status","Chart research unavailable: "+e.message)}}
 $("ticker-select").addEventListener("change",renderAnalysis);loadAnalysis();
 for(const kind of ["stocks","crypto"])$(kind).addEventListener("click",()=>{selection=kind;set("portfolio-context",(kind==="crypto"?"Crypto":"Stocks")+" · simulated portfolio");for(const name of ["stocks","crypto"])$(name).setAttribute("aria-pressed",String(name===kind));load()});load();
-</script><script src="research_extensions.js" defer></script><script src="dashboard.js" defer></script><script src="performance_reports.js" defer></script><script src="strategy_discovery.js" defer></script><script src="volume_profile.js" defer></script><script src="account_health_calendar.js" defer></script><script src="account_health.js" defer></script></body></html>
+</script><script src="research_extensions.js" defer></script><script src="dashboard.js" defer></script><script src="performance_reports.js" defer></script><script src="strategy_discovery.js" defer></script><script src="volume_profile.js" defer></script><script src="account_health_calendar.js" defer></script><script src="account_health.js" defer></script><script src="simulation_v2.js" defer></script></body></html>

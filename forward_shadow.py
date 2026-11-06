@@ -26,39 +26,7 @@ def prices():
   out[t]=c.dropna()
  return out
 def main():
- os.makedirs(D,exist_ok=True); state=load(); data=prices()
- dates={t:s.index[-1].date().isoformat() for t,s in data.items()}
- if len(set(dates.values()))!=1: print("Session mismatch",dates);return
- session=next(iter(set(dates.values()))); rows=[]
- for cfg in VARIANTS:
-  s=state[cfg["name"]]
-  if s.get("last_session")==session: continue
-  market={t:float(data[t].iloc[-1]) for t in TICKERS}
-  signals={}
-  for t,c in data.items():
-   if len(c)<cfg["regime"]:continue
-   p=market[t]; fast=float(c.iloc[-cfg["fast"]:].mean()); slow=float(c.iloc[-cfg["slow"]:].mean()); regime=float(c.iloc[-cfg["regime"]:].mean())
-   signals[t]=(p>regime and fast>slow)
-  for t in list(s["positions"]):
-   pos=s["positions"][t]; p=market[t]
-   if not signals.get(t,False) or p<=float(pos["entry_price"])*(1-cfg["stop"]):
-    s["cash"]+=float(pos["shares"])*p; del s["positions"][t]
-  value=float(s["cash"])+sum(float(p["shares"])*market[t] for t,p in s["positions"].items())
-  for t in TICKERS:
-   if not signals.get(t,False) or t in s["positions"]:continue
-   amount=min(float(s["cash"]),value*cfg["weight"])
-   if amount<50:continue
-   shares=amount/market[t];s["cash"]-=amount;s["positions"][t]={"shares":shares,"entry_price":market[t],"entry_session":session}
-  value=float(s["cash"])+sum(float(p["shares"])*market[t] for t,p in s["positions"].items())
-  s["last_session"]=session
-  rows.append({"market_session":session,"variant":cfg["name"],"paper_value":round(value,2),"cash":round(float(s["cash"]),2),"open_positions":len(s["positions"]),"total_return_pct":round((value/START-1)*100,4)})
- with open(STATE,"w",encoding="utf-8") as f:json.dump(state,f,indent=2,sort_keys=True)
- if rows:
-  exists=os.path.exists(PERF)
-  with open(PERF,"a",newline="",encoding="utf-8") as f:
-   w=csv.DictWriter(f,fieldnames=list(rows[0])); 
-   if not exists:w.writeheader()
-   w.writerows(rows)
- print("TRUE FORWARD SHADOW ACCOUNTS — SIMULATION ONLY");print("Market session:",session);print("Accounts advanced:",len(rows))
- for r in rows:print(r["variant"],"$"+str(r["paper_value"]),str(r["total_return_pct"])+"%")
-if __name__=="__main__":main()
+ from simulation_v2.runner import run
+ for variant in VARIANTS:
+  run('stock', account_id='forward-'+variant['name'], variant=variant)
+if __name__=='__main__':main()

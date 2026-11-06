@@ -66,6 +66,22 @@ jobs:
             git push
           fi
 
+      - name: Export forward-only simulation accounting evidence
+        if: always()
+        run: |
+          python -m simulation_v2.report
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/simulation-v2/
+          if [ -d simulation-v2 ]; then
+            git add simulation-v2/*/current.json simulation-v2/*/generations/
+          fi
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish forward-only simulation accounting evidence [skip ci]"
+            git pull --rebase origin main
+            git push
+          fi
+
       - name: Record account publication evidence
         if: always()
         env:

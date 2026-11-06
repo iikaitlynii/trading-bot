@@ -1,78 +1,32 @@
-"""Offline regression tests: no market network or real trading."""
-import csv
-import json
+"""Public entrypoints must never mutate or silently restart legacy accounts."""
 import os
+from pathlib import Path
 import tempfile
 import unittest
-from datetime import datetime
-from pathlib import Path
 from unittest.mock import patch
-
-import pandas as pd
-
-import crypto_paper_trader as crypto
 import paper_trader as stock
+import crypto_paper_trader as crypto
+import forward_shadow as forward
 
 
 class PaperSafetyTests(unittest.TestCase):
-    def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory()
-        self.previous_cwd = os.getcwd()
-        os.chdir(self.tmp.name)
+    def test_legacy_accounts_fail_before_network_and_remain_byte_exact(self):
+        for module,folder in [(stock,'paper'),(crypto,'crypto_paper'),(forward,'research_lab/forward')]:
+            with self.subTest(module=module.__name__),tempfile.TemporaryDirectory() as tmp:
+                previous=os.getcwd();os.chdir(tmp)
+                try:
+                    Path(folder).mkdir(parents=True)
+                    paths=[Path(folder)/name for name in ('state.json','journal.csv','performance.csv')]
+                    for path in paths:path.write_bytes(b'Unresolved original bytes\r\n')
+                    before=[p.read_bytes() for p in paths]
+                    with patch('simulation_v2.runner.accepted',side_effect=AssertionError('no input access')):
+                        with self.assertRaisesRegex(ValueError,'BLOCKED'):module.main()
+                    self.assertEqual(before,[p.read_bytes() for p in paths])
+                    self.assertFalse(Path('simulation-v2').exists())
+                finally:os.chdir(previous)
 
-    def tearDown(self):
-        os.chdir(self.previous_cwd)
-        self.tmp.cleanup()
-
-    @staticmethod
-    def history(days=220, value=10.0, business_days=False):
-        today = datetime.now(crypto.RUN_TIMEZONE).date()
-        dates = pd.date_range(end=today, periods=days, freq="B" if business_days else "D")
-        return pd.Series([value + i * 0.1 for i in range(days)], index=dates, dtype=float)
-
-    def test_crypto_missing_unheld_asset_does_not_sell_held_asset(self):
-        Path("crypto_paper").mkdir()
-        Path("crypto_paper/state.json").write_text(json.dumps({
-            "cash": 4000.0,
-            "positions": {"DOGE-USD": {"units": 100, "entry_price": 10.0, "entry_date": "2026-01-01"}},
-            "last_run_date": None,
-        }))
-        def prices(ticker):
-            if ticker == "PEPE-USD":
-                return pd.Series(dtype=float)
-            return self.history()
-        with patch.object(crypto, "get_close", side_effect=prices):
-            crypto.main()
-        with open("crypto_paper/state.json") as f:
-            state = json.load(f)
-        self.assertIn("DOGE-USD", state["positions"])
-        self.assertFalse(Path("crypto_paper/journal.csv").exists())
-        with open("crypto_paper/latest_signals.csv", newline="") as f:
-            rows = list(csv.DictReader(f))
-        self.assertEqual(next(x for x in rows if x["ticker"] == "PEPE-USD")["signal"], "NO_DATA")
-
-    def test_crypto_missing_held_asset_skips_entire_session(self):
-        Path("crypto_paper").mkdir()
-        original = {"cash": 4000.0, "positions": {
-            "PEPE-USD": {"units": 100, "entry_price": 10.0, "entry_date": "2026-01-01"}
-        }, "last_run_date": None}
-        Path("crypto_paper/state.json").write_text(json.dumps(original))
-        with patch.object(crypto, "get_close", side_effect=lambda t: pd.Series(dtype=float) if t == "PEPE-USD" else self.history()):
-            crypto.main()
-        self.assertEqual(json.loads(Path("crypto_paper/state.json").read_text()), original)
-        self.assertFalse(Path("crypto_paper/performance.csv").exists())
-        self.assertFalse(Path("crypto_paper/journal.csv").exists())
-
-    def test_stock_incomplete_history_skips_session(self):
-        Path("paper").mkdir()
-        original = {"cash": 10000.0, "positions": {}, "last_run_date": None}
-        Path("paper/state.json").write_text(json.dumps(original))
-        with patch.object(stock, "get_data", side_effect=lambda t: pd.Series(dtype=float) if t == "MSFT" else self.history(business_days=True)):
-            stock.main()
-        self.assertEqual(json.loads(Path("paper/state.json").read_text()), original)
-        self.assertFalse(Path("paper/performance.csv").exists())
-        self.assertFalse(Path("paper/journal.csv").exists())
-
-
-if __name__ == "__main__":
-    unittest.main()
+    def test_no_legacy_files_still_requires_complete_accepted_inputs(self):
+        from simulation_v2.runner import run
+        with tempfile.TemporaryDirectory() as tmp:
+            with self.assertRaises(FileNotFoundError):run('stock',root=Path(tmp))
+            self.assertFalse((Path(tmp)/'simulation-v2').exists())

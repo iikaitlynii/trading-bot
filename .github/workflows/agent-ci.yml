@@ -85,6 +85,7 @@ jobs:
       - name: Check integrated dashboard in Chromium
         id: chromium
         run: |
+          python tests/editorial_browser.py
           python tests/dashboard_browser.py
           python tests/discovery_browser.py
           python tests/volume_profile_browser.py

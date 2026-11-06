@@ -1,22 +1,6 @@
 "use strict";
 // Native fragment links remain usable when JavaScript or saved data is unavailable.
 (() => {
-  const links = [...document.querySelectorAll('.sidebar a[href^="#"]')];
-  function markLocation() {
-    const current = links.find(link => link.hash === window.location.hash) || links[0];
-    for (const link of links) {
-      if (link === current) link.setAttribute("aria-current", "location");
-      else link.removeAttribute("aria-current");
-    }
-  }
-  for (const link of links) {
-    link.addEventListener("click", () => {
-      document.getElementById(link.hash.slice(1))?.focus({preventScroll: true});
-    });
-  }
-  window.addEventListener("hashchange", markLocation);
-  markLocation();
-
   // Give horizontally scrolling data tables keyboard access and distinct names.
   document.querySelectorAll(".table-wrap").forEach((wrapper, index) => {
     const table = wrapper.querySelector("table");

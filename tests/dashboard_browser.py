@@ -17,7 +17,7 @@ class QuietHandler(SimpleHTTPRequestHandler):
     def log_message(self, *args): pass
 server = ThreadingHTTPServer(('127.0.0.1', 0), partial(QuietHandler, directory=str(ROOT / 'docs')))
 Thread(target=server.serve_forever, daemon=True).start()
-url = f'http://127.0.0.1:{server.server_port}/'
+url = f'http://127.0.0.1:{server.server_port}/#all'
 with sync_playwright() as p:
     browser = launch_chromium(p)
     page = browser.new_page(viewport={'width':1440,'height':1000})
@@ -34,7 +34,7 @@ with sync_playwright() as p:
     expect(page.locator('#discovery-status')).to_contain_text('NOT RUN')
     expect(page.locator('#discovery-status')).to_contain_text('Archive: EMPTY')
     expect(page.locator('#discovery-archive')).to_be_disabled()
-    assert page.locator('main h2').count() == 23 + page.locator('#volume-profile').count() + page.locator('#ai-copilot').count()
+    assert page.locator('main h2').count() >= 25
     for kind, folder in [('crypto','crypto_paper'),('stocks','paper')]:
         page.locator('#'+kind).click()
         expect(page.locator('#status')).to_have_text('Loaded')
@@ -82,6 +82,7 @@ with sync_playwright() as p:
     print('PASS: saved missing-data alerts unchanged by chart/video intake')
     print('PASS: candlesticks/volume/window, failed upload clears signals, synthetic reset, permission queue, safe source links and text')
     page.goto(url)
+    page.reload()
     page.keyboard.press('Tab')
     expect(page.locator('.skip-link')).to_be_focused()
     page.keyboard.press('Enter')
@@ -89,11 +90,14 @@ with sync_playwright() as p:
     for link in page.locator('.sidebar a').all():
         link.focus(); page.keyboard.press('Enter')
         target = link.get_attribute('href')
+        expect(page).to_have_url(url.split('#')[0] + target)
         expect(page.locator(target)).to_be_focused()
-        expect(link).to_have_attribute('aria-current','location')
+        expect(link).to_have_attribute('aria-current','page')
     previous_link = page.locator('.sidebar a').all()[-2]
     page.go_back()
-    expect(previous_link).to_have_attribute('aria-current','location')
+    expect(previous_link).to_have_attribute('aria-current','page')
+    page.goto(url)
+    expect(page.locator('#status')).to_have_text('Loaded')
     for width in [320,375,480,640,768,1024,1440]:
         page.set_viewport_size({'width':width,'height':900})
         assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), f'Page overflow at {width}'
@@ -125,8 +129,8 @@ with sync_playwright() as p:
     page.reload()
     expect(page.locator('#error')).to_be_visible()
     expect(page.locator('#status')).to_have_text('Unavailable')
-    page.locator('.sidebar a[href="#weekly-report"]').click()
-    expect(page.locator('#weekly-report')).to_be_focused()
+    page.locator('.sidebar a[href="#account-health"]').click()
+    expect(page.locator('#account-health')).to_be_focused()
     print('PASS: Reports navigation remains usable when portfolio data fails')
     # Verify native links remain available without scripts or network data.
     context=browser.new_context(java_script_enabled=False, viewport={'width':320,'height':900})

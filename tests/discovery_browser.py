@@ -37,15 +37,15 @@ with sync_playwright() as p:
                 request.fulfill(status=200 if local.is_file() else 404,body=local.read_bytes() if local.is_file() else b'Not found',content_type='text/javascript' if path.endswith('.js') else 'text/css' if path.endswith('.css') else 'text/html')
         else:request.abort()
     page.route('**/*',route)
-    page.goto('https://dashboard.test/')
+    page.goto('https://dashboard.test/#strategy-discovery')
     expect(page.locator('#discovery-status')).to_contain_text('RECORDED FIXTURE REVIEWS')
     expect(page.locator('#discovery-summary')).to_contain_text('Ambiguous: 1')
     expect(page.locator('#discovery-simulation')).to_have_text('Simulation: UNVALIDATED · Historical evidence: UNVALIDATED')
     assert page.locator('#discovery-results tr').count()==1
     assert page.locator('#strategy-discovery img,#strategy-discovery script').count()==0
     assert page.evaluate('window.untrustedExecuted') is None
-    page.locator('.sidebar a[href="#strategy-discovery"]').click()
-    expect(page.locator('#strategy-discovery')).to_be_focused()
+    page.locator('.sidebar a[href="#strategy-lab"]').click()
+    expect(page.locator('#strategy-lab')).to_be_focused()
     page.locator('#discovery-archive').select_option('2026-10-12')
     expect(page.locator('#discovery-status')).to_contain_text('EMPTY · 2026-10-12')
     expect(page.locator('#discovery-results')).to_contain_text('NOT RUN')
@@ -58,6 +58,7 @@ with sync_playwright() as p:
     page.locator('#discovery-archive').select_option('2026-10-12')
     expect(page.locator('#discovery-status')).to_contain_text('unavailable or invalid')
     assert page.locator('#discovery-results tr').count()==0
+    page.goto('https://dashboard.test/#overview')
     page.locator('#crypto').click();expect(page.locator('#status')).to_have_text('Loaded')
     expect(page.locator('#report-status')).to_contain_text('Simulated forward paper records')
     assert not errors,errors

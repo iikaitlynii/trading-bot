@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "simulation_only": true,
-  "checked_at": "2026-11-06T03:30:51.289024+00:00",
+  "checked_at": "2026-11-06T09:17:59.348475+00:00",
   "calendar_version": "xnys-2024-2027-v1",
   "accounts": [
     {
@@ -9,22 +9,24 @@
       "label": "STOCK",
       "status": "BLOCKED",
       "reason_codes": [
+        "DATA_MISSING_INVALID_OR_STALE",
         "ACCOUNT_INVALID_OR_STALE",
         "HISTORICAL_RECONCILIATION_REQUIRED",
         "PUBLICATION_UNCONFIRMED"
       ],
       "explanations": [
+        "raw bytes do not reproduce accepted snapshot",
         "duplicate performance sessions; historical reconciliation required",
         "Original timestamped provider responses absent; arithmetic consistency does not authenticate market sessions.",
         "[Errno 2] No such file or directory: 'monitoring/account_receipts/stock.json'"
       ],
       "expected_session": "2026-11-05",
-      "last_verified_data_session": "2026-11-05",
+      "last_verified_data_session": null,
       "last_successful_account_advancement": null,
       "last_recorded_valuation": "2026-11-02",
-      "checked_at": "2026-11-06T03:30:51.289024+00:00",
+      "checked_at": "2026-11-06T09:17:59.348475+00:00",
       "expires_at": "2026-11-06T21:00:00+00:00",
-      "data_fresh": true,
+      "data_fresh": false,
       "workflow": {
         "workflow_id": 335407512,
         "path": ".github/workflows/paper-trading.yml",
@@ -40,41 +42,7 @@
         "https://github.com/iikaitlynii/trading-bot/blob/main/research/reliability/README.md",
         "https://github.com/iikaitlynii/trading-bot/blob/main/paper/performance.csv",
         "https://github.com/iikaitlynii/trading-bot/blob/main/research/reliability/recovery-v1/README.md"
-      ],
-      "symbols": {
-        "AAPL": {
-          "http_status": 200,
-          "raw_path": "research/datasets/ingested/raw/fdcc440b212e631fb24bd6876b4da46be8d4f5a0011cee0a96a89dd569830fff.response",
-          "retrieved_at": "2026-11-06T02:22:42.513673+00:00",
-          "snapshot": "research/datasets/ingested/snapshots/8eb67550584e8cc3cfc2d5d0ee2c67f92daaa2ca67e101276cfbd71601291ae7.json",
-          "source_session": "2026-11-05",
-          "status": "VALIDATED"
-        },
-        "AMZN": {
-          "http_status": 200,
-          "raw_path": "research/datasets/ingested/raw/8b38d22d13b06a8c09618993771e62033f5a057f57c4ce993365358bec35bdf7.response",
-          "retrieved_at": "2026-11-06T02:22:43.136142+00:00",
-          "snapshot": "research/datasets/ingested/snapshots/2d04a1dcab1048164bd31f8c3049bfbe9cceb859ca408a9cfab44f7f85fa29a7.json",
-          "source_session": "2026-11-05",
-          "status": "VALIDATED"
-        },
-        "MSFT": {
-          "http_status": 200,
-          "raw_path": "research/datasets/ingested/raw/52a9ed2665d7e9ee6eab0959890a1679387a801542106507ed5de7e92d2450f9.response",
-          "retrieved_at": "2026-11-06T02:22:42.725843+00:00",
-          "snapshot": "research/datasets/ingested/snapshots/fec776e1a8d87a0818a0136f172c20e9a11bdcc1b4daf14a7d703e4fb9696ebd.json",
-          "source_session": "2026-11-05",
-          "status": "VALIDATED"
-        },
-        "NVDA": {
-          "http_status": 200,
-          "raw_path": "research/datasets/ingested/raw/218df85440dbe95ba339247b57e092a3e687bf3d508bcb3fe03d798c55039f6b.response",
-          "retrieved_at": "2026-11-06T02:22:42.939785+00:00",
-          "snapshot": "research/datasets/ingested/snapshots/167a8bcb5050491392f0f3ce778e1de75a981cfa04dac10a61a018e5cc6daef5.json",
-          "source_session": "2026-11-05",
-          "status": "VALIDATED"
-        }
-      }
+      ]
     },
     {
       "id": "crypto",
@@ -96,7 +64,7 @@
       "last_verified_data_session": null,
       "last_successful_account_advancement": null,
       "last_recorded_valuation": "2026-10-24",
-      "checked_at": "2026-11-06T03:30:51.289024+00:00",
+      "checked_at": "2026-11-06T09:17:59.348475+00:00",
       "expires_at": "2026-11-07T00:00:00+00:00",
       "data_fresh": false,
       "workflow": {
@@ -126,7 +94,7 @@
       "explanations": [
         "All four forward accounts use separate downloads without accepted input or publication receipts. Saved valuations remain historical and unverified."
       ],
-      "checked_at": "2026-11-06T03:30:51.289024+00:00",
+      "checked_at": "2026-11-06T09:17:59.348475+00:00",
       "expires_at": "2026-11-06T21:00:00+00:00",
       "expected_session": "2026-11-05",
       "last_verified_data_session": null,

@@ -221,3 +221,13 @@ class AcceptedAdapterTests(unittest.TestCase):
         with patch.dict(os.environ, SIM_FEE_BPS='100'):
             with self.assertRaisesRegex(ValueError,'configuration'):run('stock',root=self.root,now=now)
         self.assertEqual(Store(self.root/'simulation-v2/stock').load(),a)
+    def test_consumer_freezes_verified_bundle_across_pointer_replacement(self):
+        from simulation_v2.runner import accepted
+        now=datetime(2026,11,3,4,tzinfo=timezone.utc);self.inputs(now)
+        def replacing_pointer(*args,**kwargs):
+            verified=accepted(*args,**kwargs)
+            (self.root/'research/datasets/ingested/stock-latest.json').write_bytes(b'concurrent pointer replacement')
+            return verified
+        with patch('simulation_v2.runner.accepted',side_effect=replacing_pointer):
+            a=run('stock',root=self.root,now=now)
+        self.assertEqual(len(a['orders']),4);self.assertFalse(a['fills']);self.assertTrue(reconcile(a))

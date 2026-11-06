@@ -31,7 +31,11 @@ def run(market, *, root=Path('.'), account_id=None, now=None, variant=None):
     session, input_hash, evidence = accepted(root, market, now)
     # accepted() reproduces snapshots from raw bytes, validates full universe,
     # export, hashes, adjustment and the expected completed market session.
-    manifest = json.loads((root / f'research/datasets/ingested/{market}-latest.json').read_bytes())
+    # Freeze the exact verified bundle, even if ingestion replaces its latest pointer.
+    payload = (root / 'research/datasets/ingested/bundles' / (input_hash + '.json')).read_bytes()
+    if hashlib.sha256(payload).hexdigest() != input_hash:
+        raise ValueError('accepted bundle changed after validation')
+    manifest = json.loads(payload)
     attempt = json.loads((root / f'work/ingestion/{market}.json').read_bytes())
     if attempt['status'] not in ('ACCEPTED', 'NO_NEW_DATA') or attempt['as_of'] != manifest['as_of']:
         raise ValueError('latest ingestion attempt missing, blocked or mismatched')

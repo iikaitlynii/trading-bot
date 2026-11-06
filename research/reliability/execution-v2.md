@@ -24,7 +24,8 @@ existing accepted-bundle verifier: archived response hashes, raw reparse, snapsh
 contracts, raw-close adjustment, complete exchange sessions, latest completed
 session and matching export. The latest ingestion attempt in `work/ingestion/` must
 be accepted and match the bundle clock. A failed new attempt cannot fall back to an
-older accepted pointer. No provider aliases or universe substitutions are introduced.
+older accepted pointer. Consumption freezes the verified immutable bundle even if
+ingestion concurrently replaces the latest pointer. No provider aliases or universe substitutions are introduced.
 
 ## Execution assumptions
 
@@ -143,7 +144,7 @@ python tests/simulation_v2_browser.py
 python tests/copilot_browser.py
 ```
 
-Local: 234 Python tests, compilation, roadmap and six Node suites pass. Dashboard,
+Local: 235 Python tests, compilation, roadmap and six Node suites pass. Dashboard,
 Discovery, all 144 Volume Profile cases, account-health and v2 Chromium tests pass.
 The v2 suite checks safe literal rendering, missing/invalid evidence and 375/1280px
 repeat screenshots. Existing Copilot canonical pixel checks differ with host

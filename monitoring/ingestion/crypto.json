@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-11-07T02:58:25.332973+00:00",
+  "as_of": "2026-11-08T02:37:16.381436+00:00",
   "expected_symbols": [
     "DOGE-USD",
     "SHIB-USD",
@@ -13,30 +13,30 @@
   "symbols": {
     "BONK-USD": {
       "http_status": 200,
-      "raw_path": "research/datasets/ingested/raw/98c590dcf318d90661f3483dfa970b3fb8ddd404c9dd43f8c81d2b2fcf5ae20e.response",
+      "raw_path": "research/datasets/ingested/raw/efb471440687d016e60b91e5b9bcf75d7cb98f596b11cb2b79d26a38ca392534.response",
       "reason": "INVALID_OHLCV: null or nonfinite value",
-      "retrieved_at": "2026-11-07T02:58:25.766473+00:00",
+      "retrieved_at": "2026-11-08T02:37:17.383359+00:00",
       "status": "BLOCKED"
     },
     "DOGE-USD": {
       "http_status": 200,
-      "raw_path": "research/datasets/ingested/raw/df4eb47701f4a1071168147ec1656c7b12817225f7eb62b74fff237a3f00a131.response",
+      "raw_path": "research/datasets/ingested/raw/800109a2bbc36451a52fac25da63f46c73fdc9234af315eec88cef6758f06928.response",
       "reason": "INVALID_OHLCV: null or nonfinite value",
-      "retrieved_at": "2026-11-07T02:58:25.469778+00:00",
+      "retrieved_at": "2026-11-08T02:37:16.651833+00:00",
       "status": "BLOCKED"
     },
     "PEPE-USD": {
       "http_status": 404,
       "raw_path": "research/datasets/ingested/raw/f0b5f9feeac9f1fc93c31b1edc03fbc1fda4acb3ec5e233ebb39d6f8b66e1769.response",
       "reason": "PROVIDER_HTTP_404: support/history undetermined",
-      "retrieved_at": "2026-11-07T02:58:25.645232+00:00",
+      "retrieved_at": "2026-11-08T02:37:17.159093+00:00",
       "status": "BLOCKED"
     },
     "SHIB-USD": {
       "http_status": 200,
-      "raw_path": "research/datasets/ingested/raw/4e726068025ef10b182d0a266a378a8a720e75f9093198e0a0db21f28e046f8d.response",
+      "raw_path": "research/datasets/ingested/raw/83d5ce54cf0028e992c66a72b52d850798bc3f72ea403e48aef5c49e81b9db74.response",
       "reason": "INVALID_OHLCV: null or nonfinite value",
-      "retrieved_at": "2026-11-07T02:58:25.576166+00:00",
+      "retrieved_at": "2026-11-08T02:37:16.923622+00:00",
       "status": "BLOCKED"
     }
   }

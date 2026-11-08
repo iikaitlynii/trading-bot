@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "simulation_only": true,
-  "checked_at": "2026-11-07T20:50:55.940479+00:00",
+  "checked_at": "2026-11-08T00:28:46.936760+00:00",
   "calendar_version": "xnys-2024-2027-v1",
   "accounts": [
     {
@@ -24,8 +24,8 @@
       "last_verified_data_session": null,
       "last_successful_account_advancement": null,
       "last_recorded_valuation": "2026-11-02",
-      "checked_at": "2026-11-07T20:50:55.940479+00:00",
-      "expires_at": "2026-11-08T22:50:55.940479+00:00",
+      "checked_at": "2026-11-08T00:28:46.936760+00:00",
+      "expires_at": "2026-11-09T02:28:46.936760+00:00",
       "data_fresh": false,
       "workflow": {
         "workflow_id": 335407512,
@@ -60,12 +60,12 @@
         "[Errno 2] No such file or directory: 'monitoring/account_receipts/crypto.json'",
         "MISSING_SYMBOLS: BONK-USD, DOGE-USD, PEPE-USD, SHIB-USD"
       ],
-      "expected_session": "2026-11-06",
+      "expected_session": "2026-11-07",
       "last_verified_data_session": null,
       "last_successful_account_advancement": null,
       "last_recorded_valuation": "2026-10-24",
-      "checked_at": "2026-11-07T20:50:55.940479+00:00",
-      "expires_at": "2026-11-08T00:00:00+00:00",
+      "checked_at": "2026-11-08T00:28:46.936760+00:00",
+      "expires_at": "2026-11-09T00:00:00+00:00",
       "data_fresh": false,
       "workflow": {
         "workflow_id": 339790130,
@@ -94,8 +94,8 @@
       "explanations": [
         "All four forward accounts use separate downloads without accepted input or publication receipts. Saved valuations remain historical and unverified."
       ],
-      "checked_at": "2026-11-07T20:50:55.940479+00:00",
-      "expires_at": "2026-11-08T22:50:55.940479+00:00",
+      "checked_at": "2026-11-08T00:28:46.936760+00:00",
+      "expires_at": "2026-11-09T02:28:46.936760+00:00",
       "expected_session": "2026-11-06",
       "last_verified_data_session": null,
       "last_successful_account_advancement": null,

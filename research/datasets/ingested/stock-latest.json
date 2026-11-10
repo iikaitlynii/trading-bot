@@ -1,43 +1,43 @@
 {
-  "as_of": "2026-11-10T04:05:11.331016+00:00",
+  "as_of": "2026-11-10T04:46:41.599150+00:00",
   "export": "research/datasets/ingested/exports/fc4317ed96b8b23dfec5f32aef8c2ea7bf47140295f6d0611149c772ae13a375.csv",
   "market": "stock",
   "snapshots": {
-    "AAPL": "research/datasets/ingested/snapshots/f622dde4cca53c2c9af3abbdc662958beb3d08d92b430f0ca827632d68dee925.json",
-    "AMZN": "research/datasets/ingested/snapshots/dd0995573b0a6eab047cfca9b69ea08700c703ea9217ac4125b4c4bcae169737.json",
-    "MSFT": "research/datasets/ingested/snapshots/68284484e0ea3da0626558f76043cacadce99f9b7e0e426741c6c533bde3672e.json",
-    "NVDA": "research/datasets/ingested/snapshots/d5401f88062c5c199d00077703fca17601cfe558e575becf4a41a963684ded88.json"
+    "AAPL": "research/datasets/ingested/snapshots/de58976c5a6a52c305e29dfdaf0b506d3b633d2e3456bcf0dbb09b0e6af35fb2.json",
+    "AMZN": "research/datasets/ingested/snapshots/829c98dcb3271ce81de0bb10307084edd9894b63e686b8ba38a4b73cadae3387.json",
+    "MSFT": "research/datasets/ingested/snapshots/7eac9e4f28f82d7c4998c26db8c3b791acd62a6d1213ea9f8914cd5e33ce701c.json",
+    "NVDA": "research/datasets/ingested/snapshots/63bdc9fbf86076b4ab17b91fe9e311a0731cbdb0cb2d0f43758970ef85bbe3c8.json"
   },
   "symbols": {
     "AAPL": {
       "http_status": 200,
-      "raw_path": "research/datasets/ingested/raw/eb21e97b826ec6e33a108e6e75cacae5e7b29c93754699729b6c812091298556.response",
-      "retrieved_at": "2026-11-10T04:05:11.451588+00:00",
-      "snapshot": "research/datasets/ingested/snapshots/f622dde4cca53c2c9af3abbdc662958beb3d08d92b430f0ca827632d68dee925.json",
+      "raw_path": "research/datasets/ingested/raw/573f7222c5293e98ac3022679e276c58917603e5e0affc5ca0387fd1b6b1d05f.response",
+      "retrieved_at": "2026-11-10T04:46:41.782983+00:00",
+      "snapshot": "research/datasets/ingested/snapshots/de58976c5a6a52c305e29dfdaf0b506d3b633d2e3456bcf0dbb09b0e6af35fb2.json",
       "source_session": "2026-11-09",
       "status": "VALIDATED"
     },
     "AMZN": {
       "http_status": 200,
-      "raw_path": "research/datasets/ingested/raw/9ec0c011887f4891ad4ea200a665759d3f2d5ce2e57f2f788ffcf7a52b3068c7.response",
-      "retrieved_at": "2026-11-10T04:05:11.771419+00:00",
-      "snapshot": "research/datasets/ingested/snapshots/dd0995573b0a6eab047cfca9b69ea08700c703ea9217ac4125b4c4bcae169737.json",
+      "raw_path": "research/datasets/ingested/raw/548922dab96d934d1e71a7a723e223f70e923ce12597596b7a84d40344ee0ad4.response",
+      "retrieved_at": "2026-11-10T04:46:42.091150+00:00",
+      "snapshot": "research/datasets/ingested/snapshots/829c98dcb3271ce81de0bb10307084edd9894b63e686b8ba38a4b73cadae3387.json",
       "source_session": "2026-11-09",
       "status": "VALIDATED"
     },
     "MSFT": {
       "http_status": 200,
-      "raw_path": "research/datasets/ingested/raw/7182120aa1f9a1a08bbfaaa0012a82b84f7b484bf19e5df5e964243828a57401.response",
-      "retrieved_at": "2026-11-10T04:05:11.555579+00:00",
-      "snapshot": "research/datasets/ingested/snapshots/68284484e0ea3da0626558f76043cacadce99f9b7e0e426741c6c533bde3672e.json",
+      "raw_path": "research/datasets/ingested/raw/c479f1a4fd9dcc4f77de55e059b6d89a80d14b88739ae501825d00f55e0dc104.response",
+      "retrieved_at": "2026-11-10T04:46:41.896385+00:00",
+      "snapshot": "research/datasets/ingested/snapshots/7eac9e4f28f82d7c4998c26db8c3b791acd62a6d1213ea9f8914cd5e33ce701c.json",
       "source_session": "2026-11-09",
       "status": "VALIDATED"
     },
     "NVDA": {
       "http_status": 200,
-      "raw_path": "research/datasets/ingested/raw/040ca3efe4089cc60109b8fe9f834821e69cad04f8907e16687eef60bdf14199.response",
-      "retrieved_at": "2026-11-10T04:05:11.658785+00:00",
-      "snapshot": "research/datasets/ingested/snapshots/d5401f88062c5c199d00077703fca17601cfe558e575becf4a41a963684ded88.json",
+      "raw_path": "research/datasets/ingested/raw/b856c17d6b904eb636c06e9b8b2d266770cdefa036683c57fd48577557015f49.response",
+      "retrieved_at": "2026-11-10T04:46:41.990077+00:00",
+      "snapshot": "research/datasets/ingested/snapshots/63bdc9fbf86076b4ab17b91fe9e311a0731cbdb0cb2d0f43758970ef85bbe3c8.json",
       "source_session": "2026-11-09",
       "status": "VALIDATED"
     }

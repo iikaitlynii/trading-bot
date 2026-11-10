@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "simulation_only": true,
-  "checked_at": "2026-11-10T17:00:05.374800+00:00",
+  "checked_at": "2026-11-10T22:19:54.080636+00:00",
   "calendar_version": "xnys-2024-2027-v1",
   "accounts": [
     {
@@ -12,20 +12,22 @@
         "DATA_MISSING_INVALID_OR_STALE",
         "ACCOUNT_INVALID_OR_STALE",
         "HISTORICAL_RECONCILIATION_REQUIRED",
-        "PUBLICATION_UNCONFIRMED"
+        "PUBLICATION_UNCONFIRMED",
+        "INGESTION_UNKNOWN_OR_BLOCKED"
       ],
       "explanations": [
-        "raw bytes do not reproduce accepted snapshot",
+        "stale, synthetic or mismatched accepted snapshot",
         "duplicate performance sessions; historical reconciliation required",
         "Original timestamped provider responses absent; arithmetic consistency does not authenticate market sessions.",
-        "[Errno 2] No such file or directory: 'monitoring/account_receipts/stock.json'"
+        "[Errno 2] No such file or directory: 'monitoring/account_receipts/stock.json'",
+        "latest ingestion status is overdue"
       ],
-      "expected_session": "2026-11-09",
+      "expected_session": "2026-11-10",
       "last_verified_data_session": null,
       "last_successful_account_advancement": null,
       "last_recorded_valuation": "2026-11-02",
-      "checked_at": "2026-11-10T17:00:05.374800+00:00",
-      "expires_at": "2026-11-10T21:00:00+00:00",
+      "checked_at": "2026-11-10T22:19:54.080636+00:00",
+      "expires_at": "2026-11-11T21:00:00+00:00",
       "data_fresh": false,
       "workflow": {
         "workflow_id": 335407512,
@@ -64,7 +66,7 @@
       "last_verified_data_session": null,
       "last_successful_account_advancement": null,
       "last_recorded_valuation": "2026-10-24",
-      "checked_at": "2026-11-10T17:00:05.374800+00:00",
+      "checked_at": "2026-11-10T22:19:54.080636+00:00",
       "expires_at": "2026-11-11T00:00:00+00:00",
       "data_fresh": false,
       "workflow": {
@@ -94,9 +96,9 @@
       "explanations": [
         "All four forward accounts use separate downloads without accepted input or publication receipts. Saved valuations remain historical and unverified."
       ],
-      "checked_at": "2026-11-10T17:00:05.374800+00:00",
-      "expires_at": "2026-11-10T21:00:00+00:00",
-      "expected_session": "2026-11-09",
+      "checked_at": "2026-11-10T22:19:54.080636+00:00",
+      "expires_at": "2026-11-11T21:00:00+00:00",
+      "expected_session": "2026-11-10",
       "last_verified_data_session": null,
       "last_successful_account_advancement": null,
       "last_recorded_valuation": null,

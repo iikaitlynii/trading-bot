@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "simulation_only": true,
-  "checked_at": "2026-11-11T01:55:25.702409+00:00",
+  "checked_at": "2026-11-11T02:44:25.125468+00:00",
   "calendar_version": "xnys-2024-2027-v1",
   "accounts": [
     {
@@ -22,7 +22,7 @@
       "last_verified_data_session": "2026-11-10",
       "last_successful_account_advancement": null,
       "last_recorded_valuation": "2026-11-02",
-      "checked_at": "2026-11-11T01:55:25.702409+00:00",
+      "checked_at": "2026-11-11T02:44:25.125468+00:00",
       "expires_at": "2026-11-11T21:00:00+00:00",
       "data_fresh": true,
       "workflow": {
@@ -96,7 +96,7 @@
       "last_verified_data_session": null,
       "last_successful_account_advancement": null,
       "last_recorded_valuation": "2026-10-24",
-      "checked_at": "2026-11-11T01:55:25.702409+00:00",
+      "checked_at": "2026-11-11T02:44:25.125468+00:00",
       "expires_at": "2026-11-12T00:00:00+00:00",
       "data_fresh": false,
       "workflow": {
@@ -126,7 +126,7 @@
       "explanations": [
         "All four forward accounts use separate downloads without accepted input or publication receipts. Saved valuations remain historical and unverified."
       ],
-      "checked_at": "2026-11-11T01:55:25.702409+00:00",
+      "checked_at": "2026-11-11T02:44:25.125468+00:00",
       "expires_at": "2026-11-11T21:00:00+00:00",
       "expected_session": "2026-11-10",
       "last_verified_data_session": null,

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "simulation_only": true,
-  "checked_at": "2026-11-11T02:44:25.125468+00:00",
+  "checked_at": "2026-11-11T02:53:56.989977+00:00",
   "calendar_version": "xnys-2024-2027-v1",
   "accounts": [
     {
@@ -22,7 +22,7 @@
       "last_verified_data_session": "2026-11-10",
       "last_successful_account_advancement": null,
       "last_recorded_valuation": "2026-11-02",
-      "checked_at": "2026-11-11T02:44:25.125468+00:00",
+      "checked_at": "2026-11-11T02:53:56.989977+00:00",
       "expires_at": "2026-11-11T21:00:00+00:00",
       "data_fresh": true,
       "workflow": {
@@ -96,17 +96,17 @@
       "last_verified_data_session": null,
       "last_successful_account_advancement": null,
       "last_recorded_valuation": "2026-10-24",
-      "checked_at": "2026-11-11T02:44:25.125468+00:00",
+      "checked_at": "2026-11-11T02:53:56.989977+00:00",
       "expires_at": "2026-11-12T00:00:00+00:00",
       "data_fresh": false,
       "workflow": {
         "workflow_id": 339790130,
         "path": ".github/workflows/crypto-paper-trading.yml",
         "status": "FAILURE",
-        "run_id": 42757528319,
+        "run_id": 42949008438,
         "run_attempt": 1,
-        "url": "https://github.com/iikaitlynii/trading-bot/actions/runs/42757528319",
-        "updated_at": "2026-11-10T04:42:45Z",
+        "url": "https://github.com/iikaitlynii/trading-bot/actions/runs/42949008438",
+        "updated_at": "2026-11-11T02:53:29Z",
         "last_successful_run_at": "2026-11-04T03:04:42Z",
         "last_successful_run_id": 41764758528
       },
@@ -126,7 +126,7 @@
       "explanations": [
         "All four forward accounts use separate downloads without accepted input or publication receipts. Saved valuations remain historical and unverified."
       ],
-      "checked_at": "2026-11-11T02:44:25.125468+00:00",
+      "checked_at": "2026-11-11T02:53:56.989977+00:00",
       "expires_at": "2026-11-11T21:00:00+00:00",
       "expected_session": "2026-11-10",
       "last_verified_data_session": null,

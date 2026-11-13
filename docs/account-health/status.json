@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "simulation_only": true,
-  "checked_at": "2026-11-13T00:11:56.465318+00:00",
+  "checked_at": "2026-11-13T02:36:57.357541+00:00",
   "calendar_version": "xnys-2024-2027-v1",
   "accounts": [
     {
@@ -9,34 +9,30 @@
       "label": "STOCK",
       "status": "BLOCKED",
       "reason_codes": [
-        "DATA_MISSING_INVALID_OR_STALE",
         "ACCOUNT_INVALID_OR_STALE",
         "HISTORICAL_RECONCILIATION_REQUIRED",
-        "PUBLICATION_UNCONFIRMED",
-        "INGESTION_UNKNOWN_OR_BLOCKED"
+        "PUBLICATION_UNCONFIRMED"
       ],
       "explanations": [
-        "stale, synthetic or mismatched accepted snapshot",
         "duplicate performance sessions; historical reconciliation required",
         "Original timestamped provider responses absent; arithmetic consistency does not authenticate market sessions.",
-        "[Errno 2] No such file or directory: 'monitoring/account_receipts/stock.json'",
-        "latest ingestion status is overdue"
+        "[Errno 2] No such file or directory: 'monitoring/account_receipts/stock.json'"
       ],
       "expected_session": "2026-11-12",
-      "last_verified_data_session": null,
+      "last_verified_data_session": "2026-11-12",
       "last_successful_account_advancement": null,
       "last_recorded_valuation": "2026-11-02",
-      "checked_at": "2026-11-13T00:11:56.465318+00:00",
+      "checked_at": "2026-11-13T02:36:57.357541+00:00",
       "expires_at": "2026-11-13T21:00:00+00:00",
-      "data_fresh": false,
+      "data_fresh": true,
       "workflow": {
         "workflow_id": 335407512,
         "path": ".github/workflows/paper-trading.yml",
         "status": "FAILURE",
-        "run_id": 43144720309,
+        "run_id": 43353292149,
         "run_attempt": 1,
-        "url": "https://github.com/iikaitlynii/trading-bot/actions/runs/43144720309",
-        "updated_at": "2026-11-12T02:56:11Z",
+        "url": "https://github.com/iikaitlynii/trading-bot/actions/runs/43353292149",
+        "updated_at": "2026-11-13T02:36:26Z",
         "last_successful_run_at": "2026-11-04T02:17:28Z",
         "last_successful_run_id": 41759638239
       },
@@ -44,7 +40,41 @@
         "https://github.com/iikaitlynii/trading-bot/blob/main/research/reliability/README.md",
         "https://github.com/iikaitlynii/trading-bot/blob/main/paper/performance.csv",
         "https://github.com/iikaitlynii/trading-bot/blob/main/research/reliability/recovery-v1/README.md"
-      ]
+      ],
+      "symbols": {
+        "AAPL": {
+          "http_status": 200,
+          "raw_path": "research/datasets/ingested/raw/34d7255fa0c1c7c27e2b356452593c311434a830669f07a37dd9c74f81f926e2.response",
+          "retrieved_at": "2026-11-13T02:36:16.851506+00:00",
+          "snapshot": "research/datasets/ingested/snapshots/c49a7ab658b52204f20cfe4171c6f85e91f311e1c1262d43ad90d30d62dc751b.json",
+          "source_session": "2026-11-12",
+          "status": "VALIDATED"
+        },
+        "AMZN": {
+          "http_status": 200,
+          "raw_path": "research/datasets/ingested/raw/3875003b2319fc7edf618f36cf4d04f8b3beb77911967f30e81ebd6d1e895e23.response",
+          "retrieved_at": "2026-11-13T02:36:17.410471+00:00",
+          "snapshot": "research/datasets/ingested/snapshots/940c286242b58c337793f39f3480417097671b822adc3808ca1f520d6c7a21a4.json",
+          "source_session": "2026-11-12",
+          "status": "VALIDATED"
+        },
+        "MSFT": {
+          "http_status": 200,
+          "raw_path": "research/datasets/ingested/raw/d0e2abaf0f294384f355d43be9759dfd7ba29e0f21950f099109e0fbbb9bc6cf.response",
+          "retrieved_at": "2026-11-13T02:36:17.066688+00:00",
+          "snapshot": "research/datasets/ingested/snapshots/991905f8190cd8e7b93a3ca7ec2fef7681e7b1c9c2391fea9d269c3d1bc687a9.json",
+          "source_session": "2026-11-12",
+          "status": "VALIDATED"
+        },
+        "NVDA": {
+          "http_status": 200,
+          "raw_path": "research/datasets/ingested/raw/6a19f96fa9a05b8e964b3fa0c593d400f6f88dee742866883d2ab4e5d9d7d06a.response",
+          "retrieved_at": "2026-11-13T02:36:17.227642+00:00",
+          "snapshot": "research/datasets/ingested/snapshots/3a4c34f10031e2266f825f38c156dbc81dff72473ab69d063849cab92204e9bf.json",
+          "source_session": "2026-11-12",
+          "status": "VALIDATED"
+        }
+      }
     },
     {
       "id": "crypto",
@@ -66,7 +96,7 @@
       "last_verified_data_session": null,
       "last_successful_account_advancement": null,
       "last_recorded_valuation": "2026-10-24",
-      "checked_at": "2026-11-13T00:11:56.465318+00:00",
+      "checked_at": "2026-11-13T02:36:57.357541+00:00",
       "expires_at": "2026-11-14T00:00:00+00:00",
       "data_fresh": false,
       "workflow": {
@@ -96,7 +126,7 @@
       "explanations": [
         "All four forward accounts use separate downloads without accepted input or publication receipts. Saved valuations remain historical and unverified."
       ],
-      "checked_at": "2026-11-13T00:11:56.465318+00:00",
+      "checked_at": "2026-11-13T02:36:57.357541+00:00",
       "expires_at": "2026-11-13T21:00:00+00:00",
       "expected_session": "2026-11-12",
       "last_verified_data_session": null,
@@ -145,10 +175,10 @@
         "workflow_id": 335407512,
         "path": ".github/workflows/paper-trading.yml",
         "status": "FAILURE",
-        "run_id": 43144720309,
+        "run_id": 43353292149,
         "run_attempt": 1,
-        "url": "https://github.com/iikaitlynii/trading-bot/actions/runs/43144720309",
-        "updated_at": "2026-11-12T02:56:11Z",
+        "url": "https://github.com/iikaitlynii/trading-bot/actions/runs/43353292149",
+        "updated_at": "2026-11-13T02:36:26Z",
         "last_successful_run_at": "2026-11-04T02:17:28Z",
         "last_successful_run_id": 41759638239
       },

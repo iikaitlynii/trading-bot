@@ -2,7 +2,7 @@
   "schema_version": 1,
   "account": "stocks",
   "classification": "simulated forward paper records",
-  "generated_at_utc": "2026-11-20T04:22:31.873340+00:00",
+  "generated_at_utc": "2026-11-21T04:19:09.289155+00:00",
   "starting_capital": 10000.0,
   "warnings": [
     "Valuations were out of chronological order; sorted for reporting",

@@ -1,6 +1,6 @@
 {
-  "as_of": "2026-11-25T04:52:50.388876+00:00",
-  "bundle": "research/datasets/ingested/bundles/25aa301c4d56d7889c2c74cd2b4f8aac86cf8196e5cd174e3d1eb5428fa25608.json",
+  "as_of": "2026-11-26T04:07:45.680209+00:00",
+  "bundle": "research/datasets/ingested/bundles/0da3f1db253032c38eda5b2d53a0fdad13f591cb5efaafa8eb4a67e7d965ab1f.json",
   "expected_symbols": [
     "AAPL",
     "MSFT",
@@ -13,34 +13,34 @@
   "symbols": {
     "AAPL": {
       "http_status": 200,
-      "raw_path": "research/datasets/ingested/raw/b7331f10dcbd9d477f889973056cc26cf84e1789f34e7fc36b8099da9f84c88a.response",
-      "retrieved_at": "2026-11-25T04:52:50.517642+00:00",
-      "snapshot": "research/datasets/ingested/snapshots/e1d5128494b4718fe8aad6b8ecc7ec04f38dff280c2ac35f9fcfd897e9b2be9e.json",
-      "source_session": "2026-11-24",
+      "raw_path": "research/datasets/ingested/raw/ffd0ea52c3764e6333d2744cdbb6c6092ea67a2a306928bfe7be5b8dc7848c84.response",
+      "retrieved_at": "2026-11-26T04:07:45.832928+00:00",
+      "snapshot": "research/datasets/ingested/snapshots/5dcb72a0b0a0b9c0cf7dd73de95da99c41908d56f1a60919be3ac11c293f767a.json",
+      "source_session": "2026-11-25",
       "status": "VALIDATED"
     },
     "AMZN": {
       "http_status": 200,
-      "raw_path": "research/datasets/ingested/raw/0454dfaea438ad321b24038917fc3b80dc046a1d137cce703361810a959da2ba.response",
-      "retrieved_at": "2026-11-25T04:52:50.871663+00:00",
-      "snapshot": "research/datasets/ingested/snapshots/9a2545d7ab433715f898bed882a0727837b24267fa9e7cc44e4331391f0bbc4d.json",
-      "source_session": "2026-11-24",
+      "raw_path": "research/datasets/ingested/raw/d38273b3467cd43a6061d0b53279b014cd46d55120550c539d3a610458f73434.response",
+      "retrieved_at": "2026-11-26T04:07:46.232829+00:00",
+      "snapshot": "research/datasets/ingested/snapshots/8f32d571e458e5fe1f270bd698e0007dfd1440b8dcb047cf063067692c5d32ad.json",
+      "source_session": "2026-11-25",
       "status": "VALIDATED"
     },
     "MSFT": {
       "http_status": 200,
-      "raw_path": "research/datasets/ingested/raw/14e3fae3d4c0f96200489942e2a126a3d99c7668f1be380c5714d13b180df15c.response",
-      "retrieved_at": "2026-11-25T04:52:50.651744+00:00",
-      "snapshot": "research/datasets/ingested/snapshots/1d858f9ec97f3106b3e126bcaab358ada58b4c490a461c1cc9d582e11e61e514.json",
-      "source_session": "2026-11-24",
+      "raw_path": "research/datasets/ingested/raw/eed6339f0d171b8f874a98a238a8437c807e747dffea0b3945a8f59750ff8653.response",
+      "retrieved_at": "2026-11-26T04:07:45.988949+00:00",
+      "snapshot": "research/datasets/ingested/snapshots/e7ddae7573a0db5f46293ed78184964bd80f17f0aa61807f6cf45cddd5174077.json",
+      "source_session": "2026-11-25",
       "status": "VALIDATED"
     },
     "NVDA": {
       "http_status": 200,
-      "raw_path": "research/datasets/ingested/raw/6253e76c58ad7020a46764c26ccff0d1520dceaa8b454217ea93fc82e4999bca.response",
-      "retrieved_at": "2026-11-25T04:52:50.776458+00:00",
-      "snapshot": "research/datasets/ingested/snapshots/4639132d25e1c96e5710d5a7026fe6659b6ec5942519016d17e69db6ff6d8ac0.json",
-      "source_session": "2026-11-24",
+      "raw_path": "research/datasets/ingested/raw/fbe6762cb45897665c63bfb04eedf9d189eb490bb7da20cfbcc727782f444016.response",
+      "retrieved_at": "2026-11-26T04:07:46.090204+00:00",
+      "snapshot": "research/datasets/ingested/snapshots/4cd4a61d1337a4b0ff675a4345463592b1798b1b3470a1e46a2db59d05f9cce5.json",
+      "source_session": "2026-11-25",
       "status": "VALIDATED"
     }
   }

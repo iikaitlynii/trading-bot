@@ -1,0 +1,45 @@
+{
+  "as_of": "2026-11-27T05:19:35.467891+00:00",
+  "export": "research/datasets/ingested/exports/14546e308027f3ad73016f1cd699d1e29c94c71daf435924263a599c3861e7de.csv",
+  "market": "stock",
+  "snapshots": {
+    "AAPL": "research/datasets/ingested/snapshots/ca9e38b32d8c50c612eea72d77807ad27dd3337f0903110aeca7eea146aae6b8.json",
+    "AMZN": "research/datasets/ingested/snapshots/5bdbb985e566a263bd1032be37c33e31ed71a025b9598370ecdda826ae0e2b3f.json",
+    "MSFT": "research/datasets/ingested/snapshots/d872f04692acfdda92abaea631fd8e5eca90f612e3af06ade0ce84ee89af5a4a.json",
+    "NVDA": "research/datasets/ingested/snapshots/0b77b7dc42af9985039e4e0e82667ac6d7b141b985ae2b5d6768aeecb12fdca6.json"
+  },
+  "symbols": {
+    "AAPL": {
+      "http_status": 200,
+      "raw_path": "research/datasets/ingested/raw/a679d642d5234fbdb6264062bdb1879dbc1ef7063325ab901cf71607644f1417.response",
+      "retrieved_at": "2026-11-27T05:19:35.616382+00:00",
+      "snapshot": "research/datasets/ingested/snapshots/ca9e38b32d8c50c612eea72d77807ad27dd3337f0903110aeca7eea146aae6b8.json",
+      "source_session": "2026-11-25",
+      "status": "VALIDATED"
+    },
+    "AMZN": {
+      "http_status": 200,
+      "raw_path": "research/datasets/ingested/raw/86aa4df5e66d7d1f5f368614bda4c24862852920c9a862a684f89b2e4ab1ea23.response",
+      "retrieved_at": "2026-11-27T05:19:35.958166+00:00",
+      "snapshot": "research/datasets/ingested/snapshots/5bdbb985e566a263bd1032be37c33e31ed71a025b9598370ecdda826ae0e2b3f.json",
+      "source_session": "2026-11-25",
+      "status": "VALIDATED"
+    },
+    "MSFT": {
+      "http_status": 200,
+      "raw_path": "research/datasets/ingested/raw/0acc642f333367e8f9848034982c18138814e43f67b8644114f290665c3607b6.response",
+      "retrieved_at": "2026-11-27T05:19:35.746342+00:00",
+      "snapshot": "research/datasets/ingested/snapshots/d872f04692acfdda92abaea631fd8e5eca90f612e3af06ade0ce84ee89af5a4a.json",
+      "source_session": "2026-11-25",
+      "status": "VALIDATED"
+    },
+    "NVDA": {
+      "http_status": 200,
+      "raw_path": "research/datasets/ingested/raw/011f7a45ec326f8fc52c84a8d11302c6c5c8ba47b6185f77dfb77e74601579fb.response",
+      "retrieved_at": "2026-11-27T05:19:35.850451+00:00",
+      "snapshot": "research/datasets/ingested/snapshots/0b77b7dc42af9985039e4e0e82667ac6d7b141b985ae2b5d6768aeecb12fdca6.json",
+      "source_session": "2026-11-25",
+      "status": "VALIDATED"
+    }
+  }
+}

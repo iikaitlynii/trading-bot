@@ -2,7 +2,7 @@
   "schema_version": 1,
   "account": "crypto",
   "classification": "simulated forward paper records",
-  "generated_at_utc": "2026-11-27T05:25:20.883672+00:00",
+  "generated_at_utc": "2026-11-28T04:59:45.421546+00:00",
   "starting_capital": 5000.0,
   "warnings": [
     "Unavailable crypto_history.csv: FileNotFoundError",

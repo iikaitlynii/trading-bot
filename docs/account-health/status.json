@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "simulation_only": true,
-  "checked_at": "2026-11-28T03:53:22.676245+00:00",
+  "checked_at": "2026-11-28T04:49:36.623459+00:00",
   "calendar_version": "xnys-2024-2027-v1",
   "accounts": [
     {
@@ -22,8 +22,8 @@
       "last_verified_data_session": "2026-11-27",
       "last_successful_account_advancement": null,
       "last_recorded_valuation": "2026-11-02",
-      "checked_at": "2026-11-28T03:53:22.676245+00:00",
-      "expires_at": "2026-11-29T05:53:22.676245+00:00",
+      "checked_at": "2026-11-28T04:49:36.623459+00:00",
+      "expires_at": "2026-11-29T06:49:36.623459+00:00",
       "data_fresh": true,
       "workflow": {
         "workflow_id": 335407512,
@@ -96,17 +96,17 @@
       "last_verified_data_session": null,
       "last_successful_account_advancement": null,
       "last_recorded_valuation": "2026-10-24",
-      "checked_at": "2026-11-28T03:53:22.676245+00:00",
+      "checked_at": "2026-11-28T04:49:36.623459+00:00",
       "expires_at": "2026-11-29T00:00:00+00:00",
       "data_fresh": false,
       "workflow": {
         "workflow_id": 339790130,
         "path": ".github/workflows/crypto-paper-trading.yml",
         "status": "FAILURE",
-        "run_id": 45944453605,
+        "run_id": 46109254511,
         "run_attempt": 1,
-        "url": "https://github.com/iikaitlynii/trading-bot/actions/runs/45944453605",
-        "updated_at": "2026-11-27T05:13:20Z",
+        "url": "https://github.com/iikaitlynii/trading-bot/actions/runs/46109254511",
+        "updated_at": "2026-11-28T04:49:14Z",
         "last_successful_run_at": "2026-11-04T03:04:42Z",
         "last_successful_run_id": 41764758528
       },
@@ -126,8 +126,8 @@
       "explanations": [
         "All four forward accounts use separate downloads without accepted input or publication receipts. Saved valuations remain historical and unverified."
       ],
-      "checked_at": "2026-11-28T03:53:22.676245+00:00",
-      "expires_at": "2026-11-29T05:53:22.676245+00:00",
+      "checked_at": "2026-11-28T04:49:36.623459+00:00",
+      "expires_at": "2026-11-29T06:49:36.623459+00:00",
       "expected_session": "2026-11-27",
       "last_verified_data_session": null,
       "last_successful_account_advancement": null,
